@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Log in • Smart Course Companion</title>
+
+    <link rel="stylesheet" href="../css/base.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+  </head>
+
+  <body>
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <a class="brand" href="../index.html">← Smart Course Companion</a>
+
+        <nav class="topnav">
+          <a href="./register.html">Create account</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container page page--center">
+      <section class="card auth">
+        <div class="card__header">
+          <div>
+            <h1>Log in</h1>
+            <p class="muted">Access your courses, assessments, and progress.</p>
+          </div>
+        </div>
+
+        <!-- Alerts -->
+        <div class="alert alert--error" id="errorBox" hidden>
+          Invalid email or password.
+        </div>
+
+        <form id="loginForm" class="stack" novalidate>
+          <label class="field">
+            <span class="field__label">Email</span>
+            <input
+              id="email"
+              class="input"
+              type="email"
+              name="email"
+              placeholder="name@example.com"
+              autocomplete="email"
+              required
+            />
+            <span class="field__hint" id="emailHint" hidden
+              >Please enter a valid email.</span
+            >
+          </label>
+
+          <label class="field">
+            <span class="field__label">Password</span>
+            <input
+              id="password"
+              class="input"
+              type="password"
+              name="password"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              minlength="6"
+              required
+            />
+            <span class="field__hint" id="passHint" hidden
+              >Password must be at least 6 characters.</span
+            >
+          </label>
+
+          <!-- Role selector (optional but helps for the admin/student flows) -->
+          <fieldset class="fieldset">
+            <legend class="fieldset__legend">Role</legend>
+            <div class="row gap">
+              <label class="radio">
+                <input type="radio" name="role" value="student" checked />
+                <span>Student</span>
+              </label>
+
+              <label class="radio">
+                <input type="radio" name="role" value="admin" />
+                <span>Instructor/Admin</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="row row--between row--wrap gap">
+            <label class="check">
+              <input id="remember" type="checkbox" />
+              <span>Remember me</span>
+            </label>
+
+            <!-- You can implement later -->
+            <a class="link" href="./forgot.html" aria-disabled="true">Forgot password?</a>
+          </div>
+
+          <button class="btn btn--block" type="submit">Log in</button>
+
+          <p class="muted small center">
+            No account? <a class="link" href="./register.html">Create one</a>
+          </p>
+        </form>
+      </section>
+
+      <!-- Small notes for deliverable alignment -->
+      <p class="muted small center">
+        Deliverable 1 can mock login; Deliverable 2 must implement real authentication +
+        data access controls.
+      </p>
+    </main>
+
+    <footer class="footer container">
+      <p class="muted small">Smart Course Companion • SOEN 287</p>
+    </footer>
+
+    <script src="../js/pages/login.js" defer></script>
+  </body>
+</html>

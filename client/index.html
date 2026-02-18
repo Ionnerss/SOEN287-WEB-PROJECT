@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Smart Course Companion</title>
+
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/layout.css" />
+    <link rel="stylesheet" href="./css/components.css" />
+  </head>
+
+  <body>
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <a class="brand" href="./index.html">Smart Course Companion</a>
+
+        <nav class="topnav">
+          <a href="./pages/login.html">Log in</a>
+          <a class="btn btn--small" href="./pages/register.html">Create account</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container page">
+      <!-- Hero -->
+      <section class="hero card">
+        <div class="hero__content">
+          <h1>Track courses. Crush deadlines. See your progress.</h1>
+          <p class="muted">
+            Manage courses, assessments, grades, and upcoming deadlines in one place.
+            Visualize progress with simple charts and status tracking.
+          </p>
+
+          <div class="row gap">
+            <a class="btn" href="./pages/register.html">Get started</a>
+            <a class="btn btn--ghost" href="./pages/login.html">Log in</a>
+          </div>
+
+          <p class="muted small">
+            Student + Instructor/Admin flows supported (Deliverable 1 UI, Deliverable 2
+            backend).
+          </p>
+        </div>
+
+        <!-- Tiny “preview” panel -->
+        <div class="hero__panel">
+          <div class="mini card">
+            <div class="mini__header">
+              <strong>Upcoming</strong>
+              <span class="badge">2</span>
+            </div>
+
+            <ul class="list">
+              <li class="list__item">
+                <div>
+                  <div class="list__title">Lab 1</div>
+                  <div class="muted small">SOEN 287 • Feb 20</div>
+                </div>
+                <span class="tag">Pending</span>
+              </li>
+              <li class="list__item">
+                <div>
+                  <div class="list__title">Quiz 1</div>
+                  <div class="muted small">COMP 248 • Feb 23</div>
+                </div>
+                <span class="tag">Pending</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="mini card">
+            <div class="mini__header">
+              <strong>Progress</strong>
+            </div>
+
+            <div class="progress">
+              <div class="progress__bar" style="width: 45%"></div>
+            </div>
+            <p class="muted small">45% assessments completed</p>
+
+            <div class="row row--wrap gap">
+              <span class="chip">Course averages</span>
+              <span class="chip">Completion tracking</span>
+              <span class="chip">Dashboard deadlines</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section class="grid3">
+        <article class="card">
+          <h2 class="h3">Courses</h2>
+          <p class="muted">
+            Add course code, name, instructor, and term. Edit or delete anytime.
+          </p>
+        </article>
+
+        <article class="card">
+          <h2 class="h3">Assessments</h2>
+          <p class="muted">
+            Track assignments, labs, quizzes, exams. Mark them completed/pending.
+          </p>
+        </article>
+
+        <article class="card">
+          <h2 class="h3">Grades + visuals</h2>
+          <p class="muted">
+            Enter earned/total marks and view averages + progress summaries.
+          </p>
+        </article>
+      </section>
+
+      <!-- Role entry (simple) -->
+      <section class="card">
+        <div class="card__header">
+          <h2>Choose your role</h2>
+          <p class="muted">UI-only for Deliverable 1, full auth later.</p>
+        </div>
+
+        <div class="row gap">
+          <a class="btn" href="./pages/login.html?role=student">I’m a student</a>
+          <a class="btn btn--ghost" href="./pages/login.html?role=admin"
+            >I’m an instructor/admin</a
+          >
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer container">
+      <p class="muted small">© Smart Course Companion • SOEN 287 • Winter 2026</p>
+    </footer>
+
+    <script src="./js/app.js" defer></script>
+  </body>
+</html>

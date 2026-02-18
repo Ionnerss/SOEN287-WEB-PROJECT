@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Course • Smart Course Companion</title>
+
+    <link rel="stylesheet" href="../css/base.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+  </head>
+
+  <body>
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <a class="brand" href="./dashboard.html">← Dashboard</a>
+
+        <nav class="topnav">
+          <a href="./dashboard.html">Dashboard</a>
+          <a href="./profile.html">Profile</a>
+          <button class="btn btn--ghost btn--small" type="button" id="logoutBtn">
+            Log out
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container page">
+      <!-- Course header -->
+      <section class="card">
+        <div class="card__header">
+          <div>
+            <h1 id="courseTitle">SOEN 287 • Web Programming</h1>
+            <p class="muted" id="courseMeta">Winter 2026 • Instructor: TBD</p>
+          </div>
+
+          <div class="row gap">
+            <button class="btn btn--ghost" type="button" id="editCourseBtn">Edit</button>
+            <button class="btn btn--danger" type="button" id="deleteCourseBtn">
+              Delete
+            </button>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+          <div class="stat">
+            <div class="stat__label">Current average</div>
+            <div class="stat__value" id="currentAverage">--%</div>
+          </div>
+          <div class="stat">
+            <div class="stat__label">Completed</div>
+            <div class="stat__value" id="completedCount">-- / --</div>
+          </div>
+          <div class="stat">
+            <div class="stat__label">Next due</div>
+            <div class="stat__value" id="nextDue">--</div>
+          </div>
+        </div>
+
+        <!-- Completion progress -->
+        <div class="progress">
+          <div class="progress__bar" id="progressBar" style="width: 0%"></div>
+        </div>
+        <p class="muted small" id="progressText">0% assessments completed</p>
+      </section>
+
+      <section class="grid2">
+        <!-- Assessments -->
+        <section class="card">
+          <div class="card__header">
+            <div>
+              <h2>Assessments</h2>
+              <p class="muted small">Enter marks, toggle status, manage deadlines.</p>
+            </div>
+            <button class="btn" type="button" id="openAddAssessmentModalBtn">
+              + Add
+            </button>
+          </div>
+
+          <div class="row row--wrap gap">
+            <label class="field field--inline">
+              <span class="field__label">Status</span>
+              <select id="statusFilter">
+                <option value="all" selected>All</option>
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+              </select>
+            </label>
+
+            <label class="field field--inline">
+              <span class="field__label">Search</span>
+              <input
+                id="searchInput"
+                class="input input--small"
+                type="search"
+                placeholder="Lab 2, Midterm..."
+              />
+            </label>
+          </div>
+
+          <div class="table-wrap">
+            <table class="table" aria-label="Assessments table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Type</th>
+                  <th>Due</th>
+                  <th>Marks</th>
+                  <th>Status</th>
+                  <th class="right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="assessmentsTbody">
+                <!-- JS renders rows -->
+              </tbody>
+            </table>
+          </div>
+
+          <p class="muted small" id="emptyState" hidden>No assessments yet. Add one ☝️</p>
+        </section>
+
+        <!-- Visual summary -->
+        <aside class="card">
+          <div class="card__header">
+            <div>
+              <h2>Visual summary</h2>
+              <p class="muted small">Simple visuals now, charts later.</p>
+            </div>
+          </div>
+
+          <!-- Per-category progress bars (dummy placeholders) -->
+          <div class="stack" id="summaryBars">
+            <div class="barrow">
+              <div class="barrow__label">
+                <strong>Labs</strong>
+                <span class="muted small">1/3</span>
+              </div>
+              <div class="progress">
+                <div class="progress__bar" style="width: 33%"></div>
+              </div>
+            </div>
+
+            <div class="barrow">
+              <div class="barrow__label">
+                <strong>Quizzes</strong>
+                <span class="muted small">0/2</span>
+              </div>
+              <div class="progress">
+                <div class="progress__bar" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <div class="barrow">
+              <div class="barrow__label">
+                <strong>Exams</strong>
+                <span class="muted small">0/1</span>
+              </div>
+              <div class="progress">
+                <div class="progress__bar" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <hr class="sep" />
+
+          <h3 class="h4">Quick actions</h3>
+          <div class="stack">
+            <button class="btn btn--ghost" type="button" id="markAllPendingBtn">
+              Mark all pending
+            </button>
+            <button class="btn btn--ghost" type="button" id="exportBtn" disabled>
+              Export (D2 bonus)
+            </button>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <!-- Add Assessment Modal -->
+    <dialog class="modal" id="addAssessmentModal">
+      <form method="dialog" class="modal__content" id="addAssessmentForm">
+        <div class="modal__header">
+          <h3>Add assessment</h3>
+          <button class="btn btn--ghost btn--small" value="cancel" aria-label="Close">
+            ✕
+          </button>
+        </div>
+
+        <div class="grid">
+          <label class="field">
+            <span class="field__label">Title</span>
+            <input id="aTitle" class="input" required placeholder="e.g., Lab 2" />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Type</span>
+            <select id="aType" class="input" required>
+              <option value="">Choose…</option>
+              <option>Assignment</option>
+              <option>Lab</option>
+              <option>Quiz</option>
+              <option>Exam</option>
+              <option>Project</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span class="field__label">Due date</span>
+            <input id="aDue" class="input" type="date" required />
+          </label>
+
+          <div class="row gap">
+            <label class="field">
+              <span class="field__label">Earned</span>
+              <input
+                id="aEarned"
+                class="input"
+                type="number"
+                min="0"
+                placeholder="optional"
+              />
+            </label>
+
+            <label class="field">
+              <span class="field__label">Total</span>
+              <input
+                id="aTotal"
+                class="input"
+                type="number"
+                min="0"
+                placeholder="optional"
+              />
+            </label>
+          </div>
+
+          <label class="switch">
+            <input id="aCompleted" type="checkbox" />
+            <span>Mark as completed</span>
+          </label>
+        </div>
+
+        <div class="modal__footer">
+          <button
+            class="btn btn--ghost"
+            value="cancel"
+            type="button"
+            id="cancelAddAssessmentBtn"
+          >
+            Cancel
+          </button>
+          <button class="btn" value="default" type="submit">Add</button>
+        </div>
+      </form>
+    </dialog>
+
+    <footer class="footer container">
+      <p class="muted small">Smart Course Companion • SOEN 287</p>
+    </footer>
+
+    <script src="../js/pages/course.js" defer></script>
+  </body>
+</html>

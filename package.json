@@ -1,0 +1,25 @@
+{
+  "name": "soen287-web-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "format": "prettier . --write",
+    "format:check": "prettier . --check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ionnerss/SOEN287-WEB-PROJECT.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Ionnerss/SOEN287-WEB-PROJECT/issues"
+  },
+  "homepage": "https://github.com/Ionnerss/SOEN287-WEB-PROJECT#readme",
+  "devDependencies": {
+    "prettier": "^3.8.1"
+  }
+}

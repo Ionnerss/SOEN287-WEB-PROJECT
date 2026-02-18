@@ -1,0 +1,12 @@
+node_modules
+dist
+build
+coverage
+*.min.*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+#Server side files to be avoided
+*.log
+.env

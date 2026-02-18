@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dashboard • Smart Course Companion</title>
+
+    <link rel="stylesheet" href="../css/base.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+  </head>
+
+  <body>
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <a class="brand" href="../index.html">Smart Course Companion</a>
+
+        <nav class="topnav">
+          <a class="active" href="./dashboard.html">Dashboard</a>
+          <a href="./profile.html">Profile</a>
+          <button class="btn btn--ghost btn--small" type="button" id="logoutBtn">
+            Log out
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container page">
+      <!-- Header + quick actions -->
+      <section class="row row--between row--wrap gap">
+        <div>
+          <h1>Dashboard</h1>
+          <p class="muted" id="welcomeText">Welcome back 👋</p>
+        </div>
+
+        <div class="row gap">
+          <button class="btn" type="button" id="openAddCourseModalBtn">
+            + Add course
+          </button>
+          <button class="btn btn--ghost" type="button" id="openAddAssessmentModalBtn">
+            + Add assessment
+          </button>
+        </div>
+      </section>
+
+      <!-- Quick stats -->
+      <section class="grid3">
+        <article class="card statcard">
+          <div class="statcard__label">Upcoming (7 days)</div>
+          <div class="statcard__value" id="upcomingCount">--</div>
+          <div class="muted small">Across all courses</div>
+        </article>
+
+        <article class="card statcard">
+          <div class="statcard__label">Completed</div>
+          <div class="statcard__value" id="completedSummary">-- / --</div>
+          <div class="muted small">Assessments done</div>
+        </article>
+
+        <article class="card statcard">
+          <div class="statcard__label">Avg (all courses)</div>
+          <div class="statcard__value" id="overallAverage">--%</div>
+          <div class="muted small">Calculated from marks</div>
+        </article>
+      </section>
+
+      <section class="grid2">
+        <!-- Upcoming assessments -->
+        <section class="card">
+          <div class="card__header">
+            <div>
+              <h2>Upcoming assessments</h2>
+              <p class="muted small">Single list across all courses</p>
+            </div>
+
+            <label class="field field--inline">
+              <span class="field__label">Show</span>
+              <select id="upcomingFilter">
+                <option value="7" selected>Next 7 days</option>
+                <option value="14">Next 14 days</option>
+                <option value="30">Next 30 days</option>
+                <option value="all">All pending</option>
+              </select>
+            </label>
+          </div>
+
+          <ul class="list" id="upcomingList" aria-label="Upcoming assessments list">
+            <!-- Example item (JS should render real items) -->
+            <li class="list__item">
+              <div>
+                <div class="list__title">Lab 1</div>
+                <div class="muted small">SOEN 287 • Due 2026-02-20</div>
+              </div>
+              <div class="row gap">
+                <span class="tag">Pending</span>
+                <a class="btn btn--ghost btn--small" href="./course.html?courseId=SOEN287"
+                  >Open</a
+                >
+              </div>
+            </li>
+          </ul>
+
+          <p class="muted small" id="upcomingEmpty" hidden>No upcoming assessments 🎉</p>
+        </section>
+
+        <!-- Courses -->
+        <section class="card">
+          <div class="card__header">
+            <div>
+              <h2>Your courses</h2>
+              <p class="muted small">Add/edit/delete your courses</p>
+            </div>
+
+            <label class="field field--inline">
+              <span class="field__label">Search</span>
+              <input
+                id="courseSearch"
+                class="input input--small"
+                type="search"
+                placeholder="SOEN 287…"
+              />
+            </label>
+          </div>
+
+          <div class="stack" id="coursesGrid" aria-label="Courses list">
+            <!-- Example course card -->
+            <article class="coursecard">
+              <div class="coursecard__main">
+                <div class="coursecard__title">SOEN 287</div>
+                <div class="muted small">Web Programming • Winter 2026</div>
+                <div class="row row--wrap gap small">
+                  <span class="chip">Avg: 78%</span>
+                  <span class="chip">Progress: 2/5</span>
+                </div>
+              </div>
+
+              <div class="coursecard__side">
+                <div class="progress">
+                  <div class="progress__bar" style="width: 40%"></div>
+                </div>
+                <div class="row gap">
+                  <a class="btn btn--small" href="./course.html?courseId=SOEN287">View</a>
+                  <button class="btn btn--ghost btn--small" type="button">Edit</button>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <p class="muted small" id="coursesEmpty" hidden>No courses yet. Add one ☝️</p>
+        </section>
+      </section>
+
+      <!-- Visual summary section -->
+      <section class="card">
+        <div class="card__header">
+          <div>
+            <h2>Progress overview</h2>
+            <p class="muted small">Visual summaries (progress bars / charts)</p>
+          </div>
+
+          <label class="field field--inline">
+            <span class="field__label">View</span>
+            <select id="overviewMode">
+              <option value="completion" selected>Completion</option>
+              <option value="averages">Course averages</option>
+            </select>
+          </label>
+        </div>
+
+        <!-- Keep it simple for D1: just progress bars. If you add charts later, replace this block. -->
+        <div class="stack" id="overviewBars">
+          <div class="barrow">
+            <div class="barrow__label">
+              <strong>SOEN 287</strong>
+              <span class="muted small">2/5 completed</span>
+            </div>
+            <div class="progress">
+              <div class="progress__bar" style="width: 40%"></div>
+            </div>
+          </div>
+
+          <div class="barrow">
+            <div class="barrow__label">
+              <strong>COMP 248</strong>
+              <span class="muted small">1/4 completed</span>
+            </div>
+            <div class="progress">
+              <div class="progress__bar" style="width: 25%"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Add Course Modal -->
+    <dialog class="modal" id="addCourseModal">
+      <form method="dialog" class="modal__content" id="addCourseForm">
+        <div class="modal__header">
+          <h3>Add course</h3>
+          <button class="btn btn--ghost btn--small" value="cancel" aria-label="Close">
+            ✕
+          </button>
+        </div>
+
+        <div class="grid">
+          <label class="field">
+            <span class="field__label">Course code</span>
+            <input id="cCode" class="input" placeholder="SOEN 287" required />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Course name</span>
+            <input id="cName" class="input" placeholder="Web Programming" required />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Instructor</span>
+            <input id="cInstructor" class="input" placeholder="e.g., Prof. X" />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Term</span>
+            <input id="cTerm" class="input" placeholder="Winter 2026" required />
+          </label>
+        </div>
+
+        <div class="modal__footer">
+          <button
+            class="btn btn--ghost"
+            value="cancel"
+            type="button"
+            id="cancelAddCourseBtn"
+          >
+            Cancel
+          </button>
+          <button class="btn" value="default" type="submit">Add</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Add Assessment Modal (optional on dashboard, but useful) -->
+    <dialog class="modal" id="addAssessmentModal">
+      <form method="dialog" class="modal__content" id="addAssessmentForm">
+        <div class="modal__header">
+          <h3>Add assessment</h3>
+          <button class="btn btn--ghost btn--small" value="cancel" aria-label="Close">
+            ✕
+          </button>
+        </div>
+
+        <div class="grid">
+          <label class="field">
+            <span class="field__label">Course</span>
+            <select id="aCourse" class="input" required>
+              <option value="">Choose…</option>
+              <option value="SOEN287">SOEN 287</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span class="field__label">Title</span>
+            <input id="aTitle" class="input" placeholder="e.g., Quiz 1" required />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Type</span>
+            <select id="aType" class="input" required>
+              <option value="">Choose…</option>
+              <option>Assignment</option>
+              <option>Lab</option>
+              <option>Quiz</option>
+              <option>Exam</option>
+              <option>Project</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span class="field__label">Due date</span>
+            <input id="aDue" class="input" type="date" required />
+          </label>
+
+          <label class="switch">
+            <input id="aCompleted" type="checkbox" />
+            <span>Mark as completed</span>
+          </label>
+        </div>
+
+        <div class="modal__footer">
+          <button
+            class="btn btn--ghost"
+            value="cancel"
+            type="button"
+            id="cancelAddAssessmentBtn"
+          >
+            Cancel
+          </button>
+          <button class="btn" value="default" type="submit">Add</button>
+        </div>
+      </form>
+    </dialog>
+
+    <footer class="footer container">
+      <p class="muted small">Smart Course Companion • SOEN 287</p>
+    </footer>
+
+    <script src="../js/pages/dashboard.js" defer></script>
+  </body>
+</html>
