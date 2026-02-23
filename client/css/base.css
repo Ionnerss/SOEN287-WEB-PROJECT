@@ -1,0 +1,200 @@
+/* =========================
+   base.css
+   - CSS variables
+   - resets + typography
+   - common utilities
+   ========================= */
+
+/* 1) Design tokens */
+:root {
+  /* Colors */
+  --bg: #0b0f14;
+  --surface: #111827;
+  --surface-2: #0f172a;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --border: rgba(255, 255, 255, 0.08);
+
+  --primary: #4f46e5;
+  --primary-2: #6366f1;
+  --danger: #ef4444;
+
+  /* Shadows */
+  --shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+
+  /* Radius + spacing */
+  --radius: 14px;
+  --radius-sm: 10px;
+
+  --space-1: 6px;
+  --space-2: 10px;
+  --space-3: 14px;
+  --space-4: 18px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* Typography */
+  --font:
+    ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+    'Apple Color Emoji', 'Segoe UI Emoji';
+  --mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+
+  --fs-1: 0.9rem;
+  --fs-2: 1rem;
+  --fs-3: 1.25rem;
+  --fs-4: 1.6rem;
+  --fs-5: 2rem;
+
+  --lh: 1.5;
+}
+
+/* Optional: light mode support later (bonus) */
+/* Uncomment when you add a theme toggle
+:root[data-theme="light"] {
+  --bg: #f7f7fb;
+  --surface: #ffffff;
+  --surface-2: #f3f4f6;
+  --text: #111827;
+  --muted: #6b7280;
+  --border: rgba(17, 24, 39, 0.12);
+
+  --primary: #4f46e5;
+  --primary-2: #6366f1;
+  --danger: #dc2626;
+
+  --shadow: 0 10px 25px rgba(17, 24, 39, 0.08);
+}
+*/
+
+/* 2) Reset + global defaults */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  line-height: var(--lh);
+  background:
+    radial-gradient(1200px 800px at 20% 0%, rgba(79, 70, 229, 0.18), transparent 60%),
+    radial-gradient(900px 600px at 90% 20%, rgba(99, 102, 241, 0.14), transparent 55%),
+    var(--bg);
+  color: var(--text);
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* 3) Typography */
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: var(--fs-5);
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: var(--fs-4);
+  letter-spacing: -0.01em;
+}
+
+.h3 {
+  font-size: var(--fs-3);
+}
+
+.h4 {
+  font-size: 1.1rem;
+}
+
+p {
+  font-size: var(--fs-2);
+}
+
+.small {
+  font-size: var(--fs-1);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* 4) Focus styles (accessibility) */
+:focus-visible {
+  outline: 2px solid rgba(99, 102, 241, 0.9);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+
+/* 5) Common helpers */
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+hr.sep {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: var(--space-4) 0;
+}
+
+/* 6) Page baseline */
+.page {
+  padding: var(--space-6) 0;
+}
+
+/* Useful if you want centered auth pages */
+.page--center {
+  min-height: calc(100vh - 80px);
+  display: grid;
+  place-items: center;
+  padding: var(--space-6) 0;
+}
