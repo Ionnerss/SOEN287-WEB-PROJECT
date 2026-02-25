@@ -30,8 +30,8 @@
       <section class="card">
         <div class="card__header">
           <div>
-            <h1 id="courseTitle">SOEN 287 • Web Programming</h1>
-            <p class="muted" id="courseMeta">Winter 2026 • Instructor: TBD</p>
+            <h1 id="courseTitle"></h1>
+            <p class="muted" id="courseMeta"></p>
           </div>
 
           <div class="row gap">
@@ -111,7 +111,7 @@
                   <th class="right">Actions</th>
                 </tr>
               </thead>
-              <tbody id="assessmentsTbody">
+              <tbody id="assessmentsTable">
                 <!-- JS renders rows -->
               </tbody>
             </table>
@@ -182,7 +182,7 @@
       <form method="dialog" class="modal__content" id="addAssessmentForm">
         <div class="modal__header">
           <h3>Add assessment</h3>
-          <button class="btn btn--ghost btn--small" value="cancel" aria-label="Close">
+          <button class="btn btn--ghost btn--small" type="button" id="cancelAddAssessmentBtn">
             ✕
           </button>
         </div>
@@ -190,7 +190,7 @@
         <div class="grid">
           <label class="field">
             <span class="field__label">Title</span>
-            <input id="aTitle" class="input" required placeholder="e.g., Lab 2" />
+            <input id="aTitle" class="input" placeholder="e.g., Quiz 1" required />
           </label>
 
           <label class="field">
@@ -210,29 +210,15 @@
             <input id="aDue" class="input" type="date" required />
           </label>
 
-          <div class="row gap">
-            <label class="field">
-              <span class="field__label">Earned</span>
-              <input
-                id="aEarned"
-                class="input"
-                type="number"
-                min="0"
-                placeholder="optional"
-              />
-            </label>
+          <label class="field">
+            <span class="field__label">Earned marks</span>
+            <input id="aEarned" class="input" type="number" min="0" value="0" required />
+          </label>
 
-            <label class="field">
-              <span class="field__label">Total</span>
-              <input
-                id="aTotal"
-                class="input"
-                type="number"
-                min="0"
-                placeholder="optional"
-              />
-            </label>
-          </div>
+          <label class="field">
+            <span class="field__label">Total marks</span>
+            <input id="aTotal" class="input" type="number" min="1" value="100" required />
+          </label>
 
           <label class="switch">
             <input id="aCompleted" type="checkbox" />
@@ -241,15 +227,10 @@
         </div>
 
         <div class="modal__footer">
-          <button
-            class="btn btn--ghost"
-            value="cancel"
-            type="button"
-            id="cancelAddAssessmentBtn"
-          >
+          <button class="btn btn--ghost" type="button" id="cancelAddAssessmentBtn2">
             Cancel
           </button>
-          <button class="btn" value="default" type="submit">Add</button>
+          <button class="btn" type="submit">Add</button>
         </div>
       </form>
     </dialog>
@@ -258,6 +239,6 @@
       <p class="muted small">Smart Course Companion • SOEN 287</p>
     </footer>
 
-    <script src="../js/pages/course.js" defer></script>
+    <script src="../../js/studentSide.js" defer></script>
   </body>
 </html>
