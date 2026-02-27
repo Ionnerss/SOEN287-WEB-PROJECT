@@ -1,52 +1,52 @@
 /* Components Styling */
 .logo {
-    font-size: 2rem;
-    color: #800020;
-    font-weight: bold;
+  font-size: 2rem;
+  color: #800020;
+  font-weight: bold;
 }
 
 nav a {
-    margin: 0 1rem;
-    color: #333;
-    font-weight: 600;
+  margin: 0 1rem;
+  color: #333;
+  font-weight: 600;
 }
 
 nav a:hover {
-    color: #800020;
+  color: #800020;
 }
 
 .btn {
-    padding: 0.8rem 1.5rem;
-    background-color: #800020;
-    color: white;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+  padding: 0.8rem 1.5rem;
+  background-color: #800020;
+  color: white;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 .btn:hover {
-    background-color: #550015;
+  background-color: #550015;
 }
 
 .main-btn {
-    display: inline-block;
-    margin-top: 20px;
-    text-align: center;
+  display: inline-block;
+  margin-top: 20px;
+  text-align: center;
 }
 
 .hero {
-    background-color: #ffffff;
-    padding: 3rem 0;
-    text-align: center;
+  background-color: #ffffff;
+  padding: 3rem 0;
+  text-align: center;
 }
 
 .hero h1 {
-    font-size: 3rem;
-    color: #800020;
+  font-size: 3rem;
+  color: #800020;
 }
 
 .hero p {
-    font-size: 1.2rem;
-    color: #555;
+  font-size: 1.2rem;
+  color: #555;
 }
 
 .subtext-cta-row {
@@ -62,8 +62,8 @@ nav a:hover {
   left: 20px;
   width: 500px;
   text-align: justify;
-    font-size: 1rem;
-    color: #777;
+  font-size: 1rem;
+  color: #777;
 }
 
 .subtext-cta-row .button2 {
@@ -72,15 +72,15 @@ nav a:hover {
 }
 
 footer {
-    background-color: #800020;
-    color: white;
-    text-align: center;
-    padding: 1rem 0;
-    margin-top: 2rem;
+  background-color: #800020;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: 2rem;
 }
 
 footer p {
-    font-size: 1rem;
+  font-size: 1rem;
 }
 
 /*Custom for login and sign up buttons*/
@@ -97,16 +97,20 @@ footer p {
   border-radius: 0.5em;
   background: #e8e8e8;
   border: 1px solid #e8e8e8;
-  box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+  box-shadow:
+    6px 6px 12px #c5c5c5,
+    -6px -6px 12px #ffffff;
 }
 
 .button2:active {
   color: #666;
-  box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
+  box-shadow:
+    inset 4px 4px 12px #c5c5c5,
+    inset -4px -4px 12px #ffffff;
 }
 
 .button2:before {
-  content: "";
+  content: '';
   position: absolute;
   left: 50%;
   transform: translateX(-50%) scaleY(1) scaleX(1.25);
@@ -121,7 +125,7 @@ footer p {
 }
 
 .button2:after {
-  content: "";
+  content: '';
   position: absolute;
   left: 55%;
   transform: translateX(-50%) scaleY(1) scaleX(1.45);

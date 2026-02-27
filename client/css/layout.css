@@ -1,43 +1,44 @@
 /* Layout Styling */
-html, body {
-    height: 100%; /* Make sure the body takes the full height */
-    margin: 0;
+html,
+body {
+  height: 100%; /* Make sure the body takes the full height */
+  margin: 0;
 }
 
 body {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 main {
-    flex-grow: 1; /* This will make the main content area take up all available space */
+  flex-grow: 1; /* This will make the main content area take up all available space */
 }
 
 footer {
-    background-color: #800020;
-    color: white;
-    text-align: center;
-    padding: 1rem 0;
-    margin-top: 2rem;
-    /* The footer will stay at the bottom automatically */
+  background-color: #800020;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: 2rem;
+  /* The footer will stay at the bottom automatically */
 }
 
 header {
-    background-color: #ffffff;
-    padding: 1.5rem 0;
-    border-bottom: 2px solid #eee;
+  background-color: #ffffff;
+  padding: 1.5rem 0;
+  border-bottom: 2px solid #eee;
 }
 
 header .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 main {
-    padding: 3rem 0;
+  padding: 3rem 0;
 }
 
 footer {
-    margin-top: 3rem;
+  margin-top: 3rem;
 }

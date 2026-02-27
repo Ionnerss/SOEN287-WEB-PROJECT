@@ -1,18 +1,16 @@
 <main>
-<h2>Create Assessment</h2>
+  <h2>Create Assessment</h2>
 
-<form action="assessments.html" method="get">
+  <form action="assessments.html" method="get">
+    <label for="categoryName">Category:</label>
+    <input type="text" id="categoryName" name="categoryName" required />
 
-<label for="categoryName">Category:</label>
-<input type="text" id="categoryName" name="categoryName" required>
+    <label for="weight"> Weight (%):</label>
+    <input type="number" id="weight" name="weight" min="0" max="100" required />
 
-<label for="weight"> Weight (%):</label>
-<input type="number" id="weight" name="weight" min="0" max="100" required>
-
-<button type="submit">Save</button>
-
-</form>
-<a href="assessments.html">
+    <button type="submit">Save</button>
+  </form>
+  <a href="assessments.html">
     <button>Cancel</button>
-</a>
+  </a>
 </main>

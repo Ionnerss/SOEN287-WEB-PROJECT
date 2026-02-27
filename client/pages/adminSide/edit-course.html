@@ -1,40 +1,38 @@
 <main>
-    <h2>Edit Course</h2>
+  <h2>Edit Course</h2>
 
-    <form action="courses.html" method="get">
-        <div>
-        <label for="code">Course Code:</label>
-        <input type="text" id="code" name="code" required>
-        </div>
+  <form action="courses.html" method="get">
+    <div>
+      <label for="code">Course Code:</label>
+      <input type="text" id="code" name="code" required />
+    </div>
 
-        <div>
-        <label for="name">Course Name:</label>
-        <input type="text" id="name" name="name" required>
-        </div> 
+    <div>
+      <label for="name">Course Name:</label>
+      <input type="text" id="name" name="name" required />
+    </div>
 
-        <div>
-        <label for="instructor">Instructor:</label>
-        <input type="text" id="instructor" name="instructor" required>
-        </div>
+    <div>
+      <label for="instructor">Instructor:</label>
+      <input type="text" id="instructor" name="instructor" required />
+    </div>
 
-        <div>   
-        <label for="term">Term:</label>
-        <input type="text" id="term" name="term" required>
-        </div>
+    <div>
+      <label for="term">Term:</label>
+      <input type="text" id="term" name="term" required />
+    </div>
 
-        <div>   
-        <label for="status">Status:</label>
-        <select id="status" name="status">
-            <option value="enabled" selected>Enabled</option>
-            <option value="disabled">Disabled</option>
-        </select>
-        </div> 
-        
-        <button type="submit">Update Course</button>
-        
-        
-    </form>
-    <a href="courses.html">
-        <button>Cancel</button>
-    </a>
+    <div>
+      <label for="status">Status:</label>
+      <select id="status" name="status">
+        <option value="enabled" selected>Enabled</option>
+        <option value="disabled">Disabled</option>
+      </select>
+    </div>
+
+    <button type="submit">Update Course</button>
+  </form>
+  <a href="courses.html">
+    <button>Cancel</button>
+  </a>
 </main>
