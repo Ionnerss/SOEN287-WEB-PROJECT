@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up • Smart Course Companion</title>
+
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/components.css" />
+    <link rel="stylesheet" href="../../css/layout.css" />
+  </head>
+
+  <body>
+    <header>
+      <div class="container">
+        <a href="/" class="site-logo">LearnFlow</a>
+        <nav>
+          <a href="./login.html" class="action-button">Log In</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="grid-wrapper">
+          <div class="grid-background"></div>
+        </div>
+        <div class="container">
+          <div class="auth-panel">
+            <h1>Sign Up</h1>
+            <p class="auth-subtext">
+              Create your account to start tracking courses and assessments.
+            </p>
+
+            <div class="auth-error" id="errorBox" hidden>
+              Please review the highlighted fields.
+            </div>
+
+            <form id="signupForm" class="auth-form" novalidate>
+              <label class="auth-field">
+                <span>Full Name</span>
+                <input
+                  id="fullName"
+                  class="auth-input"
+                  type="text"
+                  name="fullName"
+                  placeholder="Jane Doe"
+                  autocomplete="name"
+                  required
+                />
+                <small id="nameHint" hidden>Please enter your full name.</small>
+              </label>
+
+              <label class="auth-field">
+                <span>Email</span>
+                <input
+                  id="email"
+                  class="auth-input"
+                  type="email"
+                  name="email"
+                  placeholder="name@example.com"
+                  autocomplete="email"
+                  required
+                />
+                <small id="emailHint" hidden>Please enter a valid email.</small>
+              </label>
+
+              <label class="auth-field">
+                <span>Password</span>
+                <input
+                  id="password"
+                  class="auth-input"
+                  type="password"
+                  name="password"
+                  placeholder="••••••••"
+                  autocomplete="new-password"
+                  minlength="6"
+                  required
+                />
+                <small id="passHint" hidden
+                  >Password must be at least 6 characters.</small
+                >
+              </label>
+
+              <label class="auth-field">
+                <span>Confirm Password</span>
+                <input
+                  id="confirmPassword"
+                  class="auth-input"
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="••••••••"
+                  autocomplete="new-password"
+                  minlength="6"
+                  required
+                />
+                <small id="confirmHint" hidden>Passwords must match.</small>
+              </label>
+
+              <button class="action-button action-button--full" type="submit">
+                Create Account
+              </button>
+            </form>
+
+            <p class="auth-subtext auth-subtext--small">
+              Already have an account? <a href="./login.html">Log in</a>
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 • SOEN 287 • WeUpp!</p>
+      </div>
+    </footer>
+  </body>
+</html>

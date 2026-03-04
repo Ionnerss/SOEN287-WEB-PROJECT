@@ -1,119 +1,86 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Log in • Smart Course Companion</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log In • Smart Course Companion</title>
 
-    <link rel="stylesheet" href="../css/base.css" />
-    <link rel="stylesheet" href="../css/layout.css" />
-    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/components.css" />
+    <link rel="stylesheet" href="../../css/layout.css" />
   </head>
 
   <body>
-    <header class="topbar">
-      <div class="container topbar__inner">
-        <a class="brand" href="../index.html">← Smart Course Companion</a>
-
-        <nav class="topnav">
-          <a href="./register.html">Create account</a>
+    <header>
+      <div class="container">
+        <a href="/" class="site-logo">LearnFlow</a>
+        <nav>
+          <a href="./signup.html" class="action-button">Sign Up</a>
         </nav>
       </div>
     </header>
 
-    <main class="container page page--center">
-      <section class="card auth">
-        <div class="card__header">
-          <div>
-            <h1>Log in</h1>
-            <p class="muted">Access your courses, assessments, and progress.</p>
-          </div>
+    <main>
+      <section class="hero">
+        <div class="grid-wrapper">
+          <div class="grid-background"></div>
         </div>
+        <div class="container">
+          <div class="auth-panel">
+            <h1>Log In</h1>
+            <p class="auth-subtext">Access your courses, assessments, and progress.</p>
 
-        <!-- Alerts -->
-        <div class="alert alert--error" id="errorBox" hidden>
-          Invalid email or password.
-        </div>
+            <div class="auth-error" id="errorBox" hidden>Invalid email or password.</div>
 
-        <form id="loginForm" class="stack" novalidate>
-          <label class="field">
-            <span class="field__label">Email</span>
-            <input
-              id="email"
-              class="input"
-              type="email"
-              name="email"
-              placeholder="name@example.com"
-              autocomplete="email"
-              required
-            />
-            <span class="field__hint" id="emailHint" hidden
-              >Please enter a valid email.</span
-            >
-          </label>
-
-          <label class="field">
-            <span class="field__label">Password</span>
-            <input
-              id="password"
-              class="input"
-              type="password"
-              name="password"
-              placeholder="••••••••"
-              autocomplete="current-password"
-              minlength="6"
-              required
-            />
-            <span class="field__hint" id="passHint" hidden
-              >Password must be at least 6 characters.</span
-            >
-          </label>
-
-          <!-- Role selector (optional but helps for the admin/student flows) -->
-          <fieldset class="fieldset">
-            <legend class="fieldset__legend">Role</legend>
-            <div class="row gap">
-              <label class="radio">
-                <input type="radio" name="role" value="student" checked />
-                <span>Student</span>
+            <form id="loginForm" class="auth-form" novalidate>
+              <label class="auth-field">
+                <span>Email</span>
+                <input
+                  id="email"
+                  class="auth-input"
+                  type="email"
+                  name="email"
+                  placeholder="name@example.com"
+                  autocomplete="email"
+                  required
+                />
+                <small id="emailHint" hidden>Please enter a valid email.</small>
               </label>
 
-              <label class="radio">
-                <input type="radio" name="role" value="admin" />
-                <span>Instructor/Admin</span>
+              <label class="auth-field">
+                <span>Password</span>
+                <input
+                  id="password"
+                  class="auth-input"
+                  type="password"
+                  name="password"
+                  placeholder="••••••••"
+                  autocomplete="current-password"
+                  minlength="6"
+                  required
+                />
+                <small id="passHint" hidden
+                  >Password must be at least 6 characters.</small
+                >
               </label>
-            </div>
-          </fieldset>
 
-          <div class="row row--between row--wrap gap">
-            <label class="check">
-              <input id="remember" type="checkbox" />
-              <span>Remember me</span>
-            </label>
+              <button class="action-button action-button--full" type="submit">
+                Log In
+              </button>
+            </form>
 
-            <!-- You can implement later -->
-            <a class="link" href="./forgot.html" aria-disabled="true">Forgot password?</a>
+            <p class="auth-subtext auth-subtext--small">
+              No account? <a href="./signup.html">Create one</a>
+            </p>
           </div>
-
-          <button class="btn btn--block" type="submit">Log in</button>
-
-          <p class="muted small center">
-            No account? <a class="link" href="./register.html">Create one</a>
-          </p>
-        </form>
+        </div>
       </section>
-
-      <!-- Small notes for deliverable alignment -->
-      <p class="muted small center">
-        Deliverable 1 can mock login; Deliverable 2 must implement real authentication +
-        data access controls.
-      </p>
     </main>
 
-    <footer class="footer container">
-      <p class="muted small">Smart Course Companion • SOEN 287</p>
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 • SOEN 287 • WeUpp!</p>
+      </div>
     </footer>
-
-    <script src="../js/pages/login.js" defer></script>
   </body>
 </html>

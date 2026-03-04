@@ -1,43 +1,59 @@
-/* Layout Styling */
-html, body {
-    height: 100%; /* Make sure the body takes the full height */
-    margin: 0;
-}
+/*
+  Layout Styling
+  - Handles page-level structure (header/main/footer regions).
+  - Defines spacing around the main hero area.
+*/
 
+/* Full-height page so footer can stay at bottom naturally */
+html,
 body {
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  margin: 0;
 }
 
+/* Vertical page flow: header -> main (flexes) -> footer */
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/*
+  Main region expands to consume remaining height.
+  Padding creates equal outer spacing around the hero block.
+*/
 main {
-    flex-grow: 1; /* This will make the main content area take up all available space */
+  flex-grow: 1;
+  padding: 3rem;
 }
 
+/* Footer presentation */
 footer {
-    background-color: #800020;
-    color: white;
-    text-align: center;
-    padding: 1rem 0;
-    margin-top: 2rem;
-    /* The footer will stay at the bottom automatically */
+  background-color: #800020;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: 0;
 }
 
+/* Header presentation */
 header {
-    background-color: #ffffff;
-    padding: 1.5rem 0;
-    border-bottom: 2px solid #eee;
+  background-color: #ffffff;
+  padding: 1.5rem 0;
+  border-bottom: 2px solid #eee;
 }
 
+/* Header inner alignment: logo left, nav right */
 header .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-main {
-    padding: 3rem 0;
-}
-
-footer {
-    margin-top: 3rem;
+/* Hero fills the main area and centers its internal content */
+main > .hero {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
