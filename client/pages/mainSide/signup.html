@@ -1,16 +1,21 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Standard metadata for character encoding and responsive layout -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Browser tab title -->
     <title>Sign Up • Smart Course Companion</title>
 
+    <!-- Shared styles: base reset, reusable components, then page layout -->
     <link rel="stylesheet" href="../../css/base.css" />
     <link rel="stylesheet" href="../../css/components.css" />
     <link rel="stylesheet" href="../../css/layout.css" />
   </head>
 
   <body>
+    <!-- Header: brand + quick navigation to log in -->
     <header>
       <div class="container">
         <a href="/" class="site-logo">LearnFlow</a>
@@ -20,23 +25,31 @@
       </div>
     </header>
 
+    <!-- Main: hero shell reused from landing page, with auth card content -->
     <main>
       <section class="hero">
+        <!-- Decorative background layer shown behind auth content -->
         <div class="grid-wrapper">
           <div class="grid-background"></div>
         </div>
+
+        <!-- Foreground content container -->
         <div class="container">
+          <!-- Sign-up panel/card -->
           <div class="auth-panel">
             <h1>Sign Up</h1>
             <p class="auth-subtext">
               Create your account to start tracking courses and assessments.
             </p>
 
+            <!-- Hidden error box toggled by form validation/auth logic -->
             <div class="auth-error" id="errorBox" hidden>
               Please review the highlighted fields.
             </div>
 
+            <!-- Sign-up form with browser validation hints -->
             <form id="signupForm" class="auth-form" novalidate>
+              <!-- Full name -->
               <label class="auth-field">
                 <span>Full Name</span>
                 <input
@@ -51,6 +64,7 @@
                 <small id="nameHint" hidden>Please enter your full name.</small>
               </label>
 
+              <!-- Email -->
               <label class="auth-field">
                 <span>Email</span>
                 <input
@@ -65,6 +79,7 @@
                 <small id="emailHint" hidden>Please enter a valid email.</small>
               </label>
 
+              <!-- Password -->
               <label class="auth-field">
                 <span>Password</span>
                 <input
@@ -82,6 +97,7 @@
                 >
               </label>
 
+              <!-- Password confirmation -->
               <label class="auth-field">
                 <span>Confirm Password</span>
                 <input
@@ -97,11 +113,13 @@
                 <small id="confirmHint" hidden>Passwords must match.</small>
               </label>
 
+              <!-- Primary action button -->
               <button class="action-button action-button--full" type="submit">
                 Create Account
               </button>
             </form>
 
+            <!-- Secondary navigation for existing users -->
             <p class="auth-subtext auth-subtext--small">
               Already have an account? <a href="./login.html">Log in</a>
             </p>
@@ -110,6 +128,7 @@
       </section>
     </main>
 
+    <!-- Footer: project attribution -->
     <footer>
       <div class="container">
         <p>&copy; 2026 • SOEN 287 • WeUpp!</p>

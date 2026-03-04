@@ -1,16 +1,21 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Standard metadata for character encoding and responsive layout -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Browser tab title -->
     <title>Log In • Smart Course Companion</title>
 
+    <!-- Shared styles: base reset, reusable components, then page layout -->
     <link rel="stylesheet" href="../../css/base.css" />
     <link rel="stylesheet" href="../../css/components.css" />
     <link rel="stylesheet" href="../../css/layout.css" />
   </head>
 
   <body>
+    <!-- Header: brand + quick navigation to sign up -->
     <header>
       <div class="container">
         <a href="/" class="site-logo">LearnFlow</a>
@@ -20,19 +25,27 @@
       </div>
     </header>
 
+    <!-- Main: hero shell reused from landing page, with auth card content -->
     <main>
       <section class="hero">
+        <!-- Decorative background layer shown behind auth content -->
         <div class="grid-wrapper">
           <div class="grid-background"></div>
         </div>
+
+        <!-- Foreground content container -->
         <div class="container">
+          <!-- Login panel/card -->
           <div class="auth-panel">
             <h1>Log In</h1>
             <p class="auth-subtext">Access your courses, assessments, and progress.</p>
 
+            <!-- Hidden error box toggled by validation/auth logic -->
             <div class="auth-error" id="errorBox" hidden>Invalid email or password.</div>
 
+            <!-- Login form with browser validation hints -->
             <form id="loginForm" class="auth-form" novalidate>
+              <!-- Email -->
               <label class="auth-field">
                 <span>Email</span>
                 <input
@@ -47,6 +60,7 @@
                 <small id="emailHint" hidden>Please enter a valid email.</small>
               </label>
 
+              <!-- Password -->
               <label class="auth-field">
                 <span>Password</span>
                 <input
@@ -64,11 +78,13 @@
                 >
               </label>
 
+              <!-- Primary action button -->
               <button class="action-button action-button--full" type="submit">
                 Log In
               </button>
             </form>
 
+            <!-- Secondary navigation for new users -->
             <p class="auth-subtext auth-subtext--small">
               No account? <a href="./signup.html">Create one</a>
             </p>
@@ -77,6 +93,7 @@
       </section>
     </main>
 
+    <!-- Footer: project attribution -->
     <footer>
       <div class="container">
         <p>&copy; 2026 • SOEN 287 • WeUpp!</p>
