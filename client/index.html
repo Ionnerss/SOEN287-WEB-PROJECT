@@ -1,48 +1,69 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <!-- Standard document metadata for encoding + responsive scaling -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Browser tab title -->
     <title>Smart Course Companion</title>
-    <link rel="stylesheet" href="./css/base.css">
-    <link rel="stylesheet" href="./css/components.css">
-    <link rel="stylesheet" href="./css/layout.css">
-</head>
-<body>
-    <!-- Header -->
+
+    <!-- CSS load order: base resets, reusable components, then page layout -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/components.css" />
+    <link rel="stylesheet" href="./css/layout.css" />
+  </head>
+  <body>
+    <!-- Header: branding + primary navigation actions -->
     <header>
-        <div class="container">
-            <a href="/" class="logo">LearnFlow</a>
-            <nav>
-                <a href="/login.html" class="button2">Log In</a>
-                <a href="/signup.html" class="button2">Sign Up</a>
-            </nav>
-        </div>
+      <div class="container">
+        <!-- Brand / home link -->
+        <a href="/" class="site-logo">LearnFlow</a>
+
+        <!-- Entry-point actions for auth -->
+        <nav>
+          <a href="./pages/mainSide/login.html" class="action-button">Log In</a>
+          <a href="./pages/mainSide/signup.html" class="action-button">Sign Up</a>
+        </nav>
+      </div>
     </header>
 
-    <!-- Main Section -->
+    <!-- Main: hero card with rotating tagline + primary CTA -->
     <main>
-        <section class="hero">
-            <div class="container">
-                <h1>4.0? Never been easier!</h1>
-                <p>From grades to deadlines, we’ve got you covered. Your personal course tracker has arrived!</p>
-                  <div class="subtext-cta-row">
-                        <p class="subtext">
-                            Ready to take control of your semester? Your Smart Course Companion is here to help! Organize your courses, 
-                            track grades, and never miss an assignment again—all from a simple, user-friendly dashboard. Stay ahead of deadlines and visualize 
-                            your academic journey with ease. Get started now and see how much more manageable your studies can be!
-                        </p>
-                        <a href="/signup.html" class="button2">Get Started For Free</a>
-                  </div>
-            </div>
-        </section>
+      <section class="hero">
+        <!-- Decorative background layer for the hero (sits behind all hero content) -->
+        <div class="grid-wrapper">
+          <!-- Grid pattern element rendered inside the background layer -->
+          <div class="grid-background"></div>
+        </div>
+        <div class="container">
+          <!-- Primary product heading -->
+          <h1>LearnFlow</h1>
+
+          <!-- Rotating tagline area (two lines animate in the same position) -->
+          <div class="hero-tagline-rotator" aria-live="polite">
+            <p class="hero-tagline hero-tagline-first">Stay on top. Stay in flow.</p>
+            <p class="hero-tagline hero-tagline-second">
+              From grades to deadlines, we’ve got you covered. Your personal course
+              tracker has arrived!
+            </p>
+          </div>
+
+          <!-- Main call-to-action row -->
+          <div class="hero-cta-row">
+            <a href="./pages/mainSide/signup.html" class="action-button"
+              >Get Started For Free</a
+            >
+          </div>
+        </div>
+      </section>
     </main>
 
-    <!-- Footer -->
+    <!-- Footer: project/course attribution -->
     <footer>
-        <div class="container">
-            <p>&copy; 2026 • SOEN 287 • WeUpp!</p>
-        </div>
+      <div class="container">
+        <p>&copy; 2026 • SOEN 287 • WeUpp!</p>
+      </div>
     </footer>
-</body>
+  </body>
 </html>
