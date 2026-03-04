@@ -1,90 +1,213 @@
-/* Components Styling */
-.logo {
-    font-size: 2rem;
-    color: #800020;
-    font-weight: bold;
+/*
+  Components Styling
+  - Reusable visual pieces specific to the landing page UI.
+  - Contains hero presentation, tagline animation, and action button style.
+*/
+
+/* Brand text in header */
+.site-logo {
+  font-size: 2rem;
+  color: #800020;
+  font-weight: bold;
 }
 
+/* Header navigation link spacing + base color */
 nav a {
-    margin: 0 1rem;
-    color: #333;
-    font-weight: 600;
+  margin: 0 1rem;
+  color: #333;
+  font-weight: 600;
 }
 
+/* Subtle brand color cue on hover */
 nav a:hover {
-    color: #800020;
+  color: #800020;
 }
 
-.btn {
-    padding: 0.8rem 1.5rem;
-    background-color: #800020;
-    color: white;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.btn:hover {
-    background-color: #550015;
-}
-
-.main-btn {
-    display: inline-block;
-    margin-top: 20px;
-    text-align: center;
-}
-
+/* Hero content card inside main area */
 .hero {
-    background-color: #ffffff;
-    padding: 3rem 0;
-    text-align: center;
+  position: relative;
+  overflow: hidden;
+  background-color: #ffffff;
+  padding: 5rem 0;
+  text-align: center;
 }
 
+/* Keep hero foreground content above decorative grid background */
+.hero .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Main hero title */
 .hero h1 {
-    font-size: 3rem;
-    color: #800020;
+  font-size: 5rem;
+  color: #800020;
 }
 
+/* Generic hero paragraph style */
 .hero p {
-    font-size: 1.2rem;
-    color: #555;
+  font-size: 1.2rem;
+  color: #555;
 }
 
-.subtext-cta-row {
+/*
+  Container for rotating taglines.
+  min-height reserves vertical space so layout does not jump during animation.
+*/
+.hero-tagline-rotator {
+  position: relative;
+  min-height: 3.6rem;
+  width: min(95%, 860px);
+  margin: 0 auto;
+}
+
+/* Tagline lines are stacked in the exact same position */
+.hero-tagline {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100%;
+  text-align: center;
+  transform: translate(-50%, 0);
+}
+
+/* First line starts visible, then fades/slides out in a loop */
+.hero-tagline-first {
+  opacity: 1;
+  animation: heroMessagePrimaryCycle 5.6s ease-in-out infinite;
+}
+
+/* Second line starts hidden, then fades/slides in opposite to first */
+.hero-tagline-second {
+  opacity: 0;
+  animation: heroMessageSecondaryCycle 5.6s ease-in-out infinite;
+}
+
+/* Timeline for first tagline */
+@keyframes heroMessagePrimaryCycle {
+  0%,
+  31.25% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  50%,
+  81.25% {
+    opacity: 0;
+    transform: translate(-50%, -8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* Timeline for second tagline (inverse of first) */
+@keyframes heroMessageSecondaryCycle {
+  0%,
+  31.25% {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+  50%,
+  81.25% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+}
+
+/* CTA row below the rotating tagline */
+.hero-cta-row {
   margin-top: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 150px;
 }
 
-.subtext {
-  position: relative;
-  left: 20px;
-  width: 500px;
-  text-align: justify;
-    font-size: 1rem;
-    color: #777;
-}
-
-.subtext-cta-row .button2 {
+/* Prevent CTA text from wrapping to a second line */
+.hero-cta-row .action-button {
   align-self: center;
   white-space: nowrap;
 }
 
-footer {
-    background-color: #800020;
-    color: white;
-    text-align: center;
-    padding: 1rem 0;
-    margin-top: 2rem;
+/* Login panel card styled to match landing page look-and-feel */
+.auth-panel {
+  width: min(92%, 520px);
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #e9e9e9;
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: left;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
 }
 
-footer p {
-    font-size: 1rem;
+.auth-panel h1 {
+  font-size: 2.4rem;
+  color: #800020;
+  margin-bottom: 0.5rem;
 }
 
-/*Custom for login and sign up buttons*/
-.button2 {
+.auth-subtext {
+  color: #5f5f5f;
+  margin-bottom: 1.25rem;
+}
+
+.auth-subtext--small {
+  margin-top: 1rem;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.auth-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.auth-field {
+  display: grid;
+  gap: 0.45rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.auth-input {
+  border: 1px solid #d5d5d5;
+  border-radius: 10px;
+  padding: 0.75rem 0.9rem;
+  font-size: 1rem;
+  outline: none;
+  background: #fff;
+}
+
+.auth-input:focus {
+  border-color: #800020;
+  box-shadow: 0 0 0 3px rgba(128, 0, 32, 0.12);
+}
+
+.auth-field small {
+  color: #8b8b8b;
+  font-weight: 400;
+}
+
+.auth-error {
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  border: 1px solid #f2b4b4;
+  background: #fff1f1;
+  color: #9b1c1c;
+  padding: 0.7rem 0.85rem;
+}
+
+/*
+  Shared action button style
+  - Used for header auth links and hero call-to-action.
+  - Includes gradient-like bubble hover effect via pseudo-elements.
+*/
+.action-button {
   display: inline-block;
   transition: all 0.2s ease-in;
   position: relative;
@@ -97,16 +220,27 @@ footer p {
   border-radius: 0.5em;
   background: #e8e8e8;
   border: 1px solid #e8e8e8;
-  box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+  box-shadow:
+    6px 6px 12px #c5c5c5,
+    -6px -6px 12px #ffffff;
 }
 
-.button2:active {
+.action-button--full {
+  width: 100%;
+  text-align: center;
+}
+
+/* Pressed state */
+.action-button:active {
   color: #666;
-  box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
+  box-shadow:
+    inset 4px 4px 12px #c5c5c5,
+    inset -4px -4px 12px #ffffff;
 }
 
-.button2:before {
-  content: "";
+/* Upper hover bubble */
+.action-button:before {
+  content: '';
   position: absolute;
   left: 50%;
   transform: translateX(-50%) scaleY(1) scaleX(1.25);
@@ -120,8 +254,9 @@ footer p {
   z-index: -1;
 }
 
-.button2:after {
-  content: "";
+/* Lower hover bubble */
+.action-button:after {
+  content: '';
   position: absolute;
   left: 55%;
   transform: translateX(-50%) scaleY(1) scaleX(1.45);
@@ -135,19 +270,59 @@ footer p {
   z-index: -1;
 }
 
-.button2:hover {
+/* Main hover color transition */
+.action-button:hover {
   color: #ffffff;
   border: 1px solid #800020;
 }
 
-.button2:hover:before {
+/* Animate upper bubble into view */
+.action-button:hover:before {
   top: -35%;
   background-color: #800020;
   transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
 }
 
-.button2:hover:after {
+/* Animate lower bubble into view */
+.action-button:hover:after {
   top: -45%;
   background-color: #800020;
   transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+
+/*
+  Full-bleed decorative layer inside `.hero`.
+  - `absolute + inset: 0` makes it cover the entire hero area.
+  - `z-index: 0` keeps it behind the hero foreground content.
+  - `pointer-events: none` prevents it from blocking clicks.
+*/
+.grid-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/*
+  Actual grid drawing surface.
+  Uses two linear-gradients to create vertical/horizontal lines,
+  then masks them with a radial fade for a softer visual.
+*/
+.grid-background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, #e2e8f0 1px, transparent 1px),
+    linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+  background-size: 20px 30px;
+  -webkit-mask-image: radial-gradient(
+    ellipse 70% 60% at 50% 0%,
+    #000 60%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 60%, transparent 100%);
 }
