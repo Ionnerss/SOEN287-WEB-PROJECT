@@ -1,16 +1,72 @@
-<main>
-  <h2>Create Assessment</h2>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Assessment Category - LearnFlow</title>
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/components.css" />
+    <link rel="stylesheet" href="../../css/layout.css" />
+    <link rel="stylesheet" href="../../css/admin-pages.css" />
+  </head>
+  <body class="admin-page">
+    <header>
+      <div class="container">
+        <a href="../../index.html" class="site-logo">LearnFlow</a>
+        <nav>
+          <a href="../mainSide/login.html" class="action-button">Logout</a>
+        </nav>
+      </div>
+    </header>
 
-  <form action="assessments.html" method="get">
-    <label for="categoryName">Category:</label>
-    <input type="text" id="categoryName" name="categoryName" required />
+    <main>
+      <section class="hero">
+        <div class="grid-wrapper">
+          <div class="grid-background"></div>
+        </div>
 
-    <label for="weight"> Weight (%):</label>
-    <input type="number" id="weight" name="weight" min="0" max="100" required />
+        <div class="container admin-content">
+          <h1 class="admin-page-title fade-step fade-step-1">Create Assessment</h1>
+          <p class="admin-subtext fade-step fade-step-2">
+            Add a new assessment category and assign its weight.
+          </p>
 
-    <button type="submit">Save</button>
-  </form>
-  <a href="assessments.html">
-    <button>Cancel</button>
-  </a>
-</main>
+          <nav class="admin-action-row stagger-buttons">
+            <a href="dashboard.html" class="action-button">Dashboard</a>
+            <a href="courses.html" class="action-button">Manage Courses</a>
+            <a href="assessments.html" class="action-button">Assessment Categories</a>
+            <a href="stats.html" class="action-button">Statistics</a>
+          </nav>
+
+          <section
+            class="admin-card fade-step fade-step-4"
+            aria-label="Create assessment category form"
+          >
+            <form action="assessments.html" method="get" class="admin-form">
+              <div class="admin-field">
+                <label for="categoryName">Category</label>
+                <input type="text" id="categoryName" name="categoryName" required />
+              </div>
+
+              <div class="admin-field">
+                <label for="weight">Weight (%)</label>
+                <input type="number" id="weight" name="weight" min="0" max="100" required />
+              </div>
+
+              <div class="admin-inline-actions">
+                <button type="submit" class="action-button action-button--compact">Save</button>
+                <a href="assessments.html" class="action-button action-button--compact">Cancel</a>
+              </div>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 • SOEN 287 • LearnFlow</p>
+      </div>
+    </footer>
+  </body>
+</html>

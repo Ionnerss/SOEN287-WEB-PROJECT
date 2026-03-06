@@ -1,43 +1,106 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Manage SOEN 287</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage SOEN 287 - LearnFlow</title>
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/components.css" />
+    <link rel="stylesheet" href="../../css/layout.css" />
+    <link rel="stylesheet" href="../../css/admin-pages.css" />
+  </head>
+  <body class="admin-page">
+    <header>
+      <div class="container">
+        <a href="../../index.html" class="site-logo">LearnFlow</a>
+        <nav>
+          <a href="../mainSide/login.html" class="action-button">Logout</a>
+        </nav>
+      </div>
+    </header>
 
-<main>
-    <h2>Manage SOEN 287</h2>
-
-    <form action="assessments.html" method="get">
-        <div>
-            <label for="assignments">Assignments Weight:</label>
-            <input type="number" id="assignments" name="assignments" required>
+    <main>
+      <section class="hero">
+        <div class="grid-wrapper">
+          <div class="grid-background"></div>
         </div>
 
-        <div>
-            <label for="midterm">Midterm Weight:</label>
-            <input type="number" id="midterm" name="midterm" required>
+        <div class="container admin-content">
+          <h1 class="admin-page-title fade-step fade-step-1">Manage SOEN 287</h1>
+          <p class="admin-subtext fade-step fade-step-2">
+            Adjust category weights and remove assessments if needed.
+          </p>
+
+          <nav class="admin-action-row stagger-buttons">
+            <a href="dashboard.html" class="action-button">Dashboard</a>
+            <a href="courses.html" class="action-button">Manage Courses</a>
+            <a href="assessments.html" class="action-button">Assessment Categories</a>
+            <a href="stats.html" class="action-button">Statistics</a>
+          </nav>
+
+          <div class="admin-stack">
+            <section class="admin-card fade-step fade-step-4" aria-label="Weight form">
+              <h2>Category Weights</h2>
+              <form action="assessments.html" method="get" class="admin-form">
+                <div class="admin-field">
+                  <label for="assignments">Assignments Weight</label>
+                  <input type="number" id="assignments" name="assignments" required />
+                </div>
+
+                <div class="admin-field">
+                  <label for="midterm">Midterm Weight</label>
+                  <input type="number" id="midterm" name="midterm" required />
+                </div>
+
+                <div class="admin-field">
+                  <label for="final">Final Weight</label>
+                  <input type="number" id="final" name="final" required />
+                </div>
+
+                <div class="admin-inline-actions">
+                  <button type="submit" class="action-button action-button--compact">
+                    Update
+                  </button>
+                  <a href="assessments.html" class="action-button action-button--compact">Back</a>
+                </div>
+              </form>
+            </section>
+
+            <section class="admin-card fade-step fade-step-5" aria-label="Delete actions">
+              <h2>Danger Zone</h2>
+              <div class="admin-inline-actions">
+                <button
+                  type="button"
+                  class="action-button action-button--compact"
+                  onclick="if (confirm('Are you sure you want to delete the Assignment?')) window.location.href = 'assessments.html';"
+                >
+                  Delete Assignment
+                </button>
+                <button
+                  type="button"
+                  class="action-button action-button--compact"
+                  onclick="if (confirm('Are you sure you want to delete the Midterm?')) window.location.href = 'assessments.html';"
+                >
+                  Delete Midterm
+                </button>
+                <button
+                  type="button"
+                  class="action-button action-button--compact"
+                  onclick="if (confirm('Are you sure you want to delete the Final?')) window.location.href = 'assessments.html';"
+                >
+                  Delete Final
+                </button>
+              </div>
+            </section>
+          </div>
         </div>
+      </section>
+    </main>
 
-        <div>
-            <label for="final">Final Weight:</label>
-            <input type="number" id="final" name="final" required>
-        </div>
-        
-        <button type="submit">Update</button>
-    </form>
-
-    <div>
-        <button onclick="if(confirm('Are you sure you want to delete the Assignment?')) window.location.href='assessments.html'">Delete Assignment</button>
-        <button onclick="if(confirm('Are you sure you want to delete the Midterm?')) window.location.href='assessments.html'">Delete Midterm</button>
-        <button onclick="if(confirm('Are you sure you want to delete the Final?')) window.location.href='assessments.html'">Delete Final</button>
-    </div>
-
-    <a href="courses.html">
-        <button>Back</button>
-    </a>
-</main>
-
-</body>
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 • SOEN 287 • LearnFlow</p>
+      </div>
+    </footer>
+  </body>
 </html>

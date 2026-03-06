@@ -3,197 +3,131 @@
   <head>
     <meta charset="UTF-8" />
     <title>Admin Dashboard - Smart Course Companion</title>
-    <link rel="stylesheet" href="./css/base.css" />
-    <link rel="stylesheet" href="./css/components.css" />
-    <link rel="stylesheet" href="./css/layout.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/components.css" />
+    <link rel="stylesheet" href="../../css/layout.css" />
+    <style>
+      .admin-dashboard .hero .admin-title {
+        font-size: clamp(2.6rem, 6vw, 4rem);
+      }
 
+      .admin-dashboard .hero .admin-fade {
+        opacity: 0;
+        transform: translateY(10px);
+        animation: adminFadeInUp 0.7s ease-out forwards;
+      }
 
+      .admin-dashboard .hero .admin-fade-welcome {
+        animation-delay: 0.15s;
+      }
 
-  <style>
+      .admin-dashboard .hero .admin-fade-instruction {
+        animation-delay: 0.45s;
+      }
 
-    main {
-      text-align: center;
-      margin-top: 24px;
-      color: #800020
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 24px;
-      color: #800020;
-    }
-    
-
-    body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      margin: 0;
-    }
-
-    footer {
-      background-color: #800020;
-      color: white;
-      text-align: center;
-      padding: 16px;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-    }
-
-    nav ul {
-        list-style: none;
-        padding: 0;
-        display: flex;
-        gap: 12px;
+      .admin-dashboard .hero .hero-cta-row {
+        margin-top: 2.5rem;
+        margin-bottom: 2rem;
         flex-wrap: wrap;
-        justify-content: center;
+        gap: 1rem;
       }
 
-    nav ul li a {
-        display: inline-block;
-        text-decoration: none;
-        background-color: #ccc;
-        color: #333;
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-weight: bold;
-        border: 1px solid #ccc;
-        box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
-        transition: background-color 0.5s ease, color 0.5s ease;
+      .admin-dashboard .hero .hero-cta-row .action-button {
+        opacity: 0;
+        transform: translateY(10px);
+        animation: adminFadeInUp 0.55s ease-out forwards;
       }
 
-    nav ul li a:hover {
-        background-color:#800020;
-        color: white;
+      .admin-dashboard .hero .hero-cta-row .action-button:nth-child(1) {
+        animation-delay: 0.75s;
       }
 
-      .logout-btn {
-        text-decoration: none;
-        background-color: #e8e8e8;
-        color: #111;
-        padding: 10px 24px;
-        border-radius: 12px;
-        font-weight: bold;
-        border: 1px solid #ccc;
-        box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
-        transition: background-color 0.5s ease, color 0.5s ease;
-    }
+      .admin-dashboard .hero .hero-cta-row .action-button:nth-child(2) {
+        animation-delay: 0.92s;
+      }
 
-      .logout-btn:hover {
-        background-color: #7a0020;
-        color: white;
-        border-color: #7a0020;
-    }
+      .admin-dashboard .hero .hero-cta-row .action-button:nth-child(3) {
+        animation-delay: 1.09s;
+      }
 
-    body {
-      background-color: #f5f5f5;
-      background-image:
-      linear-gradient(rgba(0,0,0,0.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,0,0,0.07) 1px, transparent 1px);
-      background-size: 40px 40px;
-    }
+      .admin-dashboard .hero .hero-cta-row .action-button:nth-child(4) {
+        animation-delay: 1.26s;
+      }
 
-    /* From Uiverse.io by SteveBloX */ 
-.card {
-  box-sizing: border-box;
-  width: 190px;
-  height: 254px;
-  background: rgba(217, 217, 217, 0.58);
-  border: 1px solid white;
-  box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(6px);
-  border-radius: 17px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.5s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  user-select: none;
-  font-weight: bolder;
-  color: black;
-  justify-content: center;
+      .admin-dashboard .hero .auth-panel {
+        margin-top: 1rem;
+        opacity: 0;
+        transform: translateY(12px);
+        animation: adminFadeInUp 0.75s ease-out 1.5s forwards;
+      }
 
-}
+      @keyframes adminFadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
 
-.card:hover {
-  border: 1px solid black;
-  background-color: #800020;
-  color: white;
-  transform: scale(1.05);
-}
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-.card:active {
-  transform: scale(0.95) rotateZ(1.7deg);
-}
-
-.card ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.card ul li {
-  margin-bottom: 12px;
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
-  flex: 1;
-}
-
-
-
-  </style>  
+      @media (prefers-reduced-motion: reduce) {
+        .admin-dashboard .hero .admin-fade,
+        .admin-dashboard .hero .hero-cta-row .action-button,
+        .admin-dashboard .hero .auth-panel {
+          animation: none;
+          opacity: 1;
+          transform: none;
+        }
+      }
+    </style>
   </head>
-  <body>
+  <body class="admin-dashboard">
     <header>
-      <h1>LearnFlow</h1>
-      <h1>Admin Panel</h1>
-      <a href="../mainSide/login.html" class="logout-btn">Logout</a>
+      <div class="container">
+        <a href="../../index.html" class="site-logo">LearnFlow</a>
+        <nav>
+          <a href="../mainSide/login.html" class="action-button">Logout</a>
+        </nav>
+      </div>
     </header>
 
-    <div class="container">
-      <nav>
-        <ul>
-          <li><a href="dashboard.html" class="action-button">Dashboard</a></li>
-          <li><a href="courses.html">Manage Courses</a></li>
-          <li><a href="assessments.html">Assessment Categories</a></li>
-          <li><a href="stats.html">Statistics</a></li>
-          
-        </ul>
-      </nav>
+    <main>
+      <section class="hero">
+        <div class="grid-wrapper">
+          <div class="grid-background"></div>
+        </div>
 
-      <main>
-        <h2>Welcome Admin</h2>
-        <h2>Select an option from the menu.</h2>
-      </main>
+        <div class="container">
+          <h1 class="admin-title">Admin Panel</h1>
+          <p class="auth-subtext admin-fade admin-fade-welcome">Welcome Admin</p>
+          <p class="auth-subtext admin-fade admin-fade-instruction">
+            Select an option from the menu.
+          </p>
 
-          <!-- From Uiverse.io by SteveBloX --> 
-    <div class="card">
-    <ul>
-      <li>DR. ADMIN</li>
-      <li>1 ACTIVE COURSE: SOEN287</li> 
-      <li>2 TOTAL COURSES: SOEN287, COMP248</li>
-      <li>271 TOTAL STUDENTS</li>
-    </ul>
-  
-</div>
+          <nav class="hero-cta-row">
+            <a href="dashboard.html" class="action-button">Dashboard</a>
+            <a href="courses.html" class="action-button">Manage Courses</a>
+            <a href="assessments.html" class="action-button">Assessment Categories</a>
+            <a href="stats.html" class="action-button">Statistics</a>
+          </nav>
 
-    </div>
-
-
+          <section class="auth-panel" aria-label="Admin quick stats">
+            <p class="auth-subtext"><strong>DR. ADMIN</strong></p>
+            <p class="auth-subtext">1 active course: SOEN287</p>
+            <p class="auth-subtext">2 total courses: SOEN287, COMP248</p>
+            <p class="auth-subtext auth-subtext--small">271 total students</p>
+          </section>
+        </div>
+      </section>
+    </main>
 
     <footer>
-      <p>© 2026 • SOEN 287 • LearnFlow</p>
+      <div class="container">
+        <p>© 2026 • SOEN 287 • LearnFlow</p>
+      </div>
     </footer>
-
-
-
   </body>
 </html>

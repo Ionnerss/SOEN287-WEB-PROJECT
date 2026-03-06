@@ -1,40 +1,94 @@
-<main>
-  <h2>Assessments</h2>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assessment Categories - LearnFlow</title>
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/components.css" />
+    <link rel="stylesheet" href="../../css/layout.css" />
+    <link rel="stylesheet" href="../../css/admin-pages.css" />
+  </head>
+  <body class="admin-page">
+    <header>
+      <div class="container">
+        <a href="../../index.html" class="site-logo">LearnFlow</a>
+        <nav>
+          <a href="../mainSide/login.html" class="action-button">Logout</a>
+        </nav>
+      </div>
+    </header>
 
-  <a href="dashboard.html">
-    <button>Back to Dashboard</button>
-  </a>
+    <main>
+      <section class="hero">
+        <div class="grid-wrapper">
+          <div class="grid-background"></div>
+        </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>SOEN 287</th>
-        <th>Weight (%)</th>
-        <th>
-          <a href="manage287.html">
-            <button>Manage</button>
-          </a>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Assignments</td>
-        <td>20%</td>
-      </tr>
-      <tr>
-        <td>Midterm</td>
-        <td>20%</td>
-      </tr>
-      <tr>
-        <td>Final Exam</td>
-        <td>60%</td>
-      </tr>
-    </tbody>
-  </table>
-  <div>
-    <a href="create-category.html">
-      <button>New Assessment</button>
-    </a>
-  </div>
-</main>
+        <div class="container admin-content">
+          <h1 class="admin-page-title fade-step fade-step-1">Assessment Categories</h1>
+          <p class="admin-subtext fade-step fade-step-2">
+            Manage category weights and create new assessment groups.
+          </p>
+
+          <nav class="admin-action-row stagger-buttons">
+            <a href="dashboard.html" class="action-button">Dashboard</a>
+            <a href="courses.html" class="action-button">Manage Courses</a>
+            <a href="create-category.html" class="action-button">New Assessment</a>
+            <a href="stats.html" class="action-button">Statistics</a>
+          </nav>
+
+          <section class="admin-card fade-step fade-step-4" aria-label="Assessment table">
+            <h2>SOEN 287</h2>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th>Weight (%)</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Assignments</td>
+                    <td>20%</td>
+                    <td>
+                      <a href="manage287.html" class="action-button action-button--compact"
+                        >Manage</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Midterm</td>
+                    <td>20%</td>
+                    <td>
+                      <a href="manage287.html" class="action-button action-button--compact"
+                        >Manage</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Final Exam</td>
+                    <td>60%</td>
+                    <td>
+                      <a href="manage287.html" class="action-button action-button--compact"
+                        >Manage</a
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 • SOEN 287 • LearnFlow</p>
+      </div>
+    </footer>
+  </body>
+</html>

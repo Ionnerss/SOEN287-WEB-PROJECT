@@ -1,80 +1,148 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Manage Courses</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Courses - LearnFlow</title>
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/components.css" />
+    <link rel="stylesheet" href="../../css/layout.css" />
+    <link rel="stylesheet" href="../../css/admin-pages.css" />
+  </head>
+  <body class="admin-page">
+    <header>
+      <div class="container">
+        <a href="../../index.html" class="site-logo">LearnFlow</a>
+        <nav>
+          <a href="../mainSide/login.html" class="action-button">Logout</a>
+        </nav>
+      </div>
+    </header>
 
-<main>
-  <h2>Manage Courses</h2>
+    <main>
+      <section class="hero">
+        <div class="grid-wrapper">
+          <div class="grid-background"></div>
+        </div>
 
-  <a href="add-course.html">
-    <button>Add New Course</button>
-  </a>
+        <div class="container admin-content">
+          <h1 class="admin-page-title fade-step fade-step-1">Manage Courses</h1>
+          <p class="admin-subtext fade-step fade-step-2">
+            Review all courses, then edit, enable, disable, or remove entries.
+          </p>
 
-  <a href="dashboard.html">
-    <button>Back to Dashboard</button>
-  </a>
+          <nav class="admin-action-row stagger-buttons">
+            <a href="dashboard.html" class="action-button">Dashboard</a>
+            <a href="add-course.html" class="action-button">Add New Course</a>
+            <a href="assessments.html" class="action-button">Assessment Categories</a>
+            <a href="stats.html" class="action-button">Statistics</a>
+          </nav>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Course Code</th>
-        <th>Course Name</th>
-        <th>Instructor</th>
-        <th>Term</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>SOEN 287</td>
-        <td>Web Programming</td>
-        <td>Dr. Admin</td>
-        <td>Winter 2026</td>
-        <td>Enabled</td>
-        <td>
-          <a href="edit-course.html">
-            <button>Edit</button>
-          </a>
-          <button onclick="confirm('Are you sure you want to disable SOEN 287 - Web Programming?')">Disable</button>
-          <button onclick="confirm('Are you sure you want to delete SOEN 287 - Web Programming?')">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          <div class="admin-stack">
+            <section class="admin-card fade-step fade-step-4" aria-label="Enabled course list">
+              <h2>Enabled Courses</h2>
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Course Code</th>
+                      <th>Course Name</th>
+                      <th>Instructor</th>
+                      <th>Term</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>SOEN 287</td>
+                      <td>Web Programming</td>
+                      <td>Dr. Admin</td>
+                      <td>Winter 2026</td>
+                      <td>Enabled</td>
+                      <td>
+                        <div class="admin-inline-actions">
+                          <a href="edit-course.html" class="action-button action-button--compact"
+                            >Edit</a
+                          >
+                          <button
+                            type="button"
+                            class="action-button action-button--compact"
+                            onclick="confirm('Are you sure you want to disable SOEN 287 - Web Programming?')"
+                          >
+                            Disable
+                          </button>
+                          <button
+                            type="button"
+                            class="action-button action-button--compact"
+                            onclick="confirm('Are you sure you want to delete SOEN 287 - Web Programming?')"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Course Code</th>
-        <th>Course Name</th>
-        <th>Instructor</th>
-        <th>Term</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>COMP 248</td>
-        <td>Object Oriented Programming</td>
-        <td>Dr. Admin</td>
-        <td>Winter 2026</td>
-        <td>Disabled</td>
-        <td>
-          <a href="edit-course.html">
-            <button>Edit</button>
-          </a>
-          <button onclick="confirm('Are you sure you want to enable COMP 248 - Object Oriented Programming?')">Enable</button>
-          <button onclick="confirm('Are you sure you want to delete COMP 248 - Object Oriented Programming?')">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</main>
+            <section class="admin-card fade-step fade-step-5" aria-label="Disabled course list">
+              <h2>Disabled Courses</h2>
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Course Code</th>
+                      <th>Course Name</th>
+                      <th>Instructor</th>
+                      <th>Term</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>COMP 248</td>
+                      <td>Object Oriented Programming</td>
+                      <td>Dr. Admin</td>
+                      <td>Winter 2026</td>
+                      <td>Disabled</td>
+                      <td>
+                        <div class="admin-inline-actions">
+                          <a href="edit-course.html" class="action-button action-button--compact"
+                            >Edit</a
+                          >
+                          <button
+                            type="button"
+                            class="action-button action-button--compact"
+                            onclick="confirm('Are you sure you want to enable COMP 248 - Object Oriented Programming?')"
+                          >
+                            Enable
+                          </button>
+                          <button
+                            type="button"
+                            class="action-button action-button--compact"
+                            onclick="confirm('Are you sure you want to delete COMP 248 - Object Oriented Programming?')"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
 
-</body>
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 • SOEN 287 • LearnFlow</p>
+      </div>
+    </footer>
+  </body>
 </html>

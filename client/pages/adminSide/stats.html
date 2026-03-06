@@ -1,29 +1,74 @@
-<main>
-  <h2>Usage Statistics</h2>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Statistics - LearnFlow</title>
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/components.css" />
+    <link rel="stylesheet" href="../../css/layout.css" />
+    <link rel="stylesheet" href="../../css/admin-pages.css" />
+  </head>
+  <body class="admin-page">
+    <header>
+      <div class="container">
+        <a href="../../index.html" class="site-logo">LearnFlow</a>
+        <nav>
+          <a href="../mainSide/login.html" class="action-button">Logout</a>
+        </nav>
+      </div>
+    </header>
 
-  <a href="dashboard.html">
-    <button>Back to Dashboard</button>
-  </a>
+    <main>
+      <section class="hero">
+        <div class="grid-wrapper">
+          <div class="grid-background"></div>
+        </div>
 
-  <section>
-    <h3>Course Completion</h3>
-    <h4>SOEN 287</h4>
+        <div class="container admin-content">
+          <h1 class="admin-page-title fade-step fade-step-1">Usage Statistics</h1>
+          <p class="admin-subtext fade-step fade-step-2">
+            Track completion rates and current class performance.
+          </p>
 
-    <p>77% of students completed the Assignment.</p>
-    <progress value="77" max="100"></progress>
+          <nav class="admin-action-row stagger-buttons">
+            <a href="dashboard.html" class="action-button">Dashboard</a>
+            <a href="courses.html" class="action-button">Manage Courses</a>
+            <a href="assessments.html" class="action-button">Assessment Categories</a>
+            <a href="stats.html" class="action-button">Statistics</a>
+          </nav>
 
-    <p>96% of students completed the Midterm.</p>
-    <progress value="96" max="100"></progress>
+          <div class="admin-stack">
+            <section class="admin-card fade-step fade-step-4" aria-label="Course completion stats">
+              <h2>Course Completion</h2>
+              <h3>SOEN 287</h3>
 
-    <p>0% of students completed the Final.</p>
-    <progress value="0" max="100"></progress>
+              <p class="admin-kpi">77% of students completed the Assignment.</p>
+              <progress value="77" max="100"></progress>
 
-    <p>The Class Average is 67%.</p>
-    <p>17% of students are failing this class. (Below 50%)</p>
-  </section>
+              <p class="admin-kpi">96% of students completed the Midterm.</p>
+              <progress value="96" max="100"></progress>
 
-  <section>
-    <h3>Active Courses</h3>
-    <p>Total Active Courses: 1</p>
-  </section>
-</main>
+              <p class="admin-kpi">0% of students completed the Final.</p>
+              <progress value="0" max="100"></progress>
+
+              <p class="admin-kpi">The class average is 67%.</p>
+              <p class="admin-kpi">17% of students are failing this class (below 50%).</p>
+            </section>
+
+            <section class="admin-card fade-step fade-step-5" aria-label="Active course count">
+              <h2>Active Courses</h2>
+              <p>Total active courses: 1</p>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 • SOEN 287 • LearnFlow</p>
+      </div>
+    </footer>
+  </body>
+</html>

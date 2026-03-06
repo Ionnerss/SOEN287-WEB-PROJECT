@@ -1,35 +1,89 @@
-<main>
-  <h2>Add Course</h2>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Course - LearnFlow</title>
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/components.css" />
+    <link rel="stylesheet" href="../../css/layout.css" />
+    <link rel="stylesheet" href="../../css/admin-pages.css" />
+  </head>
+  <body class="admin-page">
+    <header>
+      <div class="container">
+        <a href="../../index.html" class="site-logo">LearnFlow</a>
+        <nav>
+          <a href="../mainSide/login.html" class="action-button">Logout</a>
+        </nav>
+      </div>
+    </header>
 
-  <form action="courses.html" method="get">
-    <div>
-      <label for="code">Course Code:</label>
-      <input type="text" id="code" name="code" required />
-    </div>
+    <main>
+      <section class="hero">
+        <div class="grid-wrapper">
+          <div class="grid-background"></div>
+        </div>
 
-    <div>
-      <label for="name">Course Name:</label>
-      <input type="text" id="name" name="name" required />
-    </div>
+        <div class="container admin-content">
+          <h1 class="admin-page-title fade-step fade-step-1">Add Course</h1>
+          <p class="admin-subtext fade-step fade-step-2">
+            Create a new course and return to the course list.
+          </p>
 
-    <div>
-      <label for="instructor">Instructor:</label>
-      <input type="text" id="instructor" name="instructor" required />
-    </div>
+          <nav class="admin-action-row stagger-buttons">
+            <a href="dashboard.html" class="action-button">Dashboard</a>
+            <a href="courses.html" class="action-button">Manage Courses</a>
+            <a href="assessments.html" class="action-button">Assessment Categories</a>
+            <a href="stats.html" class="action-button">Statistics</a>
+          </nav>
 
-    <div>
-      <label for="term">Term:</label>
-      <input type="text" id="term" name="term" required />
-    </div>
+          <section class="admin-card fade-step fade-step-4" aria-label="Add course form">
+            <form action="courses.html" method="get" class="admin-form">
+              <div class="admin-field">
+                <label for="code">Course Code</label>
+                <input type="text" id="code" name="code" required />
+              </div>
 
-    <div>
-      <label for="status">Status:</label>
-      <select id="status" name="status">
-        <option value="enabled" selected>Enabled</option>
-        <option value="disabled">Disabled</option>
-      </select>
-    </div>
+              <div class="admin-field">
+                <label for="name">Course Name</label>
+                <input type="text" id="name" name="name" required />
+              </div>
 
-    <button type="submit">Add Course</button>
-  </form>
-</main>
+              <div class="admin-field">
+                <label for="instructor">Instructor</label>
+                <input type="text" id="instructor" name="instructor" required />
+              </div>
+
+              <div class="admin-field">
+                <label for="term">Term</label>
+                <input type="text" id="term" name="term" required />
+              </div>
+
+              <div class="admin-field">
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                  <option value="enabled" selected>Enabled</option>
+                  <option value="disabled">Disabled</option>
+                </select>
+              </div>
+
+              <div class="admin-inline-actions">
+                <button type="submit" class="action-button action-button--compact">
+                  Add Course
+                </button>
+                <a href="courses.html" class="action-button action-button--compact">Cancel</a>
+              </div>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 • SOEN 287 • LearnFlow</p>
+      </div>
+    </footer>
+  </body>
+</html>

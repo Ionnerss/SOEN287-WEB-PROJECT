@@ -1,0 +1,204 @@
+/*
+  Admin Pages Styling
+  - Applied only when pages use body.admin-page.
+  - Keeps admin pages visually consistent with landing/dashboard styles.
+*/
+
+.admin-page .hero .admin-content {
+  position: relative;
+  z-index: 1;
+  width: min(96%, 1060px);
+}
+
+.admin-page .hero .admin-page-title {
+  font-size: clamp(2.3rem, 5.2vw, 4rem);
+  color: #800020;
+  margin-bottom: 0.6rem;
+}
+
+.admin-page .hero .admin-subtext {
+  color: #5f5f5f;
+  font-size: 1.08rem;
+  margin-bottom: 0.95rem;
+}
+
+.admin-page .hero .admin-action-row {
+  margin-top: 1.8rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.admin-page .hero .admin-stack {
+  display: grid;
+  gap: 1.2rem;
+  margin-top: 0.6rem;
+}
+
+.admin-page .hero .admin-card {
+  width: min(96%, 940px);
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #e9e9e9;
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: left;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+}
+
+.admin-page .hero .admin-card h2,
+.admin-page .hero .admin-card h3,
+.admin-page .hero .admin-card h4 {
+  color: #800020;
+  margin-bottom: 0.9rem;
+}
+
+.admin-page .hero .admin-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-page .hero .admin-field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.admin-page .hero .admin-field label {
+  color: #3f3f3f;
+  font-weight: 600;
+}
+
+.admin-page .hero .admin-field input,
+.admin-page .hero .admin-field select {
+  width: 100%;
+  border: 1px solid #d5d5d5;
+  border-radius: 10px;
+  padding: 0.74rem 0.9rem;
+  font-size: 1rem;
+  outline: none;
+  background: #fff;
+}
+
+.admin-page .hero .admin-field input:focus,
+.admin-page .hero .admin-field select:focus {
+  border-color: #800020;
+  box-shadow: 0 0 0 3px rgba(128, 0, 32, 0.12);
+}
+
+.admin-page .hero .admin-inline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.admin-page .hero .action-button.action-button--compact {
+  font-size: 0.95rem;
+  padding: 0.58em 1.18em;
+  margin: 0;
+}
+
+.admin-page .hero .admin-table-wrap {
+  overflow-x: auto;
+}
+
+.admin-page .hero .admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 680px;
+}
+
+.admin-page .hero .admin-table th,
+.admin-page .hero .admin-table td {
+  border-bottom: 1px solid #ececec;
+  padding: 0.8rem 0.7rem;
+  vertical-align: top;
+}
+
+.admin-page .hero .admin-table th {
+  color: #5a5a5a;
+  font-weight: 700;
+  text-align: left;
+}
+
+.admin-page .hero progress {
+  width: min(100%, 540px);
+  height: 14px;
+  margin: 0.35rem 0 1rem;
+  accent-color: #800020;
+}
+
+.admin-page .hero .admin-kpi {
+  margin-bottom: 0.55rem;
+}
+
+.admin-page .hero .fade-step {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: adminFadeInUp 0.68s ease-out forwards;
+}
+
+.admin-page .hero .fade-step-1 {
+  animation-delay: 0.14s;
+}
+
+.admin-page .hero .fade-step-2 {
+  animation-delay: 0.38s;
+}
+
+.admin-page .hero .fade-step-3 {
+  animation-delay: 0.6s;
+}
+
+.admin-page .hero .fade-step-4 {
+  animation-delay: 1.2s;
+}
+
+.admin-page .hero .fade-step-5 {
+  animation-delay: 1.45s;
+}
+
+.admin-page .hero .stagger-buttons .action-button {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: adminFadeInUp 0.56s ease-out forwards;
+}
+
+.admin-page .hero .stagger-buttons .action-button:nth-child(1) {
+  animation-delay: 0.62s;
+}
+
+.admin-page .hero .stagger-buttons .action-button:nth-child(2) {
+  animation-delay: 0.78s;
+}
+
+.admin-page .hero .stagger-buttons .action-button:nth-child(3) {
+  animation-delay: 0.94s;
+}
+
+.admin-page .hero .stagger-buttons .action-button:nth-child(4) {
+  animation-delay: 1.1s;
+}
+
+@keyframes adminFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-page .hero .fade-step,
+  .admin-page .hero .stagger-buttons .action-button {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
