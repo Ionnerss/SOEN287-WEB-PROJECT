@@ -344,6 +344,90 @@
   gap: 0.7rem;
 }
 
+/*
+  Dialogs live outside .hero in student pages, so modal styles must not be
+  scoped to .hero or they will not apply.
+*/
+.student-page .student-modal {
+  border: none;
+  padding: 0;
+  border-radius: 14px;
+  width: min(92vw, 680px);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.22);
+  background: transparent;
+}
+
+.student-page .student-modal::backdrop {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.student-page .student-modal-content {
+  padding: 1.2rem;
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 14px;
+}
+
+.student-page .student-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.9rem;
+}
+
+.student-page .student-modal-header h3 {
+  color: #800020;
+  margin: 0;
+}
+
+.student-page .student-modal-footer {
+  margin-top: 0.95rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  justify-content: flex-end;
+}
+
+.student-page .student-modal .grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.student-page .student-modal .field {
+  display: grid;
+  gap: 0.38rem;
+}
+
+.student-page .student-modal .field__label {
+  font-weight: 600;
+  color: #3f3f3f;
+}
+
+.student-page .student-modal .input,
+.student-page .student-modal select {
+  border: 1px solid #d5d5d5;
+  border-radius: 10px;
+  padding: 0.66rem 0.82rem;
+  background: #fff;
+  font-size: 0.96rem;
+}
+
+.student-page .student-modal .input:focus,
+.student-page .student-modal select:focus {
+  border-color: #800020;
+  box-shadow: 0 0 0 3px rgba(128, 0, 32, 0.12);
+  outline: none;
+}
+
+.student-page .student-modal .switch {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-weight: 600;
+  color: #3f3f3f;
+}
+
 .student-page .hero .btn-reset {
   border: none;
   background: transparent;
@@ -427,6 +511,10 @@
   }
 
   .student-page .hero .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .student-page .student-modal .grid {
     grid-template-columns: 1fr;
   }
 }

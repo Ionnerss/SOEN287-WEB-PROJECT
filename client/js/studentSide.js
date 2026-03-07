@@ -224,6 +224,7 @@ function setupCoursePageInteractions(courseId) {
   const addAssessmentModal = document.getElementById('addAssessmentModal');
   const openAddAssessmentBtn = document.getElementById('openAddAssessmentModalBtn');
   const cancelAddAssessmentBtn = document.getElementById('cancelAddAssessmentBtn');
+  const cancelAddAssessmentBtn2 = document.getElementById('cancelAddAssessmentBtn2');
   const addAssessmentForm = document.getElementById('addAssessmentForm');
   const table = document.getElementById('assessmentsTable');
 
@@ -231,6 +232,10 @@ function setupCoursePageInteractions(courseId) {
   if (openAddAssessmentBtn && addAssessmentModal && cancelAddAssessmentBtn) {
     openAddAssessmentBtn.addEventListener('click', () => addAssessmentModal.showModal());
     cancelAddAssessmentBtn.addEventListener('click', () => addAssessmentModal.close());
+
+    if (cancelAddAssessmentBtn2) {
+      cancelAddAssessmentBtn2.addEventListener('click', () => addAssessmentModal.close());
+    }
   }
 
   // Add assessment submit
