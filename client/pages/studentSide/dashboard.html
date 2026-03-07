@@ -33,7 +33,7 @@
 
           <nav class="student-action-row stagger-buttons">
             <a class="action-button" href="./dashboard.html">Dashboard</a>
-            <a class="action-button" href="./course.html?courseId=SOEN287">Open Course</a>
+
             <button
               class="action-button"
               type="button"
@@ -132,33 +132,6 @@
               </div>
 
               <div class="student-stack" id="coursesGrid" aria-label="Courses list">
-            <!-- Example course card -->
-            <article class="coursecard">
-              <div class="coursecard__main">
-                <div class="coursecard__title">SOEN 287</div>
-                <div class="muted small">Web Programming • Winter 2026</div>
-                <div class="row row--wrap gap small">
-                  <span class="chip">Avg: 78%</span>
-                  <span class="chip">Progress: 2/5</span>
-                </div>
-              </div>
-
-              <div class="coursecard__side">
-                <div class="progress">
-                  <div class="progress__bar" style="width: 40%"></div>
-                </div>
-                  <div class="row gap">
-                    <a
-                      class="action-button action-button--compact"
-                      href="./course.html?courseId=SOEN287"
-                      >View</a
-                    >
-                    <button class="action-button action-button--compact" type="button">
-                      Edit
-                    </button>
-                </div>
-              </div>
-            </article>
           </div>
 
           <p class="muted small" id="coursesEmpty" hidden>No courses yet. Add one ☝️</p>
@@ -218,6 +191,7 @@
             class="action-button action-button--compact"
             value="cancel"
             aria-label="Close"
+            id="cancelAddCourseBtn"
           >
             ✕
           </button>
@@ -268,8 +242,8 @@
           <h3>Add assessment</h3>
           <button
             class="action-button action-button--compact"
-            value="cancel"
-            aria-label="Close"
+            type="button"
+            id="cancelAddAssessmentBtn"
           >
             ✕
           </button>

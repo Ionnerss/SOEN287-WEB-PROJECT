@@ -261,6 +261,43 @@
       </form>
     </dialog>
 
+    <!-- Edit Course Modal -->
+    <dialog class="student-modal" id="editCourseModal">
+      <form method="dialog" class="student-modal-content" id="editCourseForm">
+        <div class="student-modal-header">
+          <h3>Edit course</h3>
+          <button class="action-button action-button--compact" type="button" id="cancelEditCourseBtn">✕</button>
+        </div>
+
+        <div class="grid">
+          <label class="field">
+            <span class="field__label">Course code</span>
+            <input id="eCode" class="input" required />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Course name</span>
+            <input id="eName" class="input" required />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Instructor</span>
+            <input id="eInstructor" class="input" />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Term</span>
+            <input id="eTerm" class="input" required />
+          </label>
+        </div>
+
+        <div class="student-modal-footer">
+          <button class="action-button action-button--compact" type="button" id="cancelEditCourseBtn2">Cancel</button>
+          <button class="action-button action-button--compact" type="submit">Save</button>
+        </div>
+      </form>
+    </dialog>
+
     <footer>
       <div class="container">
         <p>&copy; 2026 • SOEN 287 • LearnFlow</p>
