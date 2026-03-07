@@ -234,6 +234,10 @@ function setupCoursePageInteractions(courseId) {
 
   if (cancelAddAssessmentBtn) {
     cancelAddAssessmentBtn.addEventListener('click', () => addAssessmentModal.close());
+
+    if (cancelAddAssessmentBtn2) {
+      cancelAddAssessmentBtn2.addEventListener('click', () => addAssessmentModal.close());
+    }
   }
 
   if (cancelAddAssessmentBtn2) {
