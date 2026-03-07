@@ -146,7 +146,6 @@ function renderCoursesDashboard() {
         </div>
         <div class="row gap">
           <a class="btn btn--small" href="./course.html?courseId=${course.id}">View</a>
-          <button class="btn btn--ghost btn--small" type="button">Edit</button>
         </div>
       </div>
     `;
@@ -228,9 +227,12 @@ function setupCoursePageInteractions(courseId) {
   const addAssessmentForm = document.getElementById('addAssessmentForm');
   const table = document.getElementById('assessmentsTable');
 
-  // Modal open/close
-  if (openAddAssessmentBtn && addAssessmentModal && cancelAddAssessmentBtn) {
+  // --- Add Assessment Modal ---
+  if (openAddAssessmentBtn && addAssessmentModal) {
     openAddAssessmentBtn.addEventListener('click', () => addAssessmentModal.showModal());
+  }
+
+  if (cancelAddAssessmentBtn) {
     cancelAddAssessmentBtn.addEventListener('click', () => addAssessmentModal.close());
 
     if (cancelAddAssessmentBtn2) {
@@ -238,17 +240,17 @@ function setupCoursePageInteractions(courseId) {
     }
   }
 
-  // Add assessment submit
-  if (addAssessmentForm && addAssessmentModal) {
+  if (cancelAddAssessmentBtn2) {
+    cancelAddAssessmentBtn2.addEventListener('click', () => addAssessmentModal.close());
+  }
+
+  if (addAssessmentForm) {
     addAssessmentForm.addEventListener('submit', (e) => {
       e.preventDefault();
 
       const courses = getCourses();
       const course = courses.find((c) => c.id === courseId);
-      if (!course) {
-        console.warn('Course not found on submit for id:', courseId);
-        return;
-      }
+      if (!course) return;
 
       const newAssessment = {
         id: Date.now().toString(),
@@ -269,7 +271,7 @@ function setupCoursePageInteractions(courseId) {
     });
   }
 
-  // Delete assessment via event delegation
+  // --- Delete Assessment ---
   if (table) {
     table.addEventListener('click', (e) => {
       const btn = e.target.closest("[data-action='delete-assessment']");
@@ -285,6 +287,56 @@ function setupCoursePageInteractions(courseId) {
       course.assessments = course.assessments.filter((a) => a.id !== assessmentId);
       saveCourses(courses);
       renderAssessments(courseId);
+    });
+  }
+
+  // --- Edit Course Modal ---
+  const editCourseModal = document.getElementById("editCourseModal");
+  const editCourseBtn = document.getElementById("editCourseBtn");
+  const cancelEditCourseBtn = document.getElementById("cancelEditCourseBtn");
+  const cancelEditCourseBtn2 = document.getElementById("cancelEditCourseBtn2");
+  const editCourseForm = document.getElementById("editCourseForm");
+
+  // Open + prefill
+  if (editCourseBtn && editCourseModal) {
+    editCourseBtn.addEventListener("click", () => {
+      const course = getCourseById(courseId);
+      if (!course) return;
+
+      document.getElementById("eCode").value = course.code;
+      document.getElementById("eName").value = course.name;
+      document.getElementById("eInstructor").value = course.instructor;
+      document.getElementById("eTerm").value = course.term;
+
+      editCourseModal.showModal();
+    });
+  }
+
+  // Close
+  if (cancelEditCourseBtn) {
+    cancelEditCourseBtn.addEventListener("click", () => editCourseModal.close());
+  }
+  if (cancelEditCourseBtn2) {
+    cancelEditCourseBtn2.addEventListener("click", () => editCourseModal.close());
+  }
+
+  // Save changes
+  if (editCourseForm) {
+    editCourseForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const courses = getCourses();
+      const course = courses.find((c) => c.id === courseId);
+      if (!course) return;
+
+      course.code = document.getElementById("eCode").value.trim();
+      course.name = document.getElementById("eName").value.trim();
+      course.instructor = document.getElementById("eInstructor").value.trim();
+      course.term = document.getElementById("eTerm").value.trim();
+
+      saveCourses(courses);
+      editCourseModal.close();
+      loadCourse(courseId);
     });
   }
 }
