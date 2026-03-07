@@ -5,42 +5,48 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Course • Smart Course Companion</title>
 
+    <link rel="stylesheet" href="../../css/components.css" />
     <link rel="stylesheet" href="../../css/base.css" />
     <link rel="stylesheet" href="../../css/layout.css" />
-    <link rel="stylesheet" href="../../css/components.css" />
+    <link rel="stylesheet" href="../../css/student-pages.css" />
   </head>
 
-  <body>
-    <header class="topbar">
-      <div class="container topbar__inner">
-        <a class="brand" href="./dashboard.html">← Dashboard</a>
-
-        <nav class="topnav">
-          <a href="./dashboard.html">Dashboard</a>
-          <a href="./profile.html">Profile</a>
-          <button class="btn btn--ghost btn--small" type="button" id="logoutBtn">
-            Log out
-          </button>
+  <body class="student-page">
+    <header>
+      <div class="container">
+        <a href="../../index.html" class="site-logo">LearnFlow</a>
+        <nav>
+          <a href="./dashboard.html" class="action-button">Dashboard</a>
+          <a href="../mainSide/login.html" class="action-button">Logout</a>
         </nav>
       </div>
     </header>
 
-    <main class="container page">
+    <main>
+      <section class="hero">
+        <div class="grid-wrapper">
+          <div class="grid-background"></div>
+        </div>
+
+        <div class="container student-content">
+          <h1 class="student-page-title fade-step fade-step-1">Course Details</h1>
+          <p class="student-subtext fade-step fade-step-2">Track marks, deadlines, and progress.</p>
+
+          <nav class="student-action-row stagger-buttons">
+            <a href="./dashboard.html" class="action-button">Dashboard</a>
+            <a href="#courseAssessments" class="action-button">Assessments</a>
+            <button class="action-button" type="button" id="editCourseBtn">Edit</button>
+            <button class="action-button" type="button" id="deleteCourseBtn">Delete</button>
+          </nav>
+
       <!-- Course header -->
-      <section class="card">
-        <div class="card__header">
+          <section class="student-card fade-step fade-step-3">
+            <div class="student-card-header">
           <div>
             <h1 id="courseTitle"></h1>
             <p class="muted" id="courseMeta"></p>
           </div>
-
-          <div class="row gap">
-            <button class="btn btn--ghost" type="button" id="editCourseBtn">Edit</button>
-            <button class="btn btn--danger" type="button" id="deleteCourseBtn">
-              Delete
-            </button>
-          </div>
-        </div>
+            </div>
 
         <!-- Stats -->
         <div class="stats">
@@ -63,23 +69,24 @@
           <div class="progress__bar" id="progressBar" style="width: 0%"></div>
         </div>
         <p class="muted small" id="progressText">0% assessments completed</p>
-      </section>
+          </section>
 
-      <section class="grid2">
+          <section class="student-grid student-grid-2 fade-step fade-step-4">
         <!-- Assessments -->
-        <section class="card">
-          <div class="card__header">
+            <section class="student-card" id="courseAssessments">
+              <div class="student-card-header">
             <div>
               <h2>Assessments</h2>
               <p class="muted small">Enter marks, toggle status, manage deadlines.</p>
             </div>
-            <button class="btn" type="button" id="openAddAssessmentModalBtn">
-              + Add
-            </button>
-          </div>
+
+                <button class="action-button action-button--compact" type="button" id="openAddAssessmentModalBtn">
+                  Add
+                </button>
+              </div>
 
           <div class="row row--wrap gap">
-            <label class="field field--inline">
+                <label class="field">
               <span class="field__label">Status</span>
               <select id="statusFilter">
                 <option value="all" selected>All</option>
@@ -88,7 +95,7 @@
               </select>
             </label>
 
-            <label class="field field--inline">
+                <label class="field">
               <span class="field__label">Search</span>
               <input
                 id="searchInput"
@@ -118,19 +125,19 @@
           </div>
 
           <p class="muted small" id="emptyState" hidden>No assessments yet. Add one ☝️</p>
-        </section>
+            </section>
 
         <!-- Visual summary -->
-        <aside class="card">
-          <div class="card__header">
+            <aside class="student-card">
+              <div class="student-card-header">
             <div>
               <h2>Visual summary</h2>
               <p class="muted small">Simple visuals now, charts later.</p>
             </div>
-          </div>
+              </div>
 
           <!-- Per-category progress bars (dummy placeholders) -->
-          <div class="stack" id="summaryBars">
+              <div class="student-stack" id="summaryBars">
             <div class="barrow">
               <div class="barrow__label">
                 <strong>Labs</strong>
@@ -165,25 +172,36 @@
           <hr class="sep" />
 
           <h3 class="h4">Quick actions</h3>
-          <div class="stack">
-            <button class="btn btn--ghost" type="button" id="markAllPendingBtn">
+              <div class="student-stack">
+                <button
+                  class="action-button action-button--compact"
+                  type="button"
+                  id="markAllPendingBtn"
+                >
               Mark all pending
             </button>
-            <button class="btn btn--ghost" type="button" id="exportBtn" disabled>
+                <button
+                  class="action-button action-button--compact"
+                  type="button"
+                  id="exportBtn"
+                  disabled
+                >
               Export (D2 bonus)
             </button>
           </div>
-        </aside>
+            </aside>
+          </section>
+        </div>
       </section>
     </main>
 
     <!-- Add Assessment Modal -->
-    <dialog class="modal" id="addAssessmentModal">
-      <form method="dialog" class="modal__content" id="addAssessmentForm">
-        <div class="modal__header">
+    <dialog class="student-modal" id="addAssessmentModal">
+      <form method="dialog" class="student-modal-content" id="addAssessmentForm">
+        <div class="student-modal-header">
           <h3>Add assessment</h3>
           <button
-            class="btn btn--ghost btn--small"
+            class="action-button action-button--compact"
             type="button"
             id="cancelAddAssessmentBtn"
           >
@@ -230,17 +248,23 @@
           </label>
         </div>
 
-        <div class="modal__footer">
-          <button class="btn btn--ghost" type="button" id="cancelAddAssessmentBtn2">
+        <div class="student-modal-footer">
+          <button
+            class="action-button action-button--compact"
+            type="button"
+            id="cancelAddAssessmentBtn2"
+          >
             Cancel
           </button>
-          <button class="btn" type="submit">Add</button>
+          <button class="action-button action-button--compact" type="submit">Add</button>
         </div>
       </form>
     </dialog>
 
-    <footer class="footer container">
-      <p class="muted small">Smart Course Companion • SOEN 287</p>
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 • SOEN 287 • LearnFlow</p>
+      </div>
     </footer>
 
     <script src="../../js/studentSide.js" defer></script>
