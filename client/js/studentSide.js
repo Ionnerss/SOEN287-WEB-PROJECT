@@ -291,22 +291,22 @@ function setupCoursePageInteractions(courseId) {
   }
 
   // --- Edit Course Modal ---
-  const editCourseModal = document.getElementById("editCourseModal");
-  const editCourseBtn = document.getElementById("editCourseBtn");
-  const cancelEditCourseBtn = document.getElementById("cancelEditCourseBtn");
-  const cancelEditCourseBtn2 = document.getElementById("cancelEditCourseBtn2");
-  const editCourseForm = document.getElementById("editCourseForm");
+  const editCourseModal = document.getElementById('editCourseModal');
+  const editCourseBtn = document.getElementById('editCourseBtn');
+  const cancelEditCourseBtn = document.getElementById('cancelEditCourseBtn');
+  const cancelEditCourseBtn2 = document.getElementById('cancelEditCourseBtn2');
+  const editCourseForm = document.getElementById('editCourseForm');
 
   // Open + prefill
   if (editCourseBtn && editCourseModal) {
-    editCourseBtn.addEventListener("click", () => {
+    editCourseBtn.addEventListener('click', () => {
       const course = getCourseById(courseId);
       if (!course) return;
 
-      document.getElementById("eCode").value = course.code;
-      document.getElementById("eName").value = course.name;
-      document.getElementById("eInstructor").value = course.instructor;
-      document.getElementById("eTerm").value = course.term;
+      document.getElementById('eCode').value = course.code;
+      document.getElementById('eName').value = course.name;
+      document.getElementById('eInstructor').value = course.instructor;
+      document.getElementById('eTerm').value = course.term;
 
       editCourseModal.showModal();
     });
@@ -314,25 +314,25 @@ function setupCoursePageInteractions(courseId) {
 
   // Close
   if (cancelEditCourseBtn) {
-    cancelEditCourseBtn.addEventListener("click", () => editCourseModal.close());
+    cancelEditCourseBtn.addEventListener('click', () => editCourseModal.close());
   }
   if (cancelEditCourseBtn2) {
-    cancelEditCourseBtn2.addEventListener("click", () => editCourseModal.close());
+    cancelEditCourseBtn2.addEventListener('click', () => editCourseModal.close());
   }
 
   // Save changes
   if (editCourseForm) {
-    editCourseForm.addEventListener("submit", (e) => {
+    editCourseForm.addEventListener('submit', (e) => {
       e.preventDefault();
 
       const courses = getCourses();
       const course = courses.find((c) => c.id === courseId);
       if (!course) return;
 
-      course.code = document.getElementById("eCode").value.trim();
-      course.name = document.getElementById("eName").value.trim();
-      course.instructor = document.getElementById("eInstructor").value.trim();
-      course.term = document.getElementById("eTerm").value.trim();
+      course.code = document.getElementById('eCode').value.trim();
+      course.name = document.getElementById('eName').value.trim();
+      course.instructor = document.getElementById('eInstructor').value.trim();
+      course.term = document.getElementById('eTerm').value.trim();
 
       saveCourses(courses);
       editCourseModal.close();

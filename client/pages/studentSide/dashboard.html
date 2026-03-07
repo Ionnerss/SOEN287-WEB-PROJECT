@@ -29,153 +29,150 @@
 
         <div class="container student-content">
           <h1 class="student-page-title fade-step fade-step-1">Student Dashboard</h1>
-          <p class="student-subtext fade-step fade-step-2" id="welcomeText">Welcome back</p>
+          <p class="student-subtext fade-step fade-step-2" id="welcomeText">
+            Welcome back
+          </p>
 
           <nav class="student-action-row stagger-buttons">
             <a class="action-button" href="./dashboard.html">Dashboard</a>
 
-            <button
-              class="action-button"
-              type="button"
-              id="openAddCourseModalBtn"
-            >
+            <button class="action-button" type="button" id="openAddCourseModalBtn">
               Add Course
             </button>
-            <button
-              class="action-button"
-              type="button"
-              id="openAddAssessmentModalBtn"
-            >
+            <button class="action-button" type="button" id="openAddAssessmentModalBtn">
               Add Assessment
             </button>
           </nav>
 
-      <!-- Quick stats -->
+          <!-- Quick stats -->
           <section class="student-grid student-grid-3 fade-step fade-step-3">
             <article class="student-card">
-          <div class="statcard__label">Upcoming (7 days)</div>
-          <div class="stat-value" id="upcomingCount">--</div>
-          <div class="muted small">Across all courses</div>
+              <div class="statcard__label">Upcoming (7 days)</div>
+              <div class="stat-value" id="upcomingCount">--</div>
+              <div class="muted small">Across all courses</div>
             </article>
 
             <article class="student-card">
-          <div class="statcard__label">Completed</div>
-          <div class="stat-value" id="completedSummary">-- / --</div>
-          <div class="muted small">Assessments done</div>
+              <div class="statcard__label">Completed</div>
+              <div class="stat-value" id="completedSummary">-- / --</div>
+              <div class="muted small">Assessments done</div>
             </article>
 
             <article class="student-card">
-          <div class="statcard__label">Avg (all courses)</div>
-          <div class="stat-value" id="overallAverage">--%</div>
-          <div class="muted small">Calculated from marks</div>
+              <div class="statcard__label">Avg (all courses)</div>
+              <div class="stat-value" id="overallAverage">--%</div>
+              <div class="muted small">Calculated from marks</div>
             </article>
           </section>
 
           <section class="student-grid student-grid-2 fade-step fade-step-4">
-        <!-- Upcoming assessments -->
+            <!-- Upcoming assessments -->
             <section class="student-card">
               <div class="student-card-header">
-            <div>
-              <h2>Upcoming assessments</h2>
-              <p class="muted small">Single list across all courses</p>
-            </div>
+                <div>
+                  <h2>Upcoming assessments</h2>
+                  <p class="muted small">Single list across all courses</p>
+                </div>
 
                 <label class="field">
-              <span class="field__label">Show</span>
-              <select id="upcomingFilter">
-                <option value="7" selected>Next 7 days</option>
-                <option value="14">Next 14 days</option>
-                <option value="30">Next 30 days</option>
-                <option value="all">All pending</option>
-              </select>
-            </label>
+                  <span class="field__label">Show</span>
+                  <select id="upcomingFilter">
+                    <option value="7" selected>Next 7 days</option>
+                    <option value="14">Next 14 days</option>
+                    <option value="30">Next 30 days</option>
+                    <option value="all">All pending</option>
+                  </select>
+                </label>
               </div>
 
-          <ul class="list" id="upcomingList" aria-label="Upcoming assessments list">
-            <!-- Example item (JS should render real items) -->
-            <li class="list__item">
-              <div>
-                <div class="list__title">Lab 1</div>
-                <div class="muted small">SOEN 287 • Due 2026-02-20</div>
-              </div>
-                <div class="row gap">
-                <span class="tag">Pending</span>
-                  <a
-                    class="action-button action-button--compact"
-                    href="./course.html?courseId=SOEN287"
-                  >Open</a
-                >
-              </div>
-            </li>
-          </ul>
+              <ul class="list" id="upcomingList" aria-label="Upcoming assessments list">
+                <!-- Example item (JS should render real items) -->
+                <li class="list__item">
+                  <div>
+                    <div class="list__title">Lab 1</div>
+                    <div class="muted small">SOEN 287 • Due 2026-02-20</div>
+                  </div>
+                  <div class="row gap">
+                    <span class="tag">Pending</span>
+                    <a
+                      class="action-button action-button--compact"
+                      href="./course.html?courseId=SOEN287"
+                      >Open</a
+                    >
+                  </div>
+                </li>
+              </ul>
 
-          <p class="muted small" id="upcomingEmpty" hidden>No upcoming assessments 🎉</p>
+              <p class="muted small" id="upcomingEmpty" hidden>
+                No upcoming assessments 🎉
+              </p>
             </section>
 
-        <!-- Courses -->
+            <!-- Courses -->
             <section class="student-card">
               <div class="student-card-header">
-            <div>
-              <h2>Your courses</h2>
-              <p class="muted small">Add/edit/delete your courses</p>
-            </div>
+                <div>
+                  <h2>Your courses</h2>
+                  <p class="muted small">Add/edit/delete your courses</p>
+                </div>
 
                 <label class="field">
-              <span class="field__label">Search</span>
-              <input
-                id="courseSearch"
-                class="input input--small"
-                type="search"
-                placeholder="SOEN 287…"
-              />
-            </label>
+                  <span class="field__label">Search</span>
+                  <input
+                    id="courseSearch"
+                    class="input input--small"
+                    type="search"
+                    placeholder="SOEN 287…"
+                  />
+                </label>
               </div>
 
-              <div class="student-stack" id="coursesGrid" aria-label="Courses list">
-          </div>
+              <div class="student-stack" id="coursesGrid" aria-label="Courses list"></div>
 
-          <p class="muted small" id="coursesEmpty" hidden>No courses yet. Add one ☝️</p>
+              <p class="muted small" id="coursesEmpty" hidden>
+                No courses yet. Add one ☝️
+              </p>
             </section>
           </section>
 
-      <!-- Visual summary section -->
+          <!-- Visual summary section -->
           <section class="student-card fade-step fade-step-5">
             <div class="student-card-header">
-          <div>
-            <h2>Progress overview</h2>
-            <p class="muted small">Visual summaries (progress bars / charts)</p>
-          </div>
+              <div>
+                <h2>Progress overview</h2>
+                <p class="muted small">Visual summaries (progress bars / charts)</p>
+              </div>
 
               <label class="field">
-            <span class="field__label">View</span>
-            <select id="overviewMode">
-              <option value="completion" selected>Completion</option>
-              <option value="averages">Course averages</option>
-            </select>
-          </label>
+                <span class="field__label">View</span>
+                <select id="overviewMode">
+                  <option value="completion" selected>Completion</option>
+                  <option value="averages">Course averages</option>
+                </select>
+              </label>
             </div>
 
-        <!-- Keep it simple for D1: just progress bars. If you add charts later, replace this block. -->
+            <!-- Keep it simple for D1: just progress bars. If you add charts later, replace this block. -->
             <div class="student-stack" id="overviewBars">
-          <div class="barrow">
-            <div class="barrow__label">
-              <strong>SOEN 287</strong>
-              <span class="muted small">2/5 completed</span>
-            </div>
-            <div class="progress">
-              <div class="progress__bar" style="width: 40%"></div>
-            </div>
-          </div>
+              <div class="barrow">
+                <div class="barrow__label">
+                  <strong>SOEN 287</strong>
+                  <span class="muted small">2/5 completed</span>
+                </div>
+                <div class="progress">
+                  <div class="progress__bar" style="width: 40%"></div>
+                </div>
+              </div>
 
-          <div class="barrow">
-            <div class="barrow__label">
-              <strong>COMP 248</strong>
-              <span class="muted small">1/4 completed</span>
-            </div>
-            <div class="progress">
-              <div class="progress__bar" style="width: 25%"></div>
-            </div>
-          </div>
+              <div class="barrow">
+                <div class="barrow__label">
+                  <strong>COMP 248</strong>
+                  <span class="muted small">1/4 completed</span>
+                </div>
+                <div class="progress">
+                  <div class="progress__bar" style="width: 25%"></div>
+                </div>
+              </div>
             </div>
           </section>
         </div>
@@ -228,7 +225,11 @@
           >
             Cancel
           </button>
-          <button class="action-button action-button--compact" value="default" type="submit">
+          <button
+            class="action-button action-button--compact"
+            value="default"
+            type="submit"
+          >
             Add
           </button>
         </div>
@@ -295,7 +296,11 @@
           >
             Cancel
           </button>
-          <button class="action-button action-button--compact" value="default" type="submit">
+          <button
+            class="action-button action-button--compact"
+            value="default"
+            type="submit"
+          >
             Add
           </button>
         </div>
