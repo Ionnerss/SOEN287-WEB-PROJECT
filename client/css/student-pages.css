@@ -76,6 +76,7 @@
 }
 
 .student-page .student-grid {
+  /* Base grid primitive used by both dashboard and course sections. */
   display: grid;
   gap: 1.2rem;
 }
@@ -137,6 +138,7 @@
 }
 
 .student-page .row--wrap {
+  /* Prevents control rows from overflowing on narrow tablet/mobile widths. */
   flex-wrap: wrap;
 }
 
@@ -296,6 +298,7 @@
 }
 
 .student-page .table {
+  /* Keeps data tables usable on small screens via horizontal scroll container. */
   width: 100%;
   border-collapse: collapse;
   min-width: 640px;
@@ -314,6 +317,7 @@
 }
 
 .student-page .student-modal {
+  /* Manual centering ensures consistent placement for the dialog element. */
   position: fixed;
   top: 50%;
   left: 50%;
@@ -395,6 +399,7 @@
 }
 
 .student-page .student-modal .grid {
+  /* Two-column form layout for faster data entry on desktop. */
   display: grid;
   gap: 0.75rem;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -507,6 +512,7 @@
 }
 
 @media (max-width: 960px) {
+  /* Collapse dense dashboard/course grids into a single readable column. */
   .student-page .student-grid-3,
   .student-page .student-grid-2 {
     grid-template-columns: 1fr;

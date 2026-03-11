@@ -325,6 +325,7 @@ nav a:hover {
   then masks them with a radial fade for a softer visual.
 */
 .grid-background {
+  /* Fixed cell size keeps the pattern subtle and consistent across screen sizes. */
   position: absolute;
   top: 0;
   right: 0;
