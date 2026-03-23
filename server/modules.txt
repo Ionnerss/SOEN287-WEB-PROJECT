@@ -1,0 +1,8 @@
+Backend dependencies installed so far:
+
+These are required for:
+- Express server
+- CORS support
+- MySQL database connection
+
+More dependencies (bcrypt, jsonwebtoken) will be added later during authentication.
