@@ -5,6 +5,7 @@
 */
 
 .admin-page .hero .admin-content {
+  /* Slightly narrower content width keeps dense admin forms readable. */
   position: relative;
   z-index: 1;
   width: min(96%, 1060px);
@@ -39,6 +40,7 @@
 }
 
 .admin-page .hero .admin-card {
+  /* Reuses the same translucent card language as student/auth pages. */
   width: min(96%, 940px);
   margin: 0 auto;
   background: rgba(255, 255, 255, 0.92);
@@ -105,6 +107,7 @@
 }
 
 .admin-page .hero .admin-table {
+  /* Horizontal scrolling is preferred over compressing columns too much. */
   width: 100%;
   border-collapse: collapse;
   min-width: 680px;
@@ -124,6 +127,7 @@
 }
 
 .admin-page .hero progress {
+  /* Native progress element keeps semantic meaning while matching brand color. */
   width: min(100%, 540px);
   height: 14px;
   margin: 0.35rem 0 1rem;
@@ -135,6 +139,7 @@
 }
 
 .admin-page .hero .fade-step {
+  /* Shared reveal animation used by cards/sections as they appear. */
   opacity: 0;
   transform: translateY(10px);
   animation: adminFadeInUp 0.68s ease-out forwards;
@@ -195,6 +200,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* Accessibility: disable motion while preserving final visible state. */
   .admin-page .hero .fade-step,
   .admin-page .hero .stagger-buttons .action-button {
     animation: none;

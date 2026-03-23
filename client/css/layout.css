@@ -51,6 +51,7 @@ header .container {
 
 /* Hero fills the main area and centers its internal content */
 main > .hero {
+  /* Lets each page-specific hero decide its internal max-width and card layout. */
   width: 100%;
   height: 100%;
   display: flex;
