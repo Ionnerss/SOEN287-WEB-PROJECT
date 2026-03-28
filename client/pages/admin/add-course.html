@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Course - LearnFlow</title>
+    <title>Add Course - LearnFlow</title>
     <link rel="stylesheet" href="../../css/base.css" />
     <link rel="stylesheet" href="../../css/components.css" />
     <link rel="stylesheet" href="../../css/layout.css" />
@@ -12,9 +12,9 @@
   <body class="admin-page">
     <header>
       <div class="container">
-        <a href="../../index.html" class="site-logo">LearnFlow</a>
+        <a href="../index/index.html" class="site-logo">LearnFlow</a>
         <nav>
-          <a href="../mainSide/login.html" class="action-button">Logout</a>
+          <a href="../auth/login.html" class="action-button">Logout</a>
         </nav>
       </div>
     </header>
@@ -26,9 +26,9 @@
         </div>
 
         <div class="container admin-content">
-          <h1 class="admin-page-title fade-step fade-step-1">Edit Course</h1>
+          <h1 class="admin-page-title fade-step fade-step-1">Add Course</h1>
           <p class="admin-subtext fade-step fade-step-2">
-            Update existing course details, then save changes.
+            Create a new course and return to the course list.
           </p>
 
           <nav class="admin-action-row stagger-buttons">
@@ -38,7 +38,7 @@
             <a href="stats.html" class="action-button">Statistics</a>
           </nav>
 
-          <section class="admin-card fade-step fade-step-4" aria-label="Edit course form">
+          <section class="admin-card fade-step fade-step-4" aria-label="Add course form">
             <form action="courses.html" method="get" class="admin-form">
               <div class="admin-field">
                 <label for="code">Course Code</label>
@@ -70,7 +70,7 @@
 
               <div class="admin-inline-actions">
                 <button type="submit" class="action-button action-button--compact">
-                  Update Course
+                  Add Course
                 </button>
                 <a href="courses.html" class="action-button action-button--compact"
                   >Cancel</a

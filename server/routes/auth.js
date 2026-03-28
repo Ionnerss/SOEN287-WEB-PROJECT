@@ -21,14 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Student login
     if (email === studentEmail && password === correctPassword) {
       localStorage.setItem('userRole', 'student');
-      window.location.href = '../studentSide/dashboard.html';
+      window.location.href = '../student/dashboard.html';
       return;
     }
 
     // Admin login
     if (email === adminEmail && password === correctPassword) {
       localStorage.setItem('userRole', 'admin');
-      window.location.href = '../adminSide/dashboard.html';
+      window.location.href = '../admin/dashboard.html';
       return;
     }
 
