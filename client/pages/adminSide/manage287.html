@@ -26,9 +26,9 @@
         </div>
 
         <div class="container admin-content">
-          <h1 class="admin-page-title fade-step fade-step-1">Manage SOEN 287</h1>
-          <p class="admin-subtext fade-step fade-step-2">
-            Adjust category weights and remove assessments if needed.
+          <h1 class="admin-page-title fade-step fade-step-1">Manage Assessment</h1>
+          <p class="admin-subtext fade-step fade-step-2" id="manageSubtext">
+            Adjust the weight for this assessment category.
           </p>
 
           <nav class="admin-action-row stagger-buttons">
@@ -40,30 +40,15 @@
 
           <div class="admin-stack">
             <section class="admin-card fade-step fade-step-4" aria-label="Weight form">
-              <h2>Category Weights</h2>
-              <form action="assessments.html" method="get" class="admin-form">
+              <h2>Update Weight</h2>
+              <form id="weightsForm" class="admin-form">
                 <div class="admin-field">
-                  <label for="assignments">Assignments Weight</label>
-                  <input type="number" id="assignments" name="assignments" required />
+                  <label for="weightInput">Weight (%)</label>
+                  <input type="number" id="weightInput" name="weight" min="0" max="100" required />
                 </div>
-
-                <div class="admin-field">
-                  <label for="midterm">Midterm Weight</label>
-                  <input type="number" id="midterm" name="midterm" required />
-                </div>
-
-                <div class="admin-field">
-                  <label for="final">Final Weight</label>
-                  <input type="number" id="final" name="final" required />
-                </div>
-
                 <div class="admin-inline-actions">
-                  <button type="submit" class="action-button action-button--compact">
-                    Update
-                  </button>
-                  <a href="assessments.html" class="action-button action-button--compact"
-                    >Back</a
-                  >
+                  <button type="submit" class="action-button action-button--compact">Update</button>
+                  <a href="assessments.html" class="action-button action-button--compact">Back</a>
                 </div>
               </form>
             </section>
@@ -73,33 +58,10 @@
               <div class="admin-inline-actions">
                 <button
                   type="button"
+                  id="deleteBtn"
                   class="action-button action-button--compact"
-                  onclick="
-                    if (confirm('Are you sure you want to delete the Assignment?'))
-                      window.location.href = 'assessments.html';
-                  "
                 >
-                  Delete Assignment
-                </button>
-                <button
-                  type="button"
-                  class="action-button action-button--compact"
-                  onclick="
-                    if (confirm('Are you sure you want to delete the Midterm?'))
-                      window.location.href = 'assessments.html';
-                  "
-                >
-                  Delete Midterm
-                </button>
-                <button
-                  type="button"
-                  class="action-button action-button--compact"
-                  onclick="
-                    if (confirm('Are you sure you want to delete the Final?'))
-                      window.location.href = 'assessments.html';
-                  "
-                >
-                  Delete Final
+                  Delete This Assessment
                 </button>
               </div>
             </section>
@@ -113,5 +75,7 @@
         <p>&copy; 2026 • SOEN 287 • LearnFlow</p>
       </div>
     </footer>
+
+    <script src="../../js/adminSide.js"></script>
   </body>
 </html>
