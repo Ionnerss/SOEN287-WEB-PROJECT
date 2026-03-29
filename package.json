@@ -21,5 +21,15 @@
   "homepage": "https://github.com/Ionnerss/SOEN287-WEB-PROJECT#readme",
   "devDependencies": {
     "prettier": "^3.8.1"
-  }
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0"
+  },
+  "scripts": {
+  "start": "node server.js",
+  "format": "prettier . --write",
+  "format:check": "prettier . --check"
+}
 }

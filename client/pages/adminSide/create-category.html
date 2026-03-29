@@ -42,7 +42,17 @@
             class="admin-card fade-step fade-step-4"
             aria-label="Create assessment category form"
           >
-            <form action="assessments.html" method="get" class="admin-form">
+            <p id="createError" style="color: red; display: none;"></p>
+            <form id="createCategoryForm" class="admin-form">
+              <div class="admin-field">
+                <label for="courseId">Course</label>
+                <select id="courseId" name="courseId" required>
+                  <option value="">Select a course</option>
+                  <option value="SOEN287">SOEN 287 - Web Programming</option>
+                  <option value="COMP248">COMP 248 - Object Oriented Programming</option>
+                </select>
+              </div>
+
               <div class="admin-field">
                 <label for="categoryName">Category</label>
                 <input type="text" id="categoryName" name="categoryName" required />
@@ -64,9 +74,9 @@
                 <button type="submit" class="action-button action-button--compact">
                   Save
                 </button>
-                <a href="assessments.html" class="action-button action-button--compact"
-                  >Cancel</a
-                >
+                <a href="assessments.html" class="action-button action-button--compact">
+                  Cancel
+                </a>
               </div>
             </form>
           </section>
@@ -79,5 +89,7 @@
         <p>&copy; 2026 • SOEN 287 • LearnFlow</p>
       </div>
     </footer>
+
+    <script src="../../js/adminSide.js"></script>
   </body>
 </html>
