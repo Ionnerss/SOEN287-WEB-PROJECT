@@ -6,6 +6,7 @@
 
 /* Reset default browser spacing and keep sizing predictable */
 * {
+  /* border-box prevents padding/borders from unexpectedly growing components. */
   margin: 0;
   padding: 0;
   box-sizing: border-box;
