@@ -1,6 +1,6 @@
 // ── assessments.html ──────────────────────────────
 async function initAssessmentsPage() {
-  const tbody = document.getElementById('assessmentsBody');
+  var tbody = document.getElementById('assessmentsBody');
   if (!tbody) return;
 
   const res = await fetch('/api/assessments');
@@ -9,31 +9,45 @@ async function initAssessmentsPage() {
   tbody.innerHTML = '';
 
   if (assessments.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="3">No assessments yet. Click "New Assessment" to add one.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="4">No assessments yet. Click "New Assessment" to add one.</td></tr>';
     return;
   }
 
-  assessments.forEach(a => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${a.category}</td>
-      <td>${a.weight}%</td>
-      <td>${a.courseId}</td>
-      <td>
-        <a href="manage287.html?id=${a.id}" class="action-button action-button--compact">Manage</a>
-      </td>
-    `;
-    tbody.appendChild(tr);
+  // Group by courseId
+  var grouped = {};
+  assessments.forEach(function(a) {
+    if (!grouped[a.courseId]) grouped[a.courseId] = [];
+    grouped[a.courseId].push(a);
+  });
+
+  // Render each group with a course header row
+  Object.entries(grouped).forEach(function(entry) {
+    var courseId = entry[0];
+    var items = entry[1];
+
+    var headerRow = document.createElement('tr');
+    headerRow.innerHTML = '<td colspan="4" style="background:#f5f5f5; font-weight:bold; color:#800020; padding: 0.6rem 1rem;">' + courseId + '</td>';
+    tbody.appendChild(headerRow);
+
+    items.forEach(function(a) {
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td style="text-align:center; font-weight:bold;">' + a.category + '</td>' +
+        '<td style="text-align:center; font-weight:bold;">' + a.weight + '%</td>' +
+        '<td style="text-align:center; font-weight:bold;">' + a.courseId + '</td>' +
+        '<td style="text-align:center; vertical-align:middle;"><a href="manage287.html?id=' + a.id + '" class="action-button action-button--compact">Manage</a></td>';
+      tbody.appendChild(tr);
+    });
   });
 }
 
 // ── manage287.html ────────────────────────────────
 async function initManagePage() {
-  const form = document.getElementById('weightsForm');
+  var form = document.getElementById('weightsForm');
   if (!form) return;
 
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get('id');
+  var params = new URLSearchParams(window.location.search);
+  var id = params.get('id');
   if (!id) {
     window.location.href = 'assessments.html';
     return;
@@ -48,30 +62,30 @@ async function initManagePage() {
     return;
   }
 
-  const subtext = document.getElementById('manageSubtext');
-  if (subtext) subtext.textContent = `Editing: ${assessment.category} (${assessment.courseId})`;
+  var subtext = document.getElementById('manageSubtext');
+  if (subtext) subtext.textContent = 'Editing: ' + assessment.category + ' (' + assessment.courseId + ')';
 
   document.getElementById('weightInput').value = assessment.weight;
 
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', async function(e) {
     e.preventDefault();
-    const weight = Number(document.getElementById('weightInput').value);
+    var weight = Number(document.getElementById('weightInput').value);
 
-    await fetch(`/api/assessments/${id}`, {
+    await fetch('/api/assessments/' + id, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ weight })
+      body: JSON.stringify({ weight: weight })
     });
 
     window.location.href = 'assessments.html';
   });
 
-  const deleteBtn = document.getElementById('deleteBtn');
+  var deleteBtn = document.getElementById('deleteBtn');
   if (deleteBtn) {
-    deleteBtn.addEventListener('click', async () => {
-      if (!confirm(`Are you sure you want to delete "${assessment.category}"?`)) return;
+    deleteBtn.addEventListener('click', async function() {
+      if (!confirm('Are you sure you want to delete "' + assessment.category + '"?')) return;
 
-      await fetch(`/api/assessments/${id}`, { method: 'DELETE' });
+      await fetch('/api/assessments/' + id, { method: 'DELETE' });
       window.location.href = 'assessments.html';
     });
   }
@@ -79,21 +93,21 @@ async function initManagePage() {
 
 // ── create-category.html ──────────────────────────
 function initCreatePage() {
-  const form = document.getElementById('createCategoryForm');
+  var form = document.getElementById('createCategoryForm');
   if (!form) return;
 
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    const courseId = document.getElementById('courseId').value;
-    const category = document.getElementById('categoryName').value.trim();
-    const weight = Number(document.getElementById('weight').value);
-    const errorEl = document.getElementById('createError');
+    var courseId = document.getElementById('courseId').value;
+    var category = document.getElementById('categoryName').value.trim();
+    var weight = Number(document.getElementById('weight').value);
+    var errorEl = document.getElementById('createError');
 
     const res = await fetch('/api/assessments', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ courseId, category, weight })
+      body: JSON.stringify({ courseId: courseId, category: category, weight: weight })
     });
 
     const data = await res.json();
@@ -108,7 +122,7 @@ function initCreatePage() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
   initAssessmentsPage();
   initManagePage();
   initCreatePage();

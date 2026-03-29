@@ -117,7 +117,7 @@
 .admin-page .hero .admin-table td {
   border-bottom: 1px solid #ececec;
   padding: 0.8rem 0.7rem;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 .admin-page .hero .admin-table th {

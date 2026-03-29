@@ -10,5 +10,11 @@
     "courseId": "COMP248",
     "category": "I AM THE BEST",
     "weight": 100
+  },
+  {
+    "id": "1774754951152",
+    "courseId": "SOEN287",
+    "category": "SIX SEVEN",
+    "weight": 67
   }
 ]
