@@ -1,12 +1,11 @@
 //File is the client-side API layer and should contain network calls only
 const APP_CONFIG = window.APP_CONFIG;
-const baseAPIUrl = `${APP_CONFIG.api.baseUrl}/${APP_CONFIG.api.basePath}`;
-var response;
+const baseAPIUrl = `${APP_CONFIG.api.baseUrl}${APP_CONFIG.api.basePath}`;
 
 async function apiRequest(endpoint, options = {}) {
     const url = `${baseAPIUrl}${endpoint}`;
-    // response = await fetch(url, {"Content-Type": "application/json"});
-    response = await fetch(url, {
+
+    const response = await fetch(url, {
         ...options,
         headers: {
             "Content-Type": "application/json",
@@ -33,7 +32,6 @@ async function apiRequest(endpoint, options = {}) {
         } catch {
             // keep fallback errorMessage
         }
-
         throw new Error(errorMessage);
     }
 
