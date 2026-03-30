@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Create Assessment Category - LearnFlow</title>
+    <title>Create Assessment - LearnFlow</title>
     <link rel="stylesheet" href="../../css/base.css" />
     <link rel="stylesheet" href="../../css/components.css" />
     <link rel="stylesheet" href="../../css/layout.css" />
@@ -28,7 +28,7 @@
         <div class="container admin-content">
           <h1 class="admin-page-title fade-step fade-step-1">Create Assessment</h1>
           <p class="admin-subtext fade-step fade-step-2">
-            Add a new assessment category and assign its weight.
+            Add a new assessment and assign its weight.
           </p>
 
           <nav class="admin-action-row stagger-buttons">
@@ -38,12 +38,10 @@
             <a href="stats.html" class="action-button">Statistics</a>
           </nav>
 
-          <section
-            class="admin-card fade-step fade-step-4"
-            aria-label="Create assessment category form"
-          >
+          <section class="admin-card fade-step fade-step-4" aria-label="Create assessment form">
             <p id="createError" style="color: red; display: none;"></p>
             <form id="createCategoryForm" class="admin-form">
+
               <div class="admin-field">
                 <label for="courseId">Course</label>
                 <select id="courseId" name="courseId" required>
@@ -54,29 +52,36 @@
               </div>
 
               <div class="admin-field">
-                <label for="categoryName">Category</label>
-                <input type="text" id="categoryName" name="categoryName" required />
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" placeholder="e.g. Midterm 1" required />
+              </div>
+
+              <div class="admin-field">
+                <label for="type">Type</label>
+                <select id="type" name="type" required>
+                  <option value="">Select a type</option>
+                  <option value="Assignment">Assignment</option>
+                  <option value="Lab">Lab</option>
+                  <option value="Quiz">Quiz</option>
+                  <option value="Midterm">Midterm</option>
+                  <option value="Project">Project</option>
+                  <option value="Final">Final</option>
+                </select>
               </div>
 
               <div class="admin-field">
                 <label for="weight">Weight (%)</label>
-                <input
-                  type="number"
-                  id="weight"
-                  name="weight"
-                  min="0"
-                  max="100"
-                  required
-                />
+                <input type="number" id="weight" name="weight" min="0" max="100" required />
+              </div>
+
+              <div class="admin-field">
+                <label for="dueDate">Due Date</label>
+                <input type="date" id="dueDate" name="dueDate" />
               </div>
 
               <div class="admin-inline-actions">
-                <button type="submit" class="action-button action-button--compact">
-                  Save
-                </button>
-                <a href="assessments.html" class="action-button action-button--compact">
-                  Cancel
-                </a>
+                <button type="submit" class="action-button action-button--compact">Save</button>
+                <a href="assessments.html" class="action-button action-button--compact">Cancel</a>
               </div>
             </form>
           </section>

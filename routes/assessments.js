@@ -20,29 +20,47 @@ router.get('/', (req, res) => {
   res.json(result);
 });
 
-// POST /api/assessments — create a new category
+// POST /api/assessments
 router.post('/', (req, res) => {
-  const { courseId, category, weight } = req.body;
-  if (!courseId || !category || weight === undefined)
+  const { courseId, title, type, weight, dueDate } = req.body;
+  if (!courseId || !title || !type || weight === undefined)
     return res.status(400).json({ error: 'Missing fields' });
 
   const all = getAssessments();
+
+  // Only 1 Final per course
+  if (type === 'Final') {
+    const alreadyHasFinal = all.some(a => a.courseId === courseId && a.type === 'Final');
+    if (alreadyHasFinal)
+      return res.status(400).json({ error: 'A Final already exists for this course.' });
+  }
+
   const newEntry = {
     id: Date.now().toString(),
     courseId,
-    category,
-    weight: Number(weight)
+    title,
+    type,
+    weight: Number(weight),
+    dueDate: dueDate || '—'
   };
   all.push(newEntry);
   saveAssessments(all);
   res.json(newEntry);
 });
 
-// PUT /api/assessments/:id — update weight
+// PUT /api/assessments/:id
 router.put('/:id', (req, res) => {
   const all = getAssessments();
   const idx = all.findIndex(a => a.id === req.params.id);
   if (idx === -1) return res.status(404).json({ error: 'Not found' });
+
+  // If changing to Final, check no other Final exists for this course
+  if (req.body.type === 'Final') {
+    const courseId = all[idx].courseId;
+    const alreadyHasFinal = all.some(a => a.courseId === courseId && a.type === 'Final' && a.id !== req.params.id);
+    if (alreadyHasFinal)
+      return res.status(400).json({ error: 'A Final already exists for this course.' });
+  }
 
   all[idx] = { ...all[idx], ...req.body };
   saveAssessments(all);
