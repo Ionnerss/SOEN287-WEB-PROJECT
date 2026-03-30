@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import testRoutes from "./routes/test.js";
+import coursesRoutes from "./routes/courses.js";
 
 const app = express();
 
@@ -10,6 +11,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api", testRoutes);
+app.use("/api/courses", coursesRoutes);
 
 // Start server
 const PORT = 3000;
