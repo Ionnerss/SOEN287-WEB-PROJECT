@@ -99,8 +99,20 @@
         <p>&copy; 2026 • SOEN 287 • WeUpp!</p>
       </div>
     </footer>
-    <script src="../../js/core/config.js"></script>
-    <script>console.log(window.APP_CONFIG.appName);</script>
+    <script>
+      import testDb from "../../core/api.js";
+
+async function runTest() {
+    try {
+        const data = await testDb();
+        console.log("DB test success:", data);
+    } catch (error) {
+        console.error("DB test failed:", error.message);
+    }
+}
+
+runTest();
+    </script>
     <!-- <script src="../../../server/routes/auth.js" defer></script> -->
   </body>
 </html>
