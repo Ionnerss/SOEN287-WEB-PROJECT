@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Manage SOEN 287 - LearnFlow</title>
+    <title>Manage Assessment - LearnFlow</title>
     <link rel="stylesheet" href="../../css/base.css" />
     <link rel="stylesheet" href="../../css/components.css" />
     <link rel="stylesheet" href="../../css/layout.css" />
@@ -28,7 +28,7 @@
         <div class="container admin-content">
           <h1 class="admin-page-title fade-step fade-step-1">Manage Assessment</h1>
           <p class="admin-subtext fade-step fade-step-2" id="manageSubtext">
-            Adjust the weight for this assessment category.
+            Adjust the details for this assessment.
           </p>
 
           <nav class="admin-action-row stagger-buttons">
@@ -39,13 +39,38 @@
           </nav>
 
           <div class="admin-stack">
-            <section class="admin-card fade-step fade-step-4" aria-label="Weight form">
-              <h2>Update Weight</h2>
+            <section class="admin-card fade-step fade-step-4" aria-label="Edit form">
+              <h2>Update Assessment</h2>
+              <p id="formError" style="color:red; display:none;"></p>
               <form id="weightsForm" class="admin-form">
+
+                <div class="admin-field">
+                  <label for="titleInput">Title</label>
+                  <input type="text" id="titleInput" name="title" required />
+                </div>
+
+                <div class="admin-field">
+                  <label for="typeInput">Type</label>
+                  <select id="typeInput" name="type" required>
+                    <option value="Assignment">Assignment</option>
+                    <option value="Lab">Lab</option>
+                    <option value="Quiz">Quiz</option>
+                    <option value="Midterm">Midterm</option>
+                    <option value="Project">Project</option>
+                    <option value="Final">Final</option>
+                  </select>
+                </div>
+
                 <div class="admin-field">
                   <label for="weightInput">Weight (%)</label>
                   <input type="number" id="weightInput" name="weight" min="0" max="100" required />
                 </div>
+
+                <div class="admin-field">
+                  <label for="dueDateInput">Due Date</label>
+                  <input type="date" id="dueDateInput" name="dueDate" />
+                </div>
+
                 <div class="admin-inline-actions">
                   <button type="submit" class="action-button action-button--compact">Update</button>
                   <a href="assessments.html" class="action-button action-button--compact">Back</a>
@@ -56,11 +81,7 @@
             <section class="admin-card fade-step fade-step-5" aria-label="Delete actions">
               <h2>Danger Zone</h2>
               <div class="admin-inline-actions">
-                <button
-                  type="button"
-                  id="deleteBtn"
-                  class="action-button action-button--compact"
-                >
+                <button type="button" id="deleteBtn" class="action-button action-button--compact">
                   Delete This Assessment
                 </button>
               </div>

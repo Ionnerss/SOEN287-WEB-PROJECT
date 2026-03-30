@@ -208,3 +208,6 @@
     transform: none;
   }
 }
+.admin-page .hero .admin-table th {
+  text-align: center;
+}
