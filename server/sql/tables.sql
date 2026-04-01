@@ -1,11 +1,14 @@
 CREATE TABLE users (
-    user_id        INT PRIMARY KEY AUTO_INCREMENT,
-    email          VARCHAR(255) UNIQUE NOT NULL,
-    password_hash  VARCHAR(255) NOT NULL,
-    role           ENUM('student', 'admin') NOT NULL,
-    created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  user_id INT AUTO_INCREMENT PRIMARY KEY,
+  full_name VARCHAR(100) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  role ENUM('student', 'admin') NOT NULL DEFAULT 'student',
+  twofa_secret VARCHAR(255) DEFAULT NULL,
+  twofa_enabled TINYINT(1) NOT NULL DEFAULT 0,
+  twofa_last_timestep BIGINT DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 CREATE TABLE courses (
     course_id   INT PRIMARY KEY AUTO_INCREMENT,
     user_id     INT NOT NULL REFERENCES users(user_id),
