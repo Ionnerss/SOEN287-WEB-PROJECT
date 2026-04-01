@@ -5,7 +5,7 @@ import cors from "cors";
 import authRoutes from "./src/routes/authRoutes.js";
 
 const app = express();
-const PORT = Number(process.env.PORT || 5500);
+const PORT = Number(process.env.PORT || 3000);
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || "http://127.0.0.1:5500";
 
 app.use(

@@ -1,7 +1,7 @@
 window.APP_CONFIG = {
   appName: "Smart Course Companion",
   api: {
-    baseUrl: "http://localhost:5500",
+    baseUrl: "http://localhost:3000",
     basePath: "api",
   },
   auth: {
