@@ -70,11 +70,11 @@
                   name="password"
                   placeholder="••••••••"
                   autocomplete="current-password"
-                  minlength="6"
+                  minlength="8"
                   required
                 />
                 <small id="passHint" hidden
-                  >Password must be at least 6 characters.</small
+                  >Password must be at least 8 characters.</small
                 >
               </label>
 
@@ -99,20 +99,7 @@
         <p>&copy; 2026 • SOEN 287 • WeUpp!</p>
       </div>
     </footer>
-    <script>
-      import testDb from "../../core/api.js";
-
-async function runTest() {
-    try {
-        const data = await testDb();
-        console.log("DB test success:", data);
-    } catch (error) {
-        console.error("DB test failed:", error.message);
-    }
-}
-
-runTest();
-    </script>
-    <!-- <script src="../../../server/routes/auth.js" defer></script> -->
+    <script src="../../js/core/config.js"></script>
+    <script type="module" src="../../js/auth/login.js"></script>
   </body>
 </html>

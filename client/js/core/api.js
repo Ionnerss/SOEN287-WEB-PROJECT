@@ -1,47 +1,82 @@
-//File is the client-side API layer and should contain network calls only
 const APP_CONFIG = window.APP_CONFIG;
-const baseAPIUrl = `${APP_CONFIG.api.baseUrl}${APP_CONFIG.api.basePath}`;
+const baseAPIUrl = `${APP_CONFIG.api.baseUrl}/${APP_CONFIG.api.basePath}`;
 
 async function apiRequest(endpoint, options = {}) {
-    const url = `${baseAPIUrl}${endpoint}`;
+  const response = await fetch(`${baseAPIUrl}${endpoint}`, {
+    credentials: "include",
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    },
+  });
 
-    const response = await fetch(url, {
-        ...options,
-        headers: {
-            "Content-Type": "application/json",
-            ...(options.headers || {})
-        }
-    });
+  const contentType = response.headers.get("content-type") || "";
 
-    const contentType = response.headers.get("content-type") || "";
+  if (!response.ok) {
+    let errorMessage = `Request failed: ${response.status}`;
 
-    if (!response.ok) {
-        let errorMessage = `Request failed: ${response.status}`;
-
-        try {
-            if (contentType.includes("application/json")) {
-                const errorData = await response.json();
-                errorMessage =
-                    errorData.error ||
-                    errorData.message ||
-                    errorMessage;
-            } else {
-                const errorText = await response.text();
-                if (errorText) errorMessage = errorText;
-            }
-        } catch {
-            // keep fallback errorMessage
-        }
-        throw new Error(errorMessage);
+    try {
+      if (contentType.includes("application/json")) {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorData.message || errorMessage;
+      } else {
+        const errorText = await response.text();
+        if (errorText) errorMessage = errorText;
+      }
+    } catch {
+      // keep fallback message
     }
 
-    if (contentType.includes("application/json")) {
-        return await response.json();
-    }
+    throw new Error(errorMessage);
+  }
 
-    return null;
+  if (contentType.includes("application/json")) {
+    return response.json();
+  }
+
+  return null;
 }
 
-export async function testDb() {
-    return apiRequest("/test-db");
+export function testDb() {
+  return apiRequest("/test-db");
+}
+
+export function signUp(payload) {
+  return apiRequest(APP_CONFIG.auth.signup, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function logIn(payload) {
+  return apiRequest(APP_CONFIG.auth.login, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function verifyTwoFactor(token) {
+  return apiRequest(APP_CONFIG.auth.twofaVerify, {
+    method: "POST",
+    body: JSON.stringify({ token }),
+  });
+}
+
+export function getTwoFactorSetup() {
+  return apiRequest(APP_CONFIG.auth.twofaSetup, {
+    method: "GET",
+  });
+}
+
+export function guard() {
+  return apiRequest(APP_CONFIG.auth.guard, {
+    method: "GET",
+  });
+}
+
+export function logOut() {
+  return apiRequest(APP_CONFIG.auth.logout, {
+    method: "POST",
+  });
 }

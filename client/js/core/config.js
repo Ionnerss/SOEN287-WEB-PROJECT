@@ -1,36 +1,25 @@
 window.APP_CONFIG = {
-    appName: "Smart Course Companion",
-    
-    api: {
-        baseUrl: "http://localhost:3000",
-        basePath: "/api"
-    },
-
-    auth: {
-        login: "/auth/login",
-        signup: "/auth/signup",
-        logout: "/auth/logout",
-        twofa: "/auth/twofa",
-        guard: "/auth/guard"
-    },
-
-    //Might be useful later on when we'll know exact final paths
-    // pages: {
-    //     login: "/pages/auth/login.html",
-    //     signup: "/pages/auth/signup.html",
-    //     verify2fa: "/pages/auth/verify-2fa.html",
-    //     studentDashboard: "/pages/student/dashboard.html",
-    //     adminDashboard: "/pages/admin/dashboard.html"
-    // },
-
-    roles: {
-        student: "student",
-        admin: "admin"
-    },
-    
-    //Same here for the final paths
-    // redirects: {
-    //     student: "...", //will build upon as we build
-    //     admin: "..."    //server and make frontend manipulate data
-    // }
+  appName: "Smart Course Companion",
+  api: {
+    baseUrl: "http://localhost:3000",
+    basePath: "api",
+  },
+  auth: {
+    signup: "/auth/signup",
+    login: "/auth/login",
+    logout: "/auth/logout",
+    guard: "/auth/guard",
+    twofaSetup: "/auth/2fa/setup",
+    twofaVerify: "/auth/2fa/verify",
+  },
+  roles: {
+    student: "student",
+    admin: "admin",
+  },
+  redirects: {
+    verify2fa: "./verify-2fa.html",
+    student: "../student/dashboard.html",
+    admin: "../admin/dashboard.html",
+    login: "./login.html",
+  },
 };

@@ -129,5 +129,10 @@
         <p>© 2026 • SOEN 287 • LearnFlow</p>
       </div>
     </footer>
+    <script src="../../js/core/config.js"></script>
+    <script type="module">
+      import { requireAuth } from "../../js/auth/guard.js";
+      requireAuth("admin");
+    </script>
   </body>
 </html>
