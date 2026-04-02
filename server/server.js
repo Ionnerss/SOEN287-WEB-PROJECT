@@ -18,8 +18,8 @@ app.use(
 
 app.use(express.json());
 
-// Routes
-app.use("/api", testRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/courses", coursesRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
