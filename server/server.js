@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 
 import authRoutes from "./src/routes/authRoutes.js";
+import coursesRoutes from "./routes/courses.js";
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
@@ -17,7 +18,8 @@ app.use(
 
 app.use(express.json());
 
-app.use("/api/auth", authRoutes);
+// Routes
+app.use("/api", testRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

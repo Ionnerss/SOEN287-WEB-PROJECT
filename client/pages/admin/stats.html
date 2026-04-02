@@ -17,6 +17,7 @@
           <a href="../auth/login.html" class="action-button">Logout</a>
         </nav>
       </div>
+      
     </header>
 
     <main>
@@ -39,30 +40,15 @@
           </nav>
 
           <div class="admin-stack">
-            <section
-              class="admin-card fade-step fade-step-4"
-              aria-label="Course completion stats"
-            >
-              <h2>Course Completion</h2>
-              <h3>SOEN 287</h3>
-
-              <p class="admin-kpi">77% of students completed the Assignment.</p>
-              <progress value="77" max="100"></progress>
-
-              <p class="admin-kpi">96% of students completed the Midterm.</p>
-              <progress value="96" max="100"></progress>
-
-              <p class="admin-kpi">0% of students completed the Final.</p>
-              <progress value="0" max="100"></progress>
-
-              <p class="admin-kpi">The class average is 67%.</p>
-              <p class="admin-kpi">17% of students are failing this class (below 50%).</p>
+            <section class="admin-card fade-step fade-step-4" aria-label="Submission stats">
+              <h2>Assessment Submissions</h2>
+              <div id="totalSubmissions"></div>
+              <div id="perAssessmentStats"></div>
             </section>
 
-            <section
-              class="admin-card fade-step fade-step-5"
-              aria-label="Active course count"
-            >
+          
+
+            <section class="admin-card fade-step fade-step-5" aria-label="Active course count">
               <h2>Active Courses</h2>
               <p>Total active courses: 1</p>
             </section>
@@ -76,5 +62,111 @@
         <p>&copy; 2026 • SOEN 287 • LearnFlow</p>
       </div>
     </footer>
+
+  <script>
+const TOTAL_STUDENTS = 10;
+
+const submissions = JSON.parse(localStorage.getItem('submissions')) || {};
+
+fetch('/api/assessments')
+.then(res => res.json())
+.then(assessments => {
+
+  const totalEl = document.getElementById('totalSubmissions');
+  const container = document.getElementById('perAssessmentStats');
+
+  container.innerHTML = '';
+
+  if (!assessments.length) return;
+
+  // global total
+  let globalTotal = 0;
+  Object.values(submissions).forEach(v => {
+    globalTotal += v || 0;
+  });
+
+ totalEl.innerHTML =
+  '<p class="admin-kpi">Total submissions across all students: <strong>' +
+  globalTotal +
+  '</strong></p>';
+
+  // group by course
+  const courses = {};
+  assessments.forEach(a => {
+    if (!courses[a.courseId]) courses[a.courseId] = [];
+    courses[a.courseId].push(a);
+  });
+
+  Object.entries(courses).forEach(([courseId, items]) => {
+
+    const block = document.createElement('div');
+    block.style.marginBottom = '1.5rem';
+
+    const title = document.createElement('h3');
+    title.textContent = courseId;
+    block.appendChild(title);
+
+    // per-course total
+    let courseTotal = 0;
+
+    let weightedTotal = 0;
+    let totalWeight = 0;
+
+    items.forEach(a => {
+
+      const count = submissions[a.id] || 0;
+      courseTotal += count;
+
+      const percent = Math.round((count / TOTAL_STUDENTS) * 100);
+
+      weightedTotal += percent * a.weight;
+      totalWeight += a.weight;
+
+      const label = document.createElement('p');
+      label.className = 'admin-kpi';
+      label.textContent =
+        percent + '% of students completed ' + a.title;
+
+      const progress = document.createElement('progress');
+      progress.value = percent;
+      progress.max = 100;
+
+      block.appendChild(label);
+      block.appendChild(progress);
+    });
+
+    // per course total submissions
+    const totalText = document.createElement('p');
+    totalText.className = 'admin-kpi';
+    totalText.innerHTML =
+      'Total submissions: <strong>' + courseTotal + '</strong>';
+
+    block.appendChild(totalText);
+
+    // class average
+    const classAvg = totalWeight
+      ? Math.round(weightedTotal / totalWeight)
+      : 0;
+
+    const avg = document.createElement('p');
+    avg.className = 'admin-kpi';
+    avg.textContent = 'The class average is ' + classAvg + '%';
+    block.appendChild(avg);
+
+    // failing %
+    const failing = Math.max(0, 50 - classAvg) * 2;
+
+    const fail = document.createElement('p');
+    fail.className = 'admin-kpi';
+    fail.textContent =
+      Math.round(failing) +
+      '% of students are failing this class (below 50%).';
+
+    block.appendChild(fail);
+
+    container.appendChild(block);
+  });
+});
+</script>
   </body>
 </html>
