@@ -184,3 +184,5 @@ document.addEventListener('DOMContentLoaded', function() {
   initManagePage();
   initCreatePage();
 });
+// END OF ASSESSMENTS
+

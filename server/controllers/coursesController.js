@@ -1,4 +1,4 @@
-import pool from "../models/db.js";
+import db from '../src/config/db.js';
 
 export const getAllCourses = async (req, res) => {
   try {
