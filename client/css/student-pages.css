@@ -1,11 +1,16 @@
-/*
-  Student Pages Styling
-  - Applied only when pages use body.student-page.
-  - Keeps student pages aligned with index/admin visual language.
-*/
+/* ------------------------------------------------------
+   Student Pages Styling
+   Applied only when pages use body.student-page.
+   Matches admin/index visual language.
+------------------------------------------------------ */
+
 .student-page {
   min-height: 100%;
 }
+
+/* ------------------------------------------------------
+   Typography & Headers
+------------------------------------------------------ */
 
 .student-page .student-page-title {
   color: #800020;
@@ -18,6 +23,10 @@
   font-size: 1.08rem;
   margin-bottom: 0.9rem;
 }
+
+/* ------------------------------------------------------
+   Action Row & Buttons
+------------------------------------------------------ */
 
 .student-page .student-action-row {
   margin-top: 1.7rem;
@@ -35,6 +44,7 @@
   margin: 0;
 }
 
+/* Neumorphic button (used in some student pages) */
 .student-page .btn {
   display: inline-block;
   transition: all 0.2s ease-in;
@@ -48,9 +58,7 @@
   border-radius: 0.5em;
   background: #e8e8e8;
   border: 1px solid #e8e8e8;
-  box-shadow:
-    6px 6px 12px #c5c5c5,
-    -6px -6px 12px #ffffff;
+  box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
 }
 
 .student-page .btn:hover {
@@ -68,8 +76,11 @@
   background: #f5f5f5;
 }
 
+/* ------------------------------------------------------
+   Grid & Layout
+------------------------------------------------------ */
+
 .student-page .student-grid {
-  /* Base grid primitive used by both dashboard and course sections. */
   display: grid;
   gap: 1.2rem;
 }
@@ -81,6 +92,32 @@
 .student-page .student-grid-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
+
+.student-page .student-stack {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.student-page .row {
+  display: flex;
+  align-items: center;
+}
+
+.student-page .row--wrap {
+  flex-wrap: wrap;
+}
+
+.student-page .row--between {
+  justify-content: space-between;
+}
+
+.student-page .gap {
+  gap: 0.75rem;
+}
+
+/* ------------------------------------------------------
+   Cards
+------------------------------------------------------ */
 
 .student-page .student-card {
   margin: 1%;
@@ -106,6 +143,10 @@
   margin-bottom: 0.95rem;
 }
 
+/* ------------------------------------------------------
+   Text Helpers
+------------------------------------------------------ */
+
 .student-page .muted {
   color: #616161;
 }
@@ -121,75 +162,13 @@
   margin: 0.28rem 0 0.35rem;
 }
 
-.student-page .student-stack {
-  display: grid;
-  gap: 0.85rem;
-}
-
-.student-page .row {
-  display: flex;
-  align-items: center;
-}
-
-.student-page .row--wrap {
-  /* Prevents control rows from overflowing on narrow tablet/mobile widths. */
-  flex-wrap: wrap;
-}
-
-.student-page .row--between {
-  justify-content: space-between;
-}
-
-.student-page .gap {
-  gap: 0.75rem;
-}
+/* ------------------------------------------------------
+   Form Fields
+------------------------------------------------------ */
 
 .student-page .field {
   display: grid;
   gap: 0.38rem;
-}
-
-.student-page .grid {
-  display: grid;
-  gap: 0.75rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.student-page .switch {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  font-weight: 600;
-  color: #3f3f3f;
-}
-
-.student-page .sep {
-  border: none;
-  border-top: 1px solid #ececec;
-  margin: 1rem 0;
-}
-
-.student-page .h4 {
-  color: #800020;
-  font-size: 1.08rem;
-  margin-bottom: 0.7rem;
-}
-
-.student-page .statcard__label {
-  color: #5c5c5c;
-  font-size: 0.94rem;
-  font-weight: 600;
-}
-
-.student-page .stat__label {
-  color: #5a5a5a;
-  font-size: 0.9rem;
-}
-
-.student-page .stat__value {
-  color: #800020;
-  font-size: 1.2rem;
-  font-weight: 700;
 }
 
 .student-page .field__label {
@@ -212,6 +191,10 @@
   box-shadow: 0 0 0 3px rgba(128, 0, 32, 0.12);
   outline: none;
 }
+
+/* ------------------------------------------------------
+   Lists
+------------------------------------------------------ */
 
 .student-page .list {
   list-style: none;
@@ -246,6 +229,10 @@
   padding: 0.2rem 0.55rem;
 }
 
+/* ------------------------------------------------------
+   Course Cards
+------------------------------------------------------ */
+
 .student-page .coursecard {
   border: 1px solid #ececec;
   border-radius: 12px;
@@ -261,6 +248,10 @@
   font-weight: 700;
   color: #333;
 }
+
+/* ------------------------------------------------------
+   Progress Bars
+------------------------------------------------------ */
 
 .student-page .progress {
   width: 100%;
@@ -287,12 +278,15 @@
   gap: 0.6rem;
 }
 
+/* ------------------------------------------------------
+   Tables
+------------------------------------------------------ */
+
 .student-page .table-wrap {
   overflow-x: auto;
 }
 
 .student-page .table {
-  /* Keeps data tables usable on small screens via horizontal scroll container. */
   width: 100%;
   border-collapse: collapse;
   min-width: 640px;
@@ -310,55 +304,21 @@
   text-align: right;
 }
 
+/* ------------------------------------------------------
+   Modal (deduplicated)
+------------------------------------------------------ */
+
 .student-page .student-modal {
-  /* Manual centering ensures consistent placement for the dialog element. */
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
   border: none;
   padding: 0;
   border-radius: 14px;
   width: min(92vw, 680px);
-  background: #fff;
-  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.22);
-}
-
-.student-page .student-modal::backdrop {
-  background: rgba(0, 0, 0, 0.35);
-}
-
-.student-page .student-modal-content {
-  padding: 1.2rem;
-  background: #fff;
-}
-
-.student-page .student-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.9rem;
-}
-
-.student-page .student-modal-footer {
-  margin-top: 0.95rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.7rem;
-}
-
-/*
-  Dialogs live outside .hero in student pages, so modal styles must not be
-  scoped to .hero or they will not apply.
-*/
-.student-page .student-modal {
-  border: none;
-  padding: 0;
-  border-radius: 14px;
-  width: min(92vw, 680px);
-  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.22);
   background: transparent;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.22);
 }
 
 .student-page .student-modal::backdrop {
@@ -393,7 +353,6 @@
 }
 
 .student-page .student-modal .grid {
-  /* Two-column form layout for faster data entry on desktop. */
   display: grid;
   gap: 0.75rem;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -404,27 +363,6 @@
   gap: 0.38rem;
 }
 
-.student-page .student-modal .field__label {
-  font-weight: 600;
-  color: #3f3f3f;
-}
-
-.student-page .student-modal .input,
-.student-page .student-modal select {
-  border: 1px solid #d5d5d5;
-  border-radius: 10px;
-  padding: 0.66rem 0.82rem;
-  background: #fff;
-  font-size: 0.96rem;
-}
-
-.student-page .student-modal .input:focus,
-.student-page .student-modal select:focus {
-  border-color: #800020;
-  box-shadow: 0 0 0 3px rgba(128, 0, 32, 0.12);
-  outline: none;
-}
-
 .student-page .student-modal .switch {
   display: flex;
   align-items: center;
@@ -433,13 +371,9 @@
   color: #3f3f3f;
 }
 
-.student-page .hero .btn-reset {
-  border: none;
-  background: transparent;
-  padding: 0;
-  margin: 0;
-  font: inherit;
-}
+/* ------------------------------------------------------
+   Animations
+------------------------------------------------------ */
 
 .student-page .fade-step {
   opacity: 0;
@@ -447,29 +381,12 @@
   animation: studentFadeInUp 0.68s ease-out forwards;
 }
 
-.student-page .fade-step-1 {
-  animation-delay: 0.14s;
-}
-
-.student-page .fade-step-2 {
-  animation-delay: 0.38s;
-}
-
-.student-page .fade-step-3 {
-  animation-delay: 0.62s;
-}
-
-.student-page .fade-step-4 {
-  animation-delay: 0.92s;
-}
-
-.student-page .fade-step-5 {
-  animation-delay: 1.18s;
-}
-
-.student-page .fade-step-6 {
-  animation-delay: 1.4s;
-}
+.student-page .fade-step-1 { animation-delay: 0.14s; }
+.student-page .fade-step-2 { animation-delay: 0.38s; }
+.student-page .fade-step-3 { animation-delay: 0.62s; }
+.student-page .fade-step-4 { animation-delay: 0.92s; }
+.student-page .fade-step-5 { animation-delay: 1.18s; }
+.student-page .fade-step-6 { animation-delay: 1.4s; }
 
 .student-page .stagger-buttons .action-button {
   opacity: 0;
@@ -477,36 +394,27 @@
   animation: studentFadeInUp 0.56s ease-out forwards;
 }
 
-.student-page .stagger-buttons .action-button:nth-child(1) {
-  animation-delay: 0.64s;
-}
-
-.student-page .stagger-buttons .action-button:nth-child(2) {
-  animation-delay: 0.8s;
-}
-
-.student-page .stagger-buttons .action-button:nth-child(3) {
-  animation-delay: 0.96s;
-}
-
-.student-page .stagger-buttons .action-button:nth-child(4) {
-  animation-delay: 1.12s;
-}
+.student-page .stagger-buttons .action-button:nth-child(1) { animation-delay: 0.64s; }
+.student-page .stagger-buttons .action-button:nth-child(2) { animation-delay: 0.8s; }
+.student-page .stagger-buttons .action-button:nth-child(3) { animation-delay: 0.96s; }
+.student-page .stagger-buttons .action-button:nth-child(4) { animation-delay: 1.12s; }
 
 @keyframes studentFadeInUp {
   from {
     opacity: 0;
     transform: translateY(10px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
+/* ------------------------------------------------------
+   Responsive
+------------------------------------------------------ */
+
 @media (max-width: 960px) {
-  /* Collapse dense dashboard/course grids into a single readable column. */
   .student-page .student-grid-3,
   .student-page .student-grid-2 {
     grid-template-columns: 1fr;
@@ -516,15 +424,13 @@
     flex-wrap: wrap;
   }
 
-  .student-page .grid {
-    grid-template-columns: 1fr;
-  }
-
+  .student-page .grid,
   .student-page .student-modal .grid {
     grid-template-columns: 1fr;
   }
 }
 
+/* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
   .student-page .fade-step,
   .student-page .stagger-buttons .action-button {
