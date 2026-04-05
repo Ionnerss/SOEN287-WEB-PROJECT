@@ -113,6 +113,20 @@
                 <small id="confirmHint" hidden>Passwords must match.</small>
               </label>
 
+                <div>
+                  <label >
+                    <input type="radio" name="role" value="student" checked /> Student
+                  </label>
+                  <label >
+                    <input type="radio" name="role" value="admin"  /> Admin
+                  </label>
+                </div>
+
+                <!-- hidden by default, shown only when admin is selected -->
+                <div id="adminKeyField" hidden>
+                  <input type="password" id="adminKey" placeholder="Admin secret key" class="auth-input" />
+                </div>
+
               <!-- Primary action button -->
               <button class="action-button action-button--full" type="submit">
                 Create Account

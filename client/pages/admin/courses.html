@@ -33,7 +33,9 @@
 
           <nav class="admin-action-row stagger-buttons">
             <a href="dashboard.html" class="action-button">Dashboard</a>
-            <a href="add-course.html" class="action-button">Add New Course</a>
+            <button class="action-button" type="button" id="openAddCourse">
+              <strong>Add Course</strong>
+            </button>
             <a href="assessments.html" class="action-button">Assessment Categories</a>
             <a href="stats.html" class="action-button">Statistics</a>
           </nav>
@@ -56,46 +58,7 @@
                       <th>Actions</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>SOEN 287</td>
-                      <td>Web Programming</td>
-                      <td>Dr. Admin</td>
-                      <td>Winter 2026</td>
-                      <td>Enabled</td>
-                      <td>
-                        <div class="admin-inline-actions">
-                          <a
-                            href="edit-course.html"
-                            class="action-button action-button--compact"
-                            >Edit</a
-                          >
-                          <button
-                            type="button"
-                            class="action-button action-button--compact"
-                            onclick="
-                              confirm(
-                                'Are you sure you want to disable SOEN 287 - Web Programming?'
-                              )
-                            "
-                          >
-                            Disable
-                          </button>
-                          <button
-                            type="button"
-                            class="action-button action-button--compact"
-                            onclick="
-                              confirm(
-                                'Are you sure you want to delete SOEN 287 - Web Programming?'
-                              )
-                            "
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
+                  <tbody id="enabled-courses-body"></tbody>
                 </table>
               </div>
             </section>
@@ -117,46 +80,7 @@
                       <th>Actions</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>COMP 248</td>
-                      <td>Object Oriented Programming</td>
-                      <td>Dr. Admin</td>
-                      <td>Winter 2026</td>
-                      <td>Disabled</td>
-                      <td>
-                        <div class="admin-inline-actions">
-                          <a
-                            href="edit-course.html"
-                            class="action-button action-button--compact"
-                            >Edit</a
-                          >
-                          <button
-                            type="button"
-                            class="action-button action-button--compact"
-                            onclick="
-                              confirm(
-                                'Are you sure you want to enable COMP 248 - Object Oriented Programming?'
-                              )
-                            "
-                          >
-                            Enable
-                          </button>
-                          <button
-                            type="button"
-                            class="action-button action-button--compact"
-                            onclick="
-                              confirm(
-                                'Are you sure you want to delete COMP 248 - Object Oriented Programming?'
-                              )
-                            "
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
+                  <tbody id="disabled-courses-body"></tbody>
                 </table>
               </div>
             </section>
@@ -170,5 +94,88 @@
         <p>&copy; 2026 • SOEN 287 • LearnFlow</p>
       </div>
     </footer>
+
+    <!-- Add Course Modal -->
+    <dialog id="addCourseModal" class="admin-modal">
+      <form id="addCourseForm" class="admin-modal-content">
+        <div class="admin-modal-header">
+          <h3>Add Course</h3>
+          <button id="closeAddCourse" class="action-button action-button--compact">✕</button>
+        </div>
+
+        <div class="grid">
+          <label class="field">
+            <span class="field__label">Course Code</span>
+            <input type="text" id="courseCode" class="input" required />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Course Name</span>
+            <input type="text" id="courseName" class="input" required />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Instructor</span>
+            <input type="text" id="courseInstructor" class="input" />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Term</span>
+            <input type="text" id="courseTerm" class="input" placeholder="Winter 2026" />
+          </label>
+        </div>
+
+        <p id="addCourseError" class="admin-subtext" style="color:#b00020; display:none;"></p>
+
+        <div class="admin-modal-footer">
+          <button type="button" id="cancelAddCourse" class="action-button action-button--compact">Cancel</button>
+          <button type="submit" class="action-button action-button--compact">Add</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Edit Course Modal -->
+    <dialog id="editCourseModal" class="admin-modal">
+      <form id="editCourseForm" class="admin-modal-content">
+        <div class="admin-modal-header">
+          <h3>Edit Course</h3>
+          <button id="closeEditCourse" class="action-button action-button--compact">✕</button>
+        </div>
+
+        <input type="hidden" id="editCourseId" />
+
+        <div class="grid">
+          <label class="field">
+            <span class="field__label">Course Code</span>
+            <input type="text" id="editCourseCode" class="input" required />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Course Name</span>
+            <input type="text" id="editCourseName" class="input" required />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Instructor</span>
+            <input type="text" id="editCourseInstructor" class="input" />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Term</span>
+            <input type="text" id="editCourseTerm" class="input" />
+          </label>
+        </div>
+
+        <p id="editCourseError" class="admin-subtext" style="color:#b00020; display:none;"></p>
+
+        <div class="admin-modal-footer">
+          <button type="button" id="cancelEditCourse" class="action-button action-button--compact">Cancel</button>
+          <button type="submit" class="action-button action-button--compact">Save</button>
+        </div>
+      </form>
+    </dialog>
+    
+    <script src="../../js/core/config.js"></script>
+    <script type="module" src="../../js/adminSide.js"></script>
   </body>
 </html>

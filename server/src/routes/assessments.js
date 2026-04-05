@@ -1,9 +1,15 @@
-const express = require('express');
-const router = express.Router();
-const fs = require('fs');
-const path = require('path');
+import express from "express";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const FILE = path.join(__dirname, '../data/assessments.json');
+const router = express.Router();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
+const FILE = path.join(__dirname, "../../data/assessments.json");
 
 function getAssessments() {
   return JSON.parse(fs.readFileSync(FILE, 'utf8'));
@@ -77,4 +83,5 @@ router.delete('/:id', (req, res) => {
   res.json({ success: true });
 });
 
-module.exports = router;
+// module.exports = router;
+export default router;

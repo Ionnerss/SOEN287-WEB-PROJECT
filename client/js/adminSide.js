@@ -1,3 +1,4 @@
+let ADMIN_COURSES_CACHE = [];
 // ── assessments.html ──────────────────────────────
 async function initAssessmentsPage() {
   var tbody = document.getElementById('assessmentsBody');
@@ -178,9 +179,163 @@ function initCreatePage() {
     window.location.href = 'assessments.html';
   });
 }
+// END OF ASSESSMENTS
 
-document.addEventListener('DOMContentLoaded', function() {
+// ── courses.html ─────────────────────────────────────────────
+async function initAdminCoursesPage() {
+  const enabledBody = document.getElementById("enabled-courses-body");
+  const disabledBody = document.getElementById("disabled-courses-body");
+
+  if (!enabledBody || !disabledBody) return;
+
+  const API = window.APP_CONFIG.api;
+  const url = `${API.baseUrl}/${API.basePath}/courses`;
+
+  try {
+    const res = await fetch(url);
+    const courses = await res.json();
+
+    // ⭐ PLACE IT RIGHT HERE
+    ADMIN_COURSES_CACHE = courses;
+
+    enabledBody.innerHTML = "";
+    disabledBody.innerHTML = "";
+
+    if (!Array.isArray(courses) || courses.length === 0) {
+      enabledBody.innerHTML = `<tr><td colspan="6">No courses found.</td></tr>`;
+      disabledBody.innerHTML = `<tr><td colspan="6">No courses found.</td></tr>`;
+      return;
+    }
+
+    courses.forEach(course => {
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+        <td>${course.code}</td>
+        <td>${course.name}</td>
+        <td>${course.instructor || "—"}</td>
+        <td>${course.term || "—"}</td>
+        <td>${course.enabled ? "Enabled" : "Disabled"}</td>
+        <td>
+          <div class="admin-inline-actions">
+            <button class="action-button action-button--compact" data-action="edit" data-id="${course.course_id}">Edit</button>
+            ${
+              course.enabled
+                ? `<button class="action-button action-button--compact" data-action="disable" data-id="${course.course_id}">Disable</button>`
+                : `<button class="action-button action-button--compact" data-action="enable" data-id="${course.course_id}">Enable</button>`
+            }
+            <button class="action-button action-button--compact" data-action="delete" data-id="${course.course_id}">Delete</button>
+          </div>
+        </td>
+      `;
+
+      if (course.enabled) {
+        enabledBody.appendChild(row);
+      } else {
+        disabledBody.appendChild(row);
+      }
+    });
+
+    attachCourseActionHandlers();
+  } catch (err) {
+    console.error("Failed to load courses:", err);
+  }
+}
+
+// Attach enable/disable/delete handlers
+function attachCourseActionHandlers() {
+  const API = window.APP_CONFIG.api;
+
+  document.querySelectorAll("[data-action]").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.id;
+      const action = btn.dataset.action;
+
+      if (action === "delete") {
+        if (!confirm("Are you sure you want to delete this course?")) return;
+        await fetch(`${API.baseUrl}/${API.basePath}/courses/${id}`, {
+          method: "DELETE"
+        });
+      }
+
+      if (action === "enable") {
+        await fetch(`${API.baseUrl}/${API.basePath}/courses/${id}/enable`, {
+          method: "PUT"
+        });
+      }
+
+      if (action === "disable") {
+        await fetch(`${API.baseUrl}/${API.basePath}/courses/${id}/disable`, {
+          method: "PUT"
+        });
+      }
+
+      if (action === "edit") {
+        window.location.href = `edit-course.html?id=${id}`;
+        return;
+      }
+
+      initAdminCoursesPage();
+    });
+  });
+}
+
+// ── Add Course Modal Logic ───────────────────────────────
+function initAddCourseModal() {
+  const modal = document.getElementById("addCourseModal");
+  if (!modal) return;
+
+  const openBtn = document.getElementById("openAddCourse");
+  const closeBtn = document.getElementById("closeAddCourse");
+  const cancelBtn = document.getElementById("cancelAddCourse");
+  const form = document.getElementById("addCourseForm");
+  const errorEl = document.getElementById("addCourseError");
+
+  const API = window.APP_CONFIG.api;
+
+  openBtn.addEventListener("click", () => modal.showModal());
+  closeBtn.addEventListener("click", () => modal.close());
+  cancelBtn.addEventListener("click", () => modal.close());
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorEl.style.display = "none";
+
+    const code = document.getElementById("courseCode").value.trim();
+    const name = document.getElementById("courseName").value.trim();
+    const instructor = document.getElementById("courseInstructor").value.trim();
+    const term = document.getElementById("courseTerm").value.trim();
+
+    const res = await fetch(`${API.baseUrl}/${API.basePath}/courses`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_id: 2,
+        code,
+        name,
+        instructor,
+        term
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.error) {
+      errorEl.textContent = data.error;
+      errorEl.style.display = "block";
+      return;
+    }
+
+    modal.close();
+    form.reset();
+    initAdminCoursesPage();
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
   initAssessmentsPage();
   initManagePage();
   initCreatePage();
+  initAdminCoursesPage();
+  initAddCourseModal();
 });

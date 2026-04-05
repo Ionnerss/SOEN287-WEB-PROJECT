@@ -247,7 +247,17 @@ router.post("/signup", async (req, res) => {
     const fullName = String(req.body.fullName || "").trim();
     const email = String(req.body.email || "").trim().toLowerCase();
     const password = String(req.body.password || "");
-    const role = req.body.role === "admin" ? "admin" : "student";
+    //const role = req.body.role === "admin" ? "admin" : "student";
+
+    const ADMIN_SECRET_KEY = process.env.ADMIN_SECRET_KEY || "changeme123";
+
+    let role = "student";
+    if (req.body.role === "admin") {
+      if (req.body.adminKey !== ADMIN_SECRET_KEY) {
+        return res.status(403).json({ error: "Invalid admin key." });
+      }
+      role = "admin";
+    }
 
     if (!fullName) {
       return res.status(400).json({ error: "Full name is required." });
