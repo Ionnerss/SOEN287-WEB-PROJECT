@@ -70,6 +70,33 @@ app.get("/api/auth/dev-login", async (req, res) => {
   }
 });
 
+// ------------------------------------------------------
+// TEMPORARY DEV LOGIN ROUTE FOR ADMIN
+// ------------------------------------------------------
+
+app.get("/api/auth/dev-login-admin", async (req, res) => {
+  try {
+    const adminId = 2; // your admin user, ensure this exists in your DB
+
+    // Create session in DB
+    const sessionId = crypto.randomBytes(32).toString("hex");
+    await db.query(
+      "INSERT INTO auth_sessions (session_id, user_id, expires_at) VALUES (?, ?, NOW() + INTERVAL 1 DAY)",
+      [sessionId, adminId]
+    );
+
+    // Set cookie manually
+    res.setHeader("Set-Cookie", [
+      `scc_session=${sessionId}; HttpOnly; SameSite=None; Secure=false; Path=/`
+    ]);
+
+    res.json({ ok: true, sessionId, role: "admin" });
+  } catch (err) {
+    console.error("ADMIN DEV LOGIN ERROR:", err);
+    res.status(500).json({ error: "Admin dev login failed" });
+  }
+});
+
 app.listen(PORT, "127.0.0.1", () => {
   console.log(`Server running on http://127.0.0.1:${PORT}`);
 });
