@@ -32,6 +32,14 @@ function validate(fullName, email, password, confirmPassword) {
 const signupForm = byId("signupForm");
 
 if (signupForm) {
+
+
+  document.querySelectorAll('input[name="role"]').forEach((radio) => {
+    radio.addEventListener("change", () => {
+      byId("adminKeyField").hidden = radio.value !== "admin" || !radio.checked;
+    });
+  });
+
   signupForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     clearError();
@@ -40,6 +48,9 @@ if (signupForm) {
     const email = byId("email").value.trim().toLowerCase();
     const password = byId("password").value;
     const confirmPassword = byId("confirmPassword").value;
+
+    const role = document.querySelector('input[name="role"]:checked').value;
+    const adminKey = role === "admin" ? byId("adminKey").value : undefined;
 
     if (!validate(fullName, email, password, confirmPassword)) {
       setError("Fix the highlighted fields.");
@@ -51,7 +62,7 @@ if (signupForm) {
         fullName,
         email,
         password,
-        role: "student",
+        role, ...(adminKey !== undefined && { adminKey }),       
       });
 
       if (result.requiresTwoFactor) {
