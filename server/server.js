@@ -35,6 +35,14 @@ app.use("/api/auth", authRoutes);
 app.use("/api/courses", coursesRoutes);
 app.use("/api/assessments", assessmentsRoutes);
 
+app.get("/", (req, res) => {
+  res.redirect("pages/index/index.html");
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+
+  
 // ------------------------------------------------------
 // TEMPORARY DEV LOGIN ROUTE (for bypassing login page)
 // ------------------------------------------------------
