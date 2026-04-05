@@ -16,6 +16,7 @@ CREATE TABLE courses (
     name        VARCHAR(255) NOT NULL,
     instructor  VARCHAR(255),
     term        VARCHAR(100),
+    enabled     TINYINT(1) NOT NULL DEFAULT 1,
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
