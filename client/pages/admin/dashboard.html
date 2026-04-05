@@ -6,83 +6,8 @@
     <link rel="stylesheet" href="../../css/base.css" />
     <link rel="stylesheet" href="../../css/components.css" />
     <link rel="stylesheet" href="../../css/layout.css" />
-    <style>
-      .admin-dashboard .hero .admin-title {
-        font-size: clamp(2.6rem, 6vw, 4rem);
-      }
-
-      .admin-dashboard .hero .admin-fade {
-        opacity: 0;
-        transform: translateY(10px);
-        animation: adminFadeInUp 0.7s ease-out forwards;
-      }
-
-      .admin-dashboard .hero .admin-fade-welcome {
-        animation-delay: 0.15s;
-      }
-
-      .admin-dashboard .hero .admin-fade-instruction {
-        animation-delay: 0.45s;
-      }
-
-      .admin-dashboard .hero .hero-cta-row {
-        margin-top: 2.5rem;
-        margin-bottom: 2rem;
-        flex-wrap: wrap;
-        gap: 1rem;
-      }
-
-      .admin-dashboard .hero .hero-cta-row .action-button {
-        opacity: 0;
-        transform: translateY(10px);
-        animation: adminFadeInUp 0.55s ease-out forwards;
-      }
-
-      .admin-dashboard .hero .hero-cta-row .action-button:nth-child(1) {
-        animation-delay: 0.75s;
-      }
-
-      .admin-dashboard .hero .hero-cta-row .action-button:nth-child(2) {
-        animation-delay: 0.92s;
-      }
-
-      .admin-dashboard .hero .hero-cta-row .action-button:nth-child(3) {
-        animation-delay: 1.09s;
-      }
-
-      .admin-dashboard .hero .hero-cta-row .action-button:nth-child(4) {
-        animation-delay: 1.26s;
-      }
-
-      .admin-dashboard .hero .auth-panel {
-        margin-top: 1rem;
-        opacity: 0;
-        transform: translateY(12px);
-        animation: adminFadeInUp 0.75s ease-out 1.5s forwards;
-      }
-
-      @keyframes adminFadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .admin-dashboard .hero .admin-fade,
-        .admin-dashboard .hero .hero-cta-row .action-button,
-        .admin-dashboard .hero .auth-panel {
-          animation: none;
-          opacity: 1;
-          transform: none;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="../../css/admin-pages.css" />
+    
   </head>
   <body class="admin-dashboard">
     <header>
@@ -115,10 +40,10 @@
           </nav>
 
           <section class="auth-panel" aria-label="Admin quick stats">
-            <p class="auth-subtext"><strong>DR. ADMIN</strong></p>
-            <p class="auth-subtext">1 active course: SOEN287</p>
-            <p class="auth-subtext">2 total courses: SOEN287, COMP248</p>
-            <p class="auth-subtext auth-subtext--small">271 total students</p>
+            <p class="auth-subtext" id="admin-name"><strong></strong></p>
+            <p class="auth-subtext" id="active-courses"></p>
+            <p class="auth-subtext" id="total-courses"></p>
+            <p class="auth-subtext auth-subtext--small" id="total-students"></p>
           </section>
         </div>
       </section>

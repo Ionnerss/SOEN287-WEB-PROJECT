@@ -6,6 +6,7 @@ const router = express.Router();
 async function getAllCourses(req, res) {
   try {
     const [rows] = await pool.query("SELECT * FROM courses");
+
     res.json(rows);
   } catch (err) {
     console.error("Error fetching courses:", err);
@@ -63,11 +64,11 @@ async function createCourse(req, res) {
 
 async function updateCourse(req, res) {
   const { id } = req.params;
-  const { user_id, code, name, instructor, term } = req.body;
+  const { code, name, instructor, term, enabled } = req.body;
 
-  if (!user_id || !code || !name) {
+  if (!code || !name) {
     return res.status(400).json({
-      error: "user_id, code, and name are required",
+      error: "code and name are required",
     });
   }
 
@@ -81,22 +82,25 @@ async function updateCourse(req, res) {
       return res.status(404).json({ error: "Course not found" });
     }
 
+    // ⭐ If enabled is undefined (student), default to 1
+    const finalEnabled = enabled !== undefined ? enabled : 1;
+
     await pool.query(
       `UPDATE courses 
-       SET user_id = ?, code = ?, name = ?, instructor = ?, term = ?
+       SET code = ?, name = ?, instructor = ?, term = ?, enabled = ?
        WHERE course_id = ?`,
-      [user_id, code, name, instructor || null, term || null, id]
+      [code, name, instructor || null, term || null, finalEnabled, id]
     );
 
     res.json({
       message: "Course updated successfully",
       course: {
         course_id: Number(id),
-        user_id,
         code,
         name,
         instructor: instructor || null,
         term: term || null,
+        enabled: finalEnabled
       },
     });
   } catch (err) {
@@ -127,6 +131,34 @@ async function deleteCourse(req, res) {
   }
 }
 
+async function enableCourse(req, res) {
+  const { id } = req.params;
+  try {
+    const [result] = await pool.query(
+      "UPDATE courses SET enabled = 1 WHERE course_id = ?",
+      [id]
+    );
+    res.json({ message: "Course enabled" });
+  } catch (err) {
+    console.error("Error enabling course:", err);
+    res.status(500).json({ error: "Database error" });
+  }
+}
+
+async function disableCourse(req, res) {
+  const { id } = req.params;
+  try {
+    const [result] = await pool.query(
+      "UPDATE courses SET enabled = 0 WHERE course_id = ?",
+      [id]
+    );
+    res.json({ message: "Course disabled" });
+  } catch (err) {
+    console.error("Error disabling course:", err);
+    res.status(500).json({ error: "Database error" });
+  }
+}
+
 /* -----------------------------------------
    Routes
 ------------------------------------------ */
@@ -136,5 +168,7 @@ router.get("/:id", getCourseById);
 router.post("/", createCourse);
 router.put("/:id", updateCourse);
 router.delete("/:id", deleteCourse);
+router.put("/:id/enable", enableCourse);
+router.put("/:id/disable", disableCourse);
 
 export default router;
