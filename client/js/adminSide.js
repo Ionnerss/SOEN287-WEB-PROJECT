@@ -1,10 +1,19 @@
 let ADMIN_COURSES_CACHE = [];
+
+let CURRENT_ADMIN = null;
+
+async function loadCurrentAdmin() {
+  const API = window.APP_CONFIG.api;
+  const res = await fetch(`${API.baseUrl}/${API.basePath}/auth/guard`, { credentials: "include" });
+  const data = await res.json();
+  if (data.authenticated) CURRENT_ADMIN = data.user;
+}
 // ── assessments.html ──────────────────────────────
 async function initAssessmentsPage() {
   var tbody = document.getElementById('assessmentsBody');
   if (!tbody) return;
 
-  const res = await fetch('/api/assessments');
+  const res = await fetch('/api/assessments', { credentials: "include" });
   const assessments = await res.json();
 
   tbody.innerHTML = '';
@@ -63,7 +72,7 @@ async function initManagePage() {
     return;
   }
 
-  const res = await fetch('/api/assessments');
+  const res = await fetch('/api/assessments', { credentials: "include" });
   const all = await res.json();
   const assessment = all.find(a => a.id === id);
 
@@ -99,6 +108,7 @@ async function initManagePage() {
     const dueDate = document.getElementById('dueDateInput').value;
 
     const updateRes = await fetch('/api/assessments/' + id, {
+      credentials: "include",
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, type, weight, dueDate })
@@ -118,7 +128,7 @@ async function initManagePage() {
   if (deleteBtn) {
     deleteBtn.addEventListener('click', async function() {
       if (!confirm('Are you sure you want to delete "' + assessment.title + '"?')) return;
-      await fetch('/api/assessments/' + id, { method: 'DELETE' });
+      await fetch('/api/assessments/' + id, { method: 'DELETE', credentials: "include" });
       window.location.href = 'assessments.html';
     });
   }
@@ -137,7 +147,7 @@ function initCreatePage() {
     const courseId = courseSelect.value;
     if (!courseId) return;
 
-    const res = await fetch('/api/assessments?courseId=' + courseId);
+    const res = await fetch('/api/assessments?courseId=' + courseId, { credentials: "include" });
     const assessments = await res.json();
     const hasFinal = assessments.some(a => a.type === 'Final');
 
@@ -163,6 +173,7 @@ function initCreatePage() {
     var errorEl = document.getElementById('createError');
 
     const res = await fetch('/api/assessments', {
+      credentials: "include",
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ courseId, title, type, weight, dueDate })
@@ -192,7 +203,7 @@ async function initAdminCoursesPage() {
   const url = `${API.baseUrl}/${API.basePath}/courses`;
 
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, { credentials: "include" });
     const courses = await res.json();
 
     // ⭐ PLACE IT RIGHT HERE
@@ -254,19 +265,22 @@ function attachCourseActionHandlers() {
       if (action === "delete") {
         if (!confirm("Are you sure you want to delete this course?")) return;
         await fetch(`${API.baseUrl}/${API.basePath}/courses/${id}`, {
-          method: "DELETE"
+          method: "DELETE",
+          credentials: "include"
         });
       }
 
       if (action === "enable") {
         await fetch(`${API.baseUrl}/${API.basePath}/courses/${id}/enable`, {
-          method: "PUT"
+          method: "PUT",
+          credentials: "include"
         });
       }
 
       if (action === "disable") {
         await fetch(`${API.baseUrl}/${API.basePath}/courses/${id}/disable`, {
-          method: "PUT"
+          method: "PUT",
+          credentials: "include"
         });
       }
 
@@ -307,10 +321,11 @@ function initAddCourseModal() {
     const term = document.getElementById("courseTerm").value.trim();
 
     const res = await fetch(`${API.baseUrl}/${API.basePath}/courses`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        user_id: 2,
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+        user_id: CURRENT_ADMIN?.userId,
         code,
         name,
         instructor,
@@ -332,7 +347,8 @@ function initAddCourseModal() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+  await loadCurrentAdmin();
   initAssessmentsPage();
   initManagePage();
   initCreatePage();

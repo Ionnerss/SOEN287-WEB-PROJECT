@@ -1,9 +1,18 @@
 const API_BASE = "http://127.0.0.1:3000/api";
 
+let CURRENT_USER = null;
+
+async function loadCurrentUser() {
+  const res = await fetch(`${API_BASE}/auth/guard`, { credentials: "include" });
+  const data = await res.json();
+  if (data.authenticated) CURRENT_USER = data.user;
+}
+
 /****************************************************
  * 1. ENTRY POINT
  ****************************************************/
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadCurrentUser();
   initDashboardPage();
   initCoursePage();
 });
@@ -47,13 +56,14 @@ function initDashboardPage() {
         name,
         instructor,
         term,
-        user_id: 1, // TODO: replace with real user id from auth
+        user_id: CURRENT_USER?.userId,
       };
 
       try {
         await fetch(`${API_BASE}/courses`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify(newCourse),
         });
 
@@ -75,8 +85,9 @@ async function loadCoursesDashboard() {
   coursesGrid.innerHTML = "";
 
   try {
-    const res = await fetch(`${API_BASE}/courses`);
+    const res = await fetch(`${API_BASE}/courses`, { credentials: "include" });
     const courses = await res.json();
+    renderOverviewBars(courses);
 
     if (!courses || courses.length === 0) {
       if (coursesEmpty) coursesEmpty.hidden = false;
@@ -131,6 +142,33 @@ async function loadCoursesDashboard() {
   } catch (err) {
     console.error("Error loading courses:", err);
   }
+}
+
+function renderOverviewBars(courses) {
+  const overviewBars = document.getElementById("overviewBars");
+  if (!overviewBars) return;
+
+  overviewBars.innerHTML = "";
+
+  if (!courses || courses.length === 0) {
+    overviewBars.innerHTML = `<p class="muted small">No courses yet.</p>`;
+    return;
+  }
+
+  courses.forEach((course) => {
+    const bar = document.createElement("div");
+    bar.className = "barrow";
+    bar.innerHTML = `
+      <div class="barrow__label">
+        <strong>${course.code}</strong>
+        <span class="muted small">${course.name}</span>
+      </div>
+      <div class="progress">
+        <div class="progress__bar" style="width: 0%"></div>
+      </div>
+    `;
+    overviewBars.appendChild(bar);
+  });
 }
 
 /****************************************************
@@ -238,7 +276,7 @@ function setupCoursePageInteractions(courseId) {
       e.preventDefault();
 
       const payload = {
-        user_id: 1, // TODO: replace with real session user
+        user_id: CURRENT_USER?.userId,
         code: document.getElementById("eCode").value.trim(),
         name: document.getElementById("eName").value.trim(),
         instructor: document.getElementById("eInstructor").value.trim(),
