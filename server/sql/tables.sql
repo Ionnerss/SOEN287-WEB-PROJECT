@@ -17,6 +17,7 @@ CREATE TABLE courses (
     instructor  VARCHAR(255),
     term        VARCHAR(100),
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    enabled     TINYINT(1) NOT NULL DEFAULT 1
 );
 
 CREATE TABLE assessments (
