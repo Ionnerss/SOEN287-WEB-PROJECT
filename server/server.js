@@ -9,8 +9,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 import authRoutes from "./src/routes/authRoutes.js";
+import usersRoutes from "./src/routes/usersRoutes.js";
 import coursesRoutes from "./src/routes/courses.js";
 import assessmentsRoutes from "./src/routes/assessments.js";
+
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
@@ -29,9 +31,11 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "../client")));
 
 app.use("/api/auth", authRoutes);
+app.use("/api/users", usersRoutes);
 app.use("/api/courses", coursesRoutes);
 app.use("/api/assessments", assessmentsRoutes);
 
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
-});
+}); 
