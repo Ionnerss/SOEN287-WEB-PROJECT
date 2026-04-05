@@ -1,12 +1,19 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import path from "path"; // 1. Added this
+import { fileURLToPath } from "url"; // 2. Added this
+
+// 3. Define __dirname for ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 import crypto from "crypto";
 import db from "./src/config/db.js";
 
 import authRoutes from "./src/routes/authRoutes.js";
 import coursesRoutes from "./src/routes/courses.js";
+import assessmentsRoutes from "./src/routes/assessments.js";
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
@@ -21,8 +28,12 @@ app.use(
 
 app.use(express.json());
 
+// This will now work because path and __dirname are defined above
+app.use(express.static(path.join(__dirname, "../client")));
+
 app.use("/api/auth", authRoutes);
 app.use("/api/courses", coursesRoutes);
+app.use("/api/assessments", assessmentsRoutes);
 
 // ------------------------------------------------------
 // TEMPORARY DEV LOGIN ROUTE (for bypassing login page)
