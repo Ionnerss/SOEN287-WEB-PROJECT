@@ -1,9 +1,8 @@
-const API_BASE = "http://localhost:3000/api";
+const API_BASE = "http://127.0.0.1:3000/api";
 
 /****************************************************
  * 1. ENTRY POINT
  ****************************************************/
-
 document.addEventListener("DOMContentLoaded", () => {
   initDashboardPage();
   initCoursePage();
@@ -12,23 +11,26 @@ document.addEventListener("DOMContentLoaded", () => {
 /****************************************************
  * 2. DASHBOARD PAGE (COURSES LIST + ADD COURSE)
  ****************************************************/
-
 function initDashboardPage() {
   const coursesGrid = document.getElementById("coursesGrid");
-  if (!coursesGrid) return; // not on dashboard
+  if (!coursesGrid) return; // Not on dashboard
 
   loadCoursesDashboard();
 
   const openAddCourseBtn = document.getElementById("openAddCourseModalBtn");
   const addCourseModal = document.getElementById("addCourseModal");
   const cancelAddCourseBtn = document.getElementById("cancelAddCourseBtn");
+  const cancelAddCourseBtn2 = document.getElementById("cancelAddCourseBtn2");
   const addCourseForm = document.getElementById("addCourseForm");
 
   if (openAddCourseBtn && addCourseModal)
     openAddCourseBtn.addEventListener("click", () => addCourseModal.showModal());
 
-  if (cancelAddCourseBtn && addCourseModal)
+  if (cancelAddCourseBtn)
     cancelAddCourseBtn.addEventListener("click", () => addCourseModal.close());
+
+  if (cancelAddCourseBtn2)
+    cancelAddCourseBtn2.addEventListener("click", () => addCourseModal.close());
 
   if (addCourseForm && addCourseModal) {
     addCourseForm.addEventListener("submit", async (e) => {
@@ -108,39 +110,44 @@ async function loadCoursesDashboard() {
       coursesGrid.appendChild(card);
     });
 
-    coursesGrid.addEventListener("click", async (e) => {
-      const btn = e.target.closest("[data-action='delete-course']");
-      if (!btn) return;
-      const id = btn.getAttribute("data-course-id");
-      if (!id) return;
+    coursesGrid.addEventListener(
+      "click",
+      async (e) => {
+        const btn = e.target.closest("[data-action='delete-course']");
+        if (!btn) return;
 
-      try {
-        await fetch(`${API_BASE}/courses/${id}`, { method: "DELETE" });
-        loadCoursesDashboard();
-      } catch (err) {
-        console.error("Error deleting course:", err);
-      }
-    }, { once: true });
+        const id = btn.getAttribute("data-course-id");
+        if (!id) return;
 
+        try {
+          await fetch(`${API_BASE}/courses/${id}`, { method: "DELETE" });
+          loadCoursesDashboard();
+        } catch (err) {
+          console.error("Error deleting course:", err);
+        }
+      },
+      { once: true }
+    );
   } catch (err) {
     console.error("Error loading courses:", err);
   }
 }
 
 /****************************************************
- * 3. COURSE PAGE INIT
+ * 3. COURSE PAGE INIT (COURSE INFO ONLY)
  ****************************************************/
-
 function initCoursePage() {
   const titleEl = document.getElementById("courseTitle");
   const table = document.getElementById("assessmentsTable");
-  if (!titleEl || !table) return; // not on course page
+  if (!titleEl || !table) return; // Not on course page
 
   const urlParams = new URLSearchParams(window.location.search);
   const courseId = urlParams.get("courseId");
   if (!courseId) return;
 
   loadCourse(courseId);
+
+  // 🚧 Assessments disabled until backend is ready
   setupCoursePageInteractions(courseId);
 }
 
@@ -148,207 +155,53 @@ async function loadCourse(courseId) {
   try {
     const res = await fetch(`${API_BASE}/courses/${courseId}`);
     if (!res.ok) return;
+
     const course = await res.json();
 
     const titleEl = document.getElementById("courseTitle");
     const metaEl = document.getElementById("courseMeta");
+
     if (titleEl) titleEl.textContent = `${course.code} • ${course.name}`;
     if (metaEl) metaEl.textContent = `${course.term} • Instructor: ${course.instructor || "TBD"}`;
 
-    await renderAssessments(courseId);
-    await loadAdminCategories(courseId);
+    /****************************************************
+     * 🚧 ASSESSMENTS DISABLED UNTIL BACKEND IS READY
+     ****************************************************/
+    // await renderAssessments(courseId);
+    // await loadAdminCategories(courseId);
+
   } catch (err) {
     console.error("Error loading course:", err);
   }
 }
 
 /****************************************************
- * 4. RENDER STUDENT ASSESSMENTS (BACKEND)
+ * 6. COURSE PAGE INTERACTIONS (COURSE EDIT ONLY)
+ * --------------------------------------------------
+ * 🚧 Assessment logic is temporarily disabled until
+ *     the assessments backend is completed.
  ****************************************************/
-
-async function renderAssessments(courseId) {
-  const table = document.getElementById("assessmentsTable");
-  if (!table) return;
-
-  // Clear existing rows
-  table.innerHTML = "";
-
-  try {
-    const res = await fetch(`${API_BASE}/assessments?courseId=${courseId}`);
-    const assessments = await res.json();
-
-    assessments.forEach((a) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${a.title}</td>
-        <td>${a.category}</td>
-        <td>${a.due_date || a.dueDate || ""}</td>
-        <td>${a.earned}/${a.total}</td>
-        <td>${a.completed ? "Submitted" : "Not Submitted"}</td>
-        <td class="right">
-          <button class="btn btn--ghost btn--small"
-            data-action="delete-assessment"
-            data-assessment-id="${a.assessment_id}">
-            🗑
-          </button>
-        </td>
-      `;
-      table.appendChild(row);
-    });
-  } catch (err) {
-    console.error("Error loading assessments:", err);
-  }
-}
-
-/****************************************************
- * 5. ADMIN CATEGORIES (BACKEND, NO LOCALSTORAGE)
- ****************************************************/
-
-function renderAdminRow(a, isSubmitted) {
-  const row = document.createElement("tr");
-  row.id = "adminrow-" + a.id;
-  row.innerHTML = `
-    <td>${a.category}</td>
-    <td>—</td>
-    <td>${a.due_date || a.dueDate || "—"}</td>
-    <td>${a.weight}%</td>
-    <td id="status-${a.id}">${isSubmitted ? "Submitted" : "Not Submitted"}</td>
-    <td class="right">
-      ${
-        isSubmitted
-          ? `<button class="btn btn--small" data-action="retract-assessment" data-assessment-id="${a.id}">Retract</button>`
-          : `<button class="btn btn--small" data-action="submit-assessment" data-assessment-id="${a.id}">Submit</button>`
-      }
-    </td>
-  `;
-  return row;
-}
-
-async function loadAdminCategories(courseId) {
-  const table = document.getElementById("assessmentsTable");
-  if (!table) return;
-
-  try {
-    const res = await fetch(`${API_BASE}/assessments/admin?courseId=${courseId}`);
-    const categories = await res.json();
-    if (!categories || categories.length === 0) return;
-
-    const headerRow = document.createElement("tr");
-    headerRow.innerHTML = `
-      <td colspan="6" style="background:#f5f5f5; font-weight:bold; color:#800020; padding: 0.6rem 0.7rem;">
-        Admin-defined Categories
-      </td>
-    `;
-    table.appendChild(headerRow);
-
-    // TODO: replace with real submission status from backend
-    const submittedIds = new Set(); // placeholder
-
-    categories.forEach((a) => {
-      const isSubmitted = submittedIds.has(a.id);
-      table.appendChild(renderAdminRow(a, isSubmitted));
-    });
-
-    table.addEventListener(
-      "click",
-      async (e) => {
-        const submitBtn = e.target.closest("[data-action='submit-assessment']");
-        const retractBtn = e.target.closest("[data-action='retract-assessment']");
-
-        if (submitBtn) {
-          const id = submitBtn.getAttribute("data-assessment-id");
-          // TODO: call backend to mark submitted
-          const row = document.getElementById("adminrow-" + id);
-          const a = categories.find((c) => String(c.id) === String(id));
-          if (row && a) row.replaceWith(renderAdminRow(a, true));
-        }
-
-        if (retractBtn) {
-          const id = retractBtn.getAttribute("data-assessment-id");
-          // TODO: call backend to retract submission
-          const row = document.getElementById("adminrow-" + id);
-          const a = categories.find((c) => String(c.id) === String(id));
-          if (row && a) row.replaceWith(renderAdminRow(a, false));
-        }
-      },
-      { once: true }
-    );
-  } catch (err) {
-    console.warn("Could not load admin categories:", err);
-  }
-}
-
-/****************************************************
- * 6. COURSE PAGE INTERACTIONS (ADD/DELETE ASSESSMENT, EDIT COURSE)
- ****************************************************/
-
 function setupCoursePageInteractions(courseId) {
-  const addAssessmentModal = document.getElementById("addAssessmentModal");
-  const openAddAssessmentBtn = document.getElementById("openAddAssessmentModalBtn");
-  const cancelAddAssessmentBtn = document.getElementById("cancelAddAssessmentBtn");
-  const cancelAddAssessmentBtn2 = document.getElementById("cancelAddAssessmentBtn2");
-  const addAssessmentForm = document.getElementById("addAssessmentForm");
-  const table = document.getElementById("assessmentsTable");
 
-  if (openAddAssessmentBtn && addAssessmentModal)
-    openAddAssessmentBtn.addEventListener("click", () => addAssessmentModal.showModal());
+  /****************************************************
+   * A. ADD ASSESSMENT (DISABLED)
+   ****************************************************/
+  // 🚧 TODO: Enable when assessments backend is ready
+  /*
+    ... your assessment add logic ...
+  */
 
-  if (cancelAddAssessmentBtn)
-    cancelAddAssessmentBtn.addEventListener("click", () => addAssessmentModal.close());
+  /****************************************************
+   * B. DELETE ASSESSMENT (DISABLED)
+   ****************************************************/
+  // 🚧 TODO: Enable when assessments backend is ready
+  /*
+    ... your assessment delete logic ...
+  */
 
-  if (cancelAddAssessmentBtn2)
-    cancelAddAssessmentBtn2.addEventListener("click", () => addAssessmentModal.close());
-
-  if (addAssessmentForm) {
-    addAssessmentForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const payload = {
-        course_id: courseId,
-        title: document.getElementById("aTitle").value.trim(),
-        category: document.getElementById("aType").value,
-        due_date: document.getElementById("aDue").value,
-        earned: Number(document.getElementById("aEarned")?.value || 0),
-        total: Number(document.getElementById("aTotal")?.value || 0),
-        completed: document.getElementById("aCompleted").checked,
-      };
-
-      try {
-        await fetch(`${API_BASE}/assessments`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-
-        addAssessmentModal.close();
-        addAssessmentForm.reset();
-        await renderAssessments(courseId);
-        await loadAdminCategories(courseId);
-      } catch (err) {
-        console.error("Error adding assessment:", err);
-      }
-    });
-  }
-
-  if (table) {
-    table.addEventListener("click", async (e) => {
-      const btn = e.target.closest("[data-action='delete-assessment']");
-      if (!btn) return;
-      const assessmentId = btn.getAttribute("data-assessment-id");
-      if (!assessmentId) return;
-
-      try {
-        await fetch(`${API_BASE}/assessments/${assessmentId}`, {
-          method: "DELETE",
-        });
-        await renderAssessments(courseId);
-        await loadAdminCategories(courseId);
-      } catch (err) {
-        console.error("Error deleting assessment:", err);
-      }
-    });
-  }
-
+  /****************************************************
+   * C. EDIT COURSE (ACTIVE)
+   ****************************************************/
   const editCourseModal = document.getElementById("editCourseModal");
   const editCourseBtn = document.getElementById("editCourseBtn");
   const cancelEditCourseBtn = document.getElementById("cancelEditCourseBtn");
@@ -360,6 +213,7 @@ function setupCoursePageInteractions(courseId) {
       try {
         const res = await fetch(`${API_BASE}/courses/${courseId}`);
         if (!res.ok) return;
+
         const course = await res.json();
 
         document.getElementById("eCode").value = course.code || "";
@@ -384,6 +238,7 @@ function setupCoursePageInteractions(courseId) {
       e.preventDefault();
 
       const payload = {
+        user_id: 1, // TODO: replace with real session user
         code: document.getElementById("eCode").value.trim(),
         name: document.getElementById("eName").value.trim(),
         instructor: document.getElementById("eInstructor").value.trim(),
@@ -401,6 +256,28 @@ function setupCoursePageInteractions(courseId) {
         await loadCourse(courseId);
       } catch (err) {
         console.error("Error updating course:", err);
+      }
+    });
+  }
+
+  /****************************************************
+   * D. DELETE COURSE (ACTIVE)
+   ****************************************************/
+  const deleteCourseBtn = document.getElementById("deleteCourseBtn");
+
+  if (deleteCourseBtn) {
+    deleteCourseBtn.addEventListener("click", async () => {
+      const confirmDelete = confirm("Are you sure you want to delete this course?");
+      if (!confirmDelete) return;
+
+      try {
+        await fetch(`${API_BASE}/courses/${courseId}`, {
+          method: "DELETE",
+        });
+
+        window.location.href = "./dashboard.html";
+      } catch (err) {
+        console.error("Error deleting course:", err);
       }
     });
   }
