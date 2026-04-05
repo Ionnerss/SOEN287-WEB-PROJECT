@@ -43,9 +43,6 @@ app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
   
-// ------------------------------------------------------
-// TEMPORARY DEV LOGIN ROUTE (for bypassing login page)
-// ------------------------------------------------------
 
 
 // ------------------------------------------------------

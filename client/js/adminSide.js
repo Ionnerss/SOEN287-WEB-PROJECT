@@ -16,57 +16,146 @@ async function initAssessmentsPage() {
   const res = await fetch('/api/assessments', { credentials: "include" });
   const assessments = await res.json();
 
-  tbody.innerHTML = '';
+async function loadCoursesDropdown(selectId) {
+  const select = document.getElementById(selectId);
+  if (!select) return;
 
-  if (assessments.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6">No assessments yet. Click "New Assessment" to add one.</td></tr>';
-    return;
-  }
+  try {
+    const res = await fetch('/api/courses');
+    
+    if (!res.ok || !res.headers.get('content-type')?.includes('application/json')) {
+      console.error(`Fetch error for /api/courses: Status ${res.status}`);
+      return;
+    }
 
-  // Group by courseId
-  var grouped = {};
-  assessments.forEach(function(a) {
-    if (!grouped[a.courseId]) grouped[a.courseId] = [];
-    grouped[a.courseId].push(a);
-  });
+    const courses = await res.json();
+    select.innerHTML = '<option value="">Select a course</option>';
 
-  var courseLinks = {
-    'SOEN287': '/pages/studentSide/course.html?courseId=SOEN287',
-    'COMP248': '/pages/studentSide/course.html?courseId=COMP248'
-  };
-
-  Object.entries(grouped).forEach(function(entry) {
-    var courseId = entry[0];
-    var items = entry[1];
-
-    var headerRow = document.createElement('tr');
-    headerRow.innerHTML = '<td colspan="6" style="background:#f5f5f5; font-weight:bold; color:#800020; padding: 0.6rem 1rem;">' + courseId + '</td>';
-    tbody.appendChild(headerRow);
-
-    items.forEach(function(a) {
-      var studentLink = courseLinks[a.courseId] || '/pages/studentSide/course.html?courseId=' + a.courseId;
-      var tr = document.createElement('tr');
-      tr.innerHTML =
-        '<td style="text-align:center; font-weight:bold; vertical-align:middle;">' +
-          '<a href="' + studentLink + '" style="color:#800020;">' + a.title + '</a>' +
-        '</td>' +
-        '<td style="text-align:center; font-weight:bold; vertical-align:middle;">' + a.type + '</td>' +
-        '<td style="text-align:center; font-weight:bold; vertical-align:middle;">' + a.weight + '%</td>' +
-        '<td style="text-align:center; font-weight:bold; vertical-align:middle;">' + (a.dueDate || '—') + '</td>' +
-        '<td style="text-align:center; font-weight:bold; vertical-align:middle;">' + a.courseId + '</td>' +
-        '<td style="text-align:center; vertical-align:middle;"><a href="manage287.html?id=' + a.id + '" class="action-button action-button--compact">Manage</a></td>';
-      tbody.appendChild(tr);
+    courses.forEach((c) => {
+      const option = document.createElement('option');
+      option.value = c.course_id || c.id;
+      option.textContent = `${c.code} - ${c.name}`;
+      select.appendChild(option);
     });
-  });
+  } catch (err) {
+    console.error("Failed to load courses dropdown:", err);
+  }
 }
 
-// ── manage287.html ────────────────────────────────
+// ── 2. DASHBOARD STATS (Filling the white rectangle) ──
+
+// ── 2. DASHBOARD STATS (Filling the white rectangle) ──
+
+async function initDashboardStats() {
+  const adminNameEl = document.getElementById('admin-name');
+  const activeCoursesEl = document.getElementById('active-courses');
+  const totalCoursesEl = document.getElementById('total-courses');
+  
+  if (!adminNameEl && !activeCoursesEl) return;
+
+  try {
+    const res = await fetch('/api/courses');
+    const courses = await res.json();
+
+    const actualName = localStorage.getItem('userName') || "System Administrator"; 
+    
+    if (adminNameEl) {
+      adminNameEl.innerHTML = `<strong>Admin:</strong> ${actualName}`;
+    }
+    // ---------------------------
+
+    if (activeCoursesEl) {
+      const codes = courses.map(c => c.code).join(', ');
+      activeCoursesEl.textContent = `Active Courses: ${codes || 'None'}`;
+    }
+
+    if (totalCoursesEl) {
+      totalCoursesEl.textContent = `Total Courses: ${courses.length}`;
+    }
+
+  } catch (err) {
+    console.warn("Dashboard stats error:", err);
+  }
+}
+
+// ── 3. ASSESSMENTS PAGE (assessments.html) ────────────
+
+async function initAssessmentsPage() {
+  const tbody = document.getElementById('assessmentsBody');
+  if (!tbody) return;
+
+  try {
+    const [coursesRes, assessmentsRes] = await Promise.all([
+      fetch('/api/courses'),
+      fetch('/api/assessments/admin/all')
+    ]);
+    
+    if (!coursesRes.ok || !assessmentsRes.ok) {
+      tbody.innerHTML = '<tr><td colspan="6" style="color:red;">Error loading data.</td></tr>';
+      return;
+    }
+
+    const courses = await coursesRes.json();
+    const assessments = await assessmentsRes.json();
+
+    // Create lookup map to show "TEST001" instead of "1"
+    const courseLookup = {};
+    courses.forEach(c => {
+      const id = c.course_id || c.id; 
+      courseLookup[id] = c.code;
+    });
+
+    tbody.innerHTML = '';
+
+    if (assessments.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6">No assessments yet.</td></tr>';
+      return;
+    }
+
+    // Group assessments by course code for the UI headers
+    const grouped = {};
+    assessments.forEach((a) => {
+      const code = courseLookup[a.courseId] || "Unknown Course";
+      if (!grouped[code]) grouped[code] = [];
+      grouped[code].push(a);
+    });
+
+    Object.entries(grouped).forEach(([courseCode, items]) => {
+      // Gray Header Row for the Course
+      const headerRow = document.createElement('tr');
+      headerRow.innerHTML = `<td colspan="6" style="background:#f5f5f5; font-weight:bold; color:#800020; padding: 0.6rem 1rem;">${courseCode}</td>`;
+      tbody.appendChild(headerRow);
+
+      items.forEach((a) => {
+        const studentLink = `/pages/studentSide/course.html?courseId=${courseCode}`;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="text-align:center; font-weight:bold; vertical-align:middle;">
+            <a href="${studentLink}" style="color:#800020;">${a.title}</a>
+          </td>
+          <td style="text-align:center; font-weight:bold; vertical-align:middle;">${a.type || a.category}</td>
+          <td style="text-align:center; font-weight:bold; vertical-align:middle;">${a.weight || '—'}%</td>
+          <td style="text-align:center; font-weight:bold; vertical-align:middle;">${a.due_date ? a.due_date.slice(0, 10) : '—'}</td>
+          <td style="text-align:center; font-weight:bold; vertical-align:middle;">${courseCode}</td> 
+          <td style="text-align:center; vertical-align:middle;">
+            <a href="manage287.html?id=${a.assessment_id}" class="action-button action-button--compact">Manage</a>
+          </td>`;
+        tbody.appendChild(tr);
+      });
+    });
+  } catch (err) {
+    console.error("initAssessmentsPage error:", err);
+  }
+}
+
+// ── 4. MANAGE ASSESSMENT (manage287.html) ─────────────
+
 async function initManagePage() {
-  var form = document.getElementById('weightsForm');
+  const form = document.getElementById('weightsForm');
   if (!form) return;
 
-  var params = new URLSearchParams(window.location.search);
-  var id = params.get('id');
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
   if (!id) {
     window.location.href = 'assessments.html';
     return;
@@ -121,26 +210,54 @@ async function initManagePage() {
       return;
     }
 
-    window.location.href = 'assessments.html';
-  });
+    const subtext = document.getElementById('manageSubtext');
+    if (subtext) subtext.textContent = `Editing: ${assessment.title}`;
 
-  var deleteBtn = document.getElementById('deleteBtn');
-  if (deleteBtn) {
-    deleteBtn.addEventListener('click', async function() {
-      if (!confirm('Are you sure you want to delete "' + assessment.title + '"?')) return;
-      await fetch('/api/assessments/' + id, { method: 'DELETE', credentials: "include" });
+    document.getElementById('titleInput').value = assessment.title;
+    document.getElementById('typeInput').value = assessment.type || assessment.category;
+    document.getElementById('weightInput').value = assessment.weight || '';
+    if (assessment.due_date) {
+      document.getElementById('dueDateInput').value = assessment.due_date.slice(0, 10);
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        title: document.getElementById('titleInput').value.trim(),
+        type: document.getElementById('typeInput').value,
+        weight: Number(document.getElementById('weightInput').value),
+        dueDate: document.getElementById('dueDateInput').value
+      };
+
+      const updateRes = await fetch(`/api/assessments/admin/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (updateRes.ok) {
+        window.location.href = 'assessments.html';
+      }
+    });
+
+    document.getElementById('deleteBtn')?.addEventListener('click', async () => {
+      if (!confirm(`Are you sure you want to delete "${assessment.title}"?`)) return;
+      await fetch(`/api/assessments/admin/${id}`, { method: 'DELETE' });
       window.location.href = 'assessments.html';
     });
+
+  } catch (err) {
+    console.error("initManagePage error:", err);
   }
 }
 
-// ── create-category.html ──────────────────────────
+// ── 5. CREATE CATEGORY (create-category.html) ─────────
+
 function initCreatePage() {
-  var form = document.getElementById('createCategoryForm');
+  const form = document.getElementById('createCategoryForm');
   if (!form) return;
 
-  const courseSelect = document.getElementById('courseId');
-  const typeSelect = document.getElementById('type');
+  loadCoursesDropdown('courseId');
 
   // When course changes, check if Final already exists for that course
   courseSelect.addEventListener('change', async function() {
@@ -164,13 +281,20 @@ function initCreatePage() {
 
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
+    const payload = {
+      courseId: document.getElementById('courseId').value,
+      title: document.getElementById('title').value.trim(),
+      type: document.getElementById('type').value,
+      weight: Number(document.getElementById('weight').value),
+      dueDate: document.getElementById('dueDate').value
+    };
 
-    var courseId = document.getElementById('courseId').value;
-    var title = document.getElementById('title').value.trim();
-    var type = document.getElementById('type').value;
-    var weight = Number(document.getElementById('weight').value);
-    var dueDate = document.getElementById('dueDate').value;
-    var errorEl = document.getElementById('createError');
+    try {
+      const res = await fetch('/api/assessments/admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
 
     const res = await fetch('/api/assessments', {
       credentials: "include",
@@ -294,10 +418,7 @@ function attachCourseActionHandlers() {
   });
 }
 
-// ── Add Course Modal Logic ───────────────────────────────
-function initAddCourseModal() {
-  const modal = document.getElementById("addCourseModal");
-  if (!modal) return;
+// ── 6. INITIALIZATION ────────────────────────────────
 
   const openBtn = document.getElementById("openAddCourse");
   const closeBtn = document.getElementById("closeAddCourse");
@@ -352,6 +473,4 @@ document.addEventListener("DOMContentLoaded", async function () {
   initAssessmentsPage();
   initManagePage();
   initCreatePage();
-  initAdminCoursesPage();
-  initAddCourseModal();
 });
