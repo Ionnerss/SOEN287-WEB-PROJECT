@@ -263,8 +263,40 @@ async function initManagePage() {
   const id = params.get('id');
   if (!id) {
     window.location.href = 'assessments.html';
-    return;
+  });
+}
+// END OF ASSESSMENTS
+
+async function loadDashboardStats() {
+  const API = window.APP_CONFIG.api;
+  const url = `${API.baseUrl}/${API.basePath}/courses`;
+
+  try {
+    const res = await fetch(url, { credentials: "include" });
+    const courses = await res.json();
+
+    const total = courses.length;
+    const enabled = courses.filter(c => c.enabled).length;
+
+    const totalEl = document.getElementById("total-courses");
+    const activeEl = document.getElementById("active-courses");
+
+    if (totalEl) totalEl.textContent = `Total courses: ${total}`;
+    if (activeEl) activeEl.textContent = `Enabled courses: ${enabled}`;
+  } catch (err) {
+    console.error("Failed to load dashboard stats:", err);
   }
+}
+
+// ── courses.html ─────────────────────────────────────────────
+async function initAdminCoursesPage() {
+  const enabledBody = document.getElementById("enabled-courses-body");
+  const disabledBody = document.getElementById("disabled-courses-body");
+
+  if (!enabledBody || !disabledBody) return;
+
+  const API = window.APP_CONFIG.api;
+  const url = `${API.baseUrl}/${API.basePath}/courses`;
 
   try {
     const res = await fetch(url, { credentials: "include" });
@@ -413,6 +445,17 @@ function initCreatePage() {
 
 document.addEventListener("DOMContentLoaded", async function () {
   await loadCurrentAdmin();
+
+  const adminNameEl = document.getElementById("admin-name");
+  if (adminNameEl && CURRENT_ADMIN) {
+    adminNameEl.innerHTML = `<strong>Welcome, ${CURRENT_ADMIN.fullName}</strong>`;
+  }
+
+  // Detect dashboard page
+  if (document.getElementById("admin-dashboard")) {
+    loadDashboardStats();
+  }
+
   initAssessmentsPage();
   initManagePage();
   initCreatePage();

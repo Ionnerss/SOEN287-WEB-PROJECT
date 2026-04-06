@@ -9,10 +9,7 @@
     <link rel="stylesheet" href="../../css/admin-pages.css" />
     
   </head>
-  <script src="../../js/adminSide.js"></script>
-  </body>
-</html>
-  <body class="admin-dashboard">
+  <body id="admin-dashboard">
     <header>
       <div class="container">
         <a href="../index/index.html" class="site-logo">LearnFlow</a>
@@ -63,5 +60,6 @@
       import { requireAuth } from "../../js/auth/guard.js";
       requireAuth("admin");
     </script>
+    <script src="../../js/adminSide.js"></script>
   </body>
 </html>
