@@ -1,0 +1,19 @@
+[
+  {
+    "assessment_id": "1775424164296",
+    "courseId": "1",
+    "title": "TEST001 Final",
+    "type": "Final",
+    "weight": 67,
+    "due_date": "2026-04-03",
+    "dueDate": "2026-04-03"
+  },
+  {
+    "assessment_id": "1775439006614",
+    "courseId": "2",
+    "title": "Merwane is woke",
+    "type": "Final",
+    "weight": 61,
+    "due_date": "2026-05-09"
+  }
+]
