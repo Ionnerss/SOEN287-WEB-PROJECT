@@ -1,7 +1,13 @@
 import express from "express";
 import crypto from "node:crypto";
+import { webcrypto } from "node:crypto";
 import bcrypt from "bcryptjs";
 import * as QRCode from "qrcode";
+
+if (!globalThis.crypto) {
+  globalThis.crypto = webcrypto;
+}
+
 import { generateSecret, verify } from "otplib";
 import db from "../config/db.js";
 
