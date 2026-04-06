@@ -64,109 +64,110 @@
     </footer>
 
   <script>
-const TOTAL_STUDENTS = 10;
 
+const TOTAL_STUDENTS = 10;
 const submissions = JSON.parse(localStorage.getItem('submissions')) || {};
 
-fetch('/api/assessments')
-.then(res => res.json())
-.then(assessments => {
-
+// Fetch both courses and assessments to map IDs to Names/Codes
+Promise.all([
+  fetch('/api/courses').then(res => res.json()),
+  fetch('/api/assessments/admin/all').then(res => res.json()) // Using the admin endpoint to ensure we get all data
+])
+.then(([courses, assessments]) => {
   const totalEl = document.getElementById('totalSubmissions');
   const container = document.getElementById('perAssessmentStats');
+  
+  // 1. Create a lookup map: { "1": "SOEN287", "2": "COMP248" }
+  const courseLookup = {};
+  courses.forEach(c => {
+    courseLookup[String(c.course_id)] = c.code;
+  });
 
   container.innerHTML = '';
+  if (!assessments.length) {
+    container.innerHTML = '<p>No assessments found.</p>';
+    return;
+  }
 
-  if (!assessments.length) return;
-
-  // global total
+  // Calculate global total
   let globalTotal = 0;
-  Object.values(submissions).forEach(v => {
-    globalTotal += v || 0;
-  });
+  Object.values(submissions).forEach(v => { globalTotal += (v || 0); });
 
- totalEl.innerHTML =
-  '<p class="admin-kpi">Total submissions across all students: <strong>' +
-  globalTotal +
-  '</strong></p>';
+  totalEl.innerHTML = `
+    <p class="admin-kpi">Total submissions across all students: <strong>${globalTotal}</strong></p>
+  `;
 
-  // group by course
-  const courses = {};
+  // 2. Group by course using the mapped Course Code
+  const grouped = {};
   assessments.forEach(a => {
-    if (!courses[a.courseId]) courses[a.courseId] = [];
-    courses[a.courseId].push(a);
+    const courseIdKey = String(a.course_id || a.courseId);
+    const code = courseLookup[courseIdKey] || 'Unknown Course';
+    
+    if (!grouped[code]) grouped[code] = [];
+    grouped[code].push(a);
   });
 
-  Object.entries(courses).forEach(([courseId, items]) => {
-
+  // 3. Render each group
+  Object.entries(grouped).forEach(([courseCode, items]) => {
     const block = document.createElement('div');
-    block.style.marginBottom = '1.5rem';
+    block.style.marginBottom = '2.5rem';
+    block.style.padding = '1rem';
+    block.style.borderLeft = '4px solid #800020';
+    block.style.background = 'rgba(128, 0, 32, 0.05)';
 
     const title = document.createElement('h3');
-    title.textContent = courseId;
+    title.textContent = courseCode; // Now shows "SOEN287" instead of "1"
     block.appendChild(title);
 
-    // per-course total
-    let courseTotal = 0;
-
+    let courseTotalSubmissions = 0;
     let weightedTotal = 0;
     let totalWeight = 0;
 
     items.forEach(a => {
-
-      const count = submissions[a.id] || 0;
-      courseTotal += count;
+      const assessmentId = a.assessment_id || a.id;
+      const count = submissions[assessmentId] || 0;
+      courseTotalSubmissions += count;
 
       const percent = Math.round((count / TOTAL_STUDENTS) * 100);
-
-      weightedTotal += percent * a.weight;
-      totalWeight += a.weight;
+      weightedTotal += (percent * (a.weight || 0));
+      totalWeight += (a.weight || 0);
 
       const label = document.createElement('p');
       label.className = 'admin-kpi';
-      label.textContent =
-        percent + '% of students completed ' + a.title;
+      label.innerHTML = `<strong>${percent}%</strong> of students completed ${a.title}`;
 
       const progress = document.createElement('progress');
       progress.value = percent;
       progress.max = 100;
+      progress.style.width = '100%';
 
       block.appendChild(label);
       block.appendChild(progress);
     });
 
-    // per course total submissions
-    const totalText = document.createElement('p');
-    totalText.className = 'admin-kpi';
-    totalText.innerHTML =
-      'Total submissions: <strong>' + courseTotal + '</strong>';
-
-    block.appendChild(totalText);
-
-    // class average
-    const classAvg = totalWeight
-      ? Math.round(weightedTotal / totalWeight)
-      : 0;
-
-    const avg = document.createElement('p');
-    avg.className = 'admin-kpi';
-    avg.textContent = 'The class average is ' + classAvg + '%';
-    block.appendChild(avg);
-
-    // failing %
+    // Class average logic
+    const classAvg = totalWeight ? Math.round(weightedTotal / totalWeight) : 0;
     const failing = Math.max(0, 50 - classAvg) * 2;
 
-    const fail = document.createElement('p');
-    fail.className = 'admin-kpi';
-    fail.textContent =
-      Math.round(failing) +
-      '% of students are failing this class (below 50%).';
-
-    block.appendChild(fail);
-
+    const statsSummary = document.createElement('div');
+    statsSummary.style.marginTop = '1rem';
+    statsSummary.innerHTML = `
+      <p class="admin-kpi">Total submissions: <strong>${courseTotalSubmissions}</strong></p>
+      <p class="admin-kpi">Class Average: <strong>${classAvg}%</strong></p>
+      <p class="admin-kpi" style="color: ${failing > 30 ? 'red' : 'inherit'}">
+        ${Math.round(failing)}% of students are failing this class (below 50%).
+      </p>
+    `;
+    
+    block.appendChild(statsSummary);
     container.appendChild(block);
   });
+})
+.catch(err => {
+  console.error("Error loading stats:", err);
+  document.getElementById('perAssessmentStats').innerHTML = '<p style="color:red;">Error loading statistics from server.</p>';
 });
 </script>
+
   </body>
 </html>
