@@ -56,12 +56,6 @@ function renderAdminUI(user) {
       </form>
     </div>
   `;
-
-  document.getElementById("logoutContainer").innerHTML = `
-    <button id="logoutBtn" class="action-button action-button--full">
-      Log Out
-    </button>
-  `;
 }
 
 // -------------------------------
@@ -104,33 +98,28 @@ function renderStudentUI(user) {
       </form>
     </div>
   `;
-
-  document.getElementById("logoutContainer").innerHTML = `
-    <button id="logoutBtn" class="btn btn--small">
-      Log Out
-    </button>
-  `;
 }
 
 // -------------------------------
 // Update Profile
 // -------------------------------
-async function updateProfile(userId) {
+async function updateProfile(currentEmail) {
   const fullName = document.getElementById("fullName").value.trim();
-  const password = document.getElementById("password").value.trim();
 
-  const payload = { fullName };
-  if (password.length > 0) payload.password = password;
-
-  const res = await fetch(`${API_BASE_URL}/users/${userId}`, {
+  const res = await fetch(`${API_BASE_URL}/users/me`, {
     method: "PUT",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
+    body: JSON.stringify({
+      fullName,
+      email: currentEmail   // ← REQUIRED by backend
+    })
   });
 
+  const data = await res.json();
+
   if (!res.ok) {
-    alert("Failed to update profile");
+    alert(data.error || "Failed to update profile");
     return;
   }
 
@@ -168,7 +157,7 @@ async function logout() {
 
   document.getElementById("profileForm").addEventListener("submit", (e) => {
     e.preventDefault();
-    updateProfile(user.userId);
+    updateProfile(user.email);
   });
 
   document.getElementById("logoutContainer").addEventListener("click", (e) => {

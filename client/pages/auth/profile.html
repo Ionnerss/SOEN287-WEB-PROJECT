@@ -9,19 +9,24 @@
   <link rel="stylesheet" href="../../css/base.css" />
   <link rel="stylesheet" href="../../css/layout.css" />
   <link rel="stylesheet" href="../../css/admin-pages.css" />
-  <link rel="stylesheet" href="../../css/student-pages.css" />
+  <link rel="stylesheet" href="../../css/student-pages.css" />|
+  <link rel="stylesheet" href="../../css/components.css" />
+  
 </head>
 
 <!-- Body class will be set dynamically by profile.js -->
 <body id="profileBody">
 
   <!-- Header (shared across pages) -->
-  <header>
-    <div class="container">
-      <div class="site-logo">LearnFlow</div>
-      <nav id="navLinks"></nav>
-    </div>
-  </header>
+    <header>
+      <div class="container">
+        <a href="../index/index.html" class="site-logo">LearnFlow</a>
+        <nav>
+          <a href="../auth/login.html" class="action-button">Logout</a>
+          <a href="../student/dashboard.html" class="action-button">Dashboard</a>
+        </nav>
+      </div>
+    </header>
 
   <main>
     <section class="hero">
