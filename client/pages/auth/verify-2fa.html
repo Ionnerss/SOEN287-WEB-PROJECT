@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verify 2FA • Smart Course Companion</title>
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/components.css" />
+    <link rel="stylesheet" href="../../css/layout.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <a href="../index/index.html" class="site-logo">LearnFlow</a>
+        <nav>
+          <a href="./login.html" class="action-button">Back to Log In</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="grid-wrapper">
+          <div class="grid-background"></div>
+        </div>
+
+        <div class="container">
+          <div class="auth-panel">
+            <h1>Two-Factor Authentication</h1>
+            <p class="auth-subtext">
+              Enter the 6-digit code from your authenticator app.
+            </p>
+
+            <div id="errorBox" class="auth-error" hidden></div>
+
+            <div id="setupPanel" hidden>
+              <p class="auth-subtext">
+                Scan this QR code with Google Authenticator, Authy, or Microsoft
+                Authenticator for <strong id="setupEmail"></strong>.
+              </p>
+
+              <div style="display: flex; justify-content: center; margin: 1rem 0">
+                <img
+                  id="qrCodeImage"
+                  alt="2FA QR Code"
+                  style="width: 220px; height: 220px; background: white; padding: 12px; border-radius: 12px"
+                />
+              </div>
+
+              <p class="auth-subtext auth-subtext--small">
+                Manual key: <code id="manualKey"></code>
+              </p>
+            </div>
+
+            <form id="twofaForm" class="auth-form" novalidate>
+              <label class="auth-field">
+                <span>Authentication Code</span>
+                <input
+                  id="token"
+                  class="auth-input"
+                  type="text"
+                  inputmode="numeric"
+                  autocomplete="one-time-code"
+                  maxlength="6"
+                  placeholder="123456"
+                  required
+                />
+              </label>
+
+              <button class="action-button action-button--full" type="submit">
+                Verify Code
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 • SOEN 287 • WeUpp!</p>
+      </div>
+    </footer>
+
+    <script src="../../js/core/config.js"></script>
+    <script type="module" src="../../js/auth/twofa.js"></script>
+  </body>
+</html>

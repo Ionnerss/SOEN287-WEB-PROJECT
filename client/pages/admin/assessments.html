@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assessment Categories - LearnFlow</title>
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/components.css" />
+    <link rel="stylesheet" href="../../css/layout.css" />
+    <link rel="stylesheet" href="../../css/admin-pages.css" />
+  </head>
+  <body class="admin-page">
+    <header>
+      <div class="container">
+        <a href="../index/index.html" class="site-logo">LearnFlow</a>
+        <nav>
+          <a href="../auth/login.html" class="action-button">Logout</a>
+          <a href="../auth/profile.html" class="action-button" id="profileLink">Profile</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="grid-wrapper">
+          <div class="grid-background"></div>
+        </div>
+
+        <div class="container admin-content">
+          <h1 class="admin-page-title fade-step fade-step-1">Assessment Categories</h1>
+          <p class="admin-subtext fade-step fade-step-2">
+            Manage assessments and create new ones.
+          </p>
+
+          <nav class="admin-action-row stagger-buttons">
+            <a href="dashboard.html" class="action-button">Dashboard</a>
+            <a href="courses.html" class="action-button">Manage Courses</a>
+            <a href="create-category.html" class="action-button">New Assessment</a>
+            <a href="stats.html" class="action-button">Statistics</a>
+          </nav>
+
+          <section class="admin-card fade-step fade-step-4" aria-label="Assessment table">
+            <h2>All Assessments</h2>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th style="text-align:center;">Title</th>
+                    <th style="text-align:center;">Type</th>
+                    <th style="text-align:center;">Weight (%)</th>
+                    <th style="text-align:center;">Due Date</th>
+                    <th style="text-align:center;">Course</th>
+                    <th style="text-align:center;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="assessmentsBody">
+                  <tr><td colspan="6">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 • SOEN 287 • LearnFlow</p>
+      </div>
+    </footer>
+
+    <script src="../../js/adminSide.js"></script>
+  </body>
+</html>

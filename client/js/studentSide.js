@@ -1,26 +1,18 @@
+const API_BASE = "http://127.0.0.1:3000/api";
+
+let CURRENT_USER = null;
+
+async function loadCurrentUser() {
+  const res = await fetch(`${API_BASE}/auth/guard`, { credentials: "include" });
+  const data = await res.json();
+  if (data.authenticated) CURRENT_USER = data.user;
+}
+
 /****************************************************
  * 1. INITIALIZATION & ENTRY POINT
  ****************************************************/
-
-// Ensure a default course exists only if nothing is stored yet
-(function initializeDefaultCourse() {
-  const existing = localStorage.getItem('studentCourses');
-  if (existing) return;
-
-  const defaultCourse = {
-    id: 'SOEN287',
-    code: 'SOEN 287',
-    name: 'Web Programming',
-    instructor: 'TBD',
-    term: 'Winter 2026',
-    assessments: [],
-  };
-
-  localStorage.setItem('studentCourses', JSON.stringify([defaultCourse]));
-  console.log('Default course created:', defaultCourse);
-})();
-
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadCurrentUser();
   initDashboardPage();
   initCoursePage();
 });
@@ -29,17 +21,58 @@ document.addEventListener('DOMContentLoaded', () => {
  * 2. LOCALSTORAGE HELPERS
  ****************************************************/
 
-function getCourses() {
-  return JSON.parse(localStorage.getItem('studentCourses')) || [];
+function getSubmissions() {
+  return JSON.parse(localStorage.getItem('submissions')) || {};
 }
 
-function saveCourses(courses) {
-  localStorage.setItem('studentCourses', JSON.stringify(courses));
+function saveSubmissions(submissions) {
+  localStorage.setItem('submissions', JSON.stringify(submissions));
 }
 
-function getCourseById(id) {
-  const courses = getCourses();
-  return courses.find((c) => c.id === id);
+function getSubmissionStats() {
+  return JSON.parse(localStorage.getItem('submissionStats')) || { total: 0 };
+}
+
+function saveSubmissionStats(stats) {
+  localStorage.setItem('submissionStats', JSON.stringify(stats));
+}
+
+// Student-added assessments (personal goals) stored by course code
+function getStudentAssessments(courseCode) {
+  const all = JSON.parse(localStorage.getItem('studentAssessments') || '{}');
+  return all[courseCode] || [];
+}
+
+      const code = document.getElementById("cCode").value.trim();
+      const name = document.getElementById("cName").value.trim();
+      const instructor = document.getElementById("cInstructor").value.trim();
+      const term = document.getElementById("cTerm").value.trim();
+      if (!code || !name || !term) return;
+
+      const newCourse = {
+        code,
+        name,
+        instructor,
+        term,
+        user_id: CURRENT_USER?.userId,
+      };
+
+      try {
+        await fetch(`${API_BASE}/courses`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(newCourse),
+        });
+
+        addCourseModal.close();
+        addCourseForm.reset();
+        loadCoursesDashboard();
+      } catch (err) {
+        console.error("Error adding course:", err);
+      }
+    });
+  }
 }
 
 /****************************************************
@@ -48,110 +81,89 @@ function getCourseById(id) {
 
 function initDashboardPage() {
   const coursesGrid = document.getElementById('coursesGrid');
-  if (!coursesGrid) return; // not on dashboard
+  if (!coursesGrid) return;
 
   renderCoursesDashboard();
 
-  // Add Course modal
-  const openAddCourseBtn = document.getElementById('openAddCourseModalBtn');
-  const addCourseModal = document.getElementById('addCourseModal');
-  const cancelAddCourseBtn = document.getElementById('cancelAddCourseBtn');
-  const addCourseForm = document.getElementById('addCourseForm');
+  const openAddBtn = document.getElementById('openAddAssessmentModalBtn');
+  const modal = document.getElementById('addAssessmentModal');
+  const cancelBtn = document.getElementById('cancelAddAssessmentBtn');
 
-  if (openAddCourseBtn && addCourseModal) {
-    openAddCourseBtn.addEventListener('click', () => addCourseModal.showModal());
-  }
-
-  if (cancelAddCourseBtn && addCourseModal) {
-    cancelAddCourseBtn.addEventListener('click', () => addCourseModal.close());
-  }
-
-  if (addCourseForm && addCourseModal) {
-    addCourseForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const code = document.getElementById('cCode').value.trim();
-      const name = document.getElementById('cName').value.trim();
-      const instructor = document.getElementById('cInstructor').value.trim();
-      const term = document.getElementById('cTerm').value.trim();
-
-      if (!code || !name || !term) return;
-
-      const courses = getCourses();
-
-      const newCourse = {
-        id: Date.now().toString(),
-        code,
-        name,
-        instructor,
-        term,
-        assessments: [],
-      };
-
-      courses.push(newCourse);
-      saveCourses(courses);
-
-      addCourseModal.close();
-      addCourseForm.reset();
-      renderCoursesDashboard();
-    });
-  }
-
-  // Dashboard Add Assessment modal (just open/close for now)
-  const openAddAssessmentBtn = document.getElementById('openAddAssessmentModalBtn');
-  const addAssessmentModal = document.getElementById('addAssessmentModal');
-  const cancelAddAssessmentBtn = document.getElementById('cancelAddAssessmentBtn');
-
-  if (openAddAssessmentBtn && addAssessmentModal) {
-    openAddAssessmentBtn.addEventListener('click', () => addAssessmentModal.showModal());
-  }
-
-  if (cancelAddAssessmentBtn && addAssessmentModal) {
-    cancelAddAssessmentBtn.addEventListener('click', () => addAssessmentModal.close());
-  }
+  if (openAddBtn && modal) openAddBtn.addEventListener('click', () => modal.showModal());
+  if (cancelBtn && modal) cancelBtn.addEventListener('click', () => modal.close());
 }
 
-function renderCoursesDashboard() {
+async function renderCoursesDashboard() {
   const coursesGrid = document.getElementById('coursesGrid');
   const coursesEmpty = document.getElementById('coursesEmpty');
   if (!coursesGrid) return;
 
-  const courses = getCourses();
-  coursesGrid.innerHTML = '';
+  try {
+    const res = await fetch(`${API_BASE}/courses`, { credentials: "include" });
+    const courses = await res.json();
+    renderOverviewBars(courses);
 
-  if (courses.length === 0) {
-    if (coursesEmpty) coursesEmpty.hidden = false;
+    coursesGrid.innerHTML = '';
+
+    if (!courses || courses.length === 0) {
+      if (coursesEmpty) coursesEmpty.hidden = false;
+      return;
+    } else {
+      if (coursesEmpty) coursesEmpty.hidden = true;
+    }
+
+    courses.forEach((course) => {
+      const card = document.createElement('article');
+      card.className = 'coursecard';
+      card.innerHTML = `
+        <div class="coursecard__main">
+          <div class="coursecard__title">${course.code}</div>
+          <div class="muted small">${course.name} • ${course.term || ''}</div>
+          <div class="row row--wrap gap small">
+            <span class="chip">Avg: --%</span>
+            <span class="chip">Progress: --</span>
+          </div>
+        </div>
+        <div class="coursecard__side">
+          <div class="progress">
+            <div class="progress__bar" style="width: 0%"></div>
+          </div>
+          <div class="row gap">
+            <a class="btn btn--small" href="./course.html?courseId=${course.code}">View</a>
+          </div>
+        </div>
+      `;
+      coursesGrid.appendChild(card);
+    });
+  } catch (err) {
+    console.error('Failed to load courses:', err);
+  }
+}
+
+function renderOverviewBars(courses) {
+  const overviewBars = document.getElementById("overviewBars");
+  if (!overviewBars) return;
+
+  overviewBars.innerHTML = "";
+
+  if (!courses || courses.length === 0) {
+    overviewBars.innerHTML = `<p class="muted small">No courses yet.</p>`;
     return;
-  } else {
-    if (coursesEmpty) coursesEmpty.hidden = true;
   }
 
   courses.forEach((course) => {
-    const card = document.createElement('article');
-    card.className = 'coursecard';
-
-    card.innerHTML = `
-      <div class="coursecard__main">
-        <div class="coursecard__title">${course.code}</div>
-        <div class="muted small">${course.name} • ${course.term || ''}</div>
-        <div class="row row--wrap gap small">
-          <span class="chip">Avg: --%</span>
-          <span class="chip">Progress: --</span>
-        </div>
+    const bar = document.createElement("div");
+    bar.className = "barrow";
+    bar.innerHTML = `
+      <div class="barrow__label">
+        <strong>${course.code}</strong>
+        <span class="muted small">${course.name}</span>
       </div>
-
-      <div class="coursecard__side">
-        <div class="progress">
-          <div class="progress__bar" style="width: 0%"></div>
-        </div>
-        <div class="row gap">
-          <a class="btn btn--small" href="./course.html?courseId=${course.id}">View</a>
-          <button class="btn btn--ghost btn--small" type="button">Edit</button>
-        </div>
+      <div class="progress">
+        <div class="progress__bar" style="width: 0%"></div>
       </div>
     `;
-
-    coursesGrid.appendChild(card);
+    overviewBars.appendChild(bar);
   });
 }
 
@@ -162,90 +174,203 @@ function renderCoursesDashboard() {
 function initCoursePage() {
   const titleEl = document.getElementById('courseTitle');
   const table = document.getElementById('assessmentsTable');
-  if (!titleEl || !table) return; // not on course page
+  if (!titleEl || !table) return;
 
   const urlParams = new URLSearchParams(window.location.search);
-  const courseId = urlParams.get('courseId');
-  if (!courseId) return;
+  const courseCode = urlParams.get('courseId'); // e.g. "SOEN287"
+  if (!courseCode) return;
 
-  loadCourse(courseId);
-  setupCoursePageInteractions(courseId);
+  loadCourseData(courseCode);
 }
 
-function loadCourse(courseId) {
-  const course = getCourseById(courseId);
-  if (!course) {
-    console.warn('Course not found for id:', courseId);
-    return;
-  }
+async function loadCourseData(courseCode) {
+  try {
+    const res = await fetch('/api/courses');
+    const courses = await res.json();
+    const course = courses.find(c => c.code === courseCode);
 
-  const titleEl = document.getElementById('courseTitle');
-  const metaEl = document.getElementById('courseMeta');
+    if (course) {
+      const titleEl = document.getElementById('courseTitle');
+      const metaEl = document.getElementById('courseMeta');
+      if (titleEl) titleEl.textContent = `${course.code} • ${course.name}`;
+      if (metaEl) metaEl.textContent = `${course.term || ''} • Instructor: ${course.instructor || 'TBD'}`;
 
-  if (titleEl) {
-    titleEl.textContent = `${course.code} • ${course.name}`;
-  }
-  if (metaEl) {
-    metaEl.textContent = `${course.term} • Instructor: ${course.instructor}`;
-  }
+      const realId = course.course_id || course.id;
 
-  renderAssessments(courseId);
+      // Render local student data
+      renderStudentAssessments(courseCode);
+      
+      // Render DB admin data using numerical ID
+      loadAdminCategories(realId);
+
+      // Pass both to interactions
+      setupCoursePageInteractions(courseCode, realId);
+    }
+  } catch (err) {
+    console.error('Failed to load course:', err);
+  }
 }
 
-function renderAssessments(courseId) {
-  const course = getCourseById(courseId);
+/****************************************************
+ * 5. RENDERING ASSESSMENTS
+ ****************************************************/
+
+function renderStudentAssessments(courseCode) {
+  const assessments = getStudentAssessments(courseCode);
   const table = document.getElementById('assessmentsTable');
+  if (!table) return;
 
-  if (!course || !table) return;
+  table.innerHTML = ''; // Fresh start
 
-  table.innerHTML = '';
-
-  course.assessments.forEach((a) => {
+  assessments.forEach((a) => {
     const row = document.createElement('tr');
-
     row.innerHTML = `
       <td>${a.title}</td>
       <td>${a.category}</td>
       <td>${a.dueDate}</td>
       <td>${a.earned}/${a.total}</td>
-      <td>${a.completed ? 'Completed' : 'Pending'}</td>
+      <td>${a.completed ? 'Submitted' : 'Not Submitted'}</td>
       <td class="right">
         <button class="btn btn--ghost btn--small"
           data-action="delete-assessment"
           data-assessment-id="${a.id}">🗑</button>
       </td>
     `;
-
     table.appendChild(row);
   });
 }
 
-function setupCoursePageInteractions(courseId) {
-  const addAssessmentModal = document.getElementById('addAssessmentModal');
-  const openAddAssessmentBtn = document.getElementById('openAddAssessmentModalBtn');
-  const cancelAddAssessmentBtn = document.getElementById('cancelAddAssessmentBtn');
-  const addAssessmentForm = document.getElementById('addAssessmentForm');
-  const table = document.getElementById('assessmentsTable');
+function renderAdminRow(a, isSubmitted) {
+  const row = document.createElement('tr');
+  const aid = a.assessment_id;
+  row.id = 'adminrow-' + aid;
+  row.innerHTML = `
+    <td>${a.title}</td>
+    <td>${a.type || a.category}</td>
+    <td>${a.due_date ? a.due_date.slice(0,10) : '—'}</td>
+    <td>${a.weight ? a.weight + '%' : '—'}</td>
+    <td id="status-${aid}">${isSubmitted ? 'Submitted' : 'Not Submitted'}</td>
+    <td class="right">
+      ${isSubmitted
+        ? `<button class="btn btn--small" data-action="retract-assessment" data-assessment-id="${aid}">Retract</button>`
+        : `<button class="btn btn--small" data-action="submit-assessment" data-assessment-id="${aid}">Submit</button>`
+      }
+    </td>
+  `;
+  return row;
+}
 
-  // Modal open/close
-  if (openAddAssessmentBtn && addAssessmentModal && cancelAddAssessmentBtn) {
-    openAddAssessmentBtn.addEventListener('click', () => addAssessmentModal.showModal());
-    cancelAddAssessmentBtn.addEventListener('click', () => addAssessmentModal.close());
+function loadAdminCategories(realId) {
+  const table = document.getElementById('assessmentsTable');
+  if (!table) return;
+
+  fetch('/api/assessments/admin/all?courseId=' + realId)
+    .then(res => res.json())
+    .then(categories => {
+      if (!categories || categories.length === 0) return;
+
+      const headerRow = document.createElement('tr');
+      headerRow.innerHTML = `
+        <td colspan="6" style="background:#f5f5f5; font-weight:bold; color:#800020; padding: 0.6rem 0.7rem;">
+          Admin-defined Categories
+        </td>
+      `;
+      table.appendChild(headerRow);
+
+      const submissions = getSubmissions();
+
+      categories.forEach(a => {
+        const isSubmitted = submissions[a.assessment_id] === true;
+        table.appendChild(renderAdminRow(a, isSubmitted));
+      });
+
+      // Attach delegation for dynamic rows
+      table.addEventListener('click', (e) => handleTableClick(e, categories));
+    })
+    .catch(err => console.warn('Could not load admin categories:', err));
+}
+
+/****************************************************
+ * 6. TABLE INTERACTION HANDLER
+ ****************************************************/
+
+function handleTableClick(e, categories) {
+  const submitBtn = e.target.closest("[data-action='submit-assessment']");
+  const retractBtn = e.target.closest("[data-action='retract-assessment']");
+
+  if (submitBtn) {
+    const id = submitBtn.getAttribute('data-assessment-id');
+    const subs = getSubmissions();
+    subs[id] = true;
+    saveSubmissions(subs);
+
+    const stats = getSubmissionStats();
+    stats.total = (stats.total || 0) + 1;
+    saveSubmissionStats(stats);
+
+    const row = document.getElementById('adminrow-' + id);
+    const a = categories.find(c => String(c.assessment_id) === String(id));
+    if (row && a) row.replaceWith(renderAdminRow(a, true));
   }
 
-  // Add assessment submit
-  if (addAssessmentForm && addAssessmentModal) {
-    addAssessmentForm.addEventListener('submit', (e) => {
-      e.preventDefault();
+  if (retractBtn) {
+    const id = retractBtn.getAttribute('data-assessment-id');
+    const subs = getSubmissions();
+    subs[id] = false;
+    saveSubmissions(subs);
 
-      const courses = getCourses();
-      const course = courses.find((c) => c.id === courseId);
-      if (!course) {
-        console.warn('Course not found on submit for id:', courseId);
-        return;
+    const stats = getSubmissionStats();
+    stats.total = Math.max(0, (stats.total || 0) - 1);
+    saveSubmissionStats(stats);
+
+      const payload = {
+        user_id: CURRENT_USER?.userId,
+        code: document.getElementById("eCode").value.trim(),
+        name: document.getElementById("eName").value.trim(),
+        instructor: document.getElementById("eInstructor").value.trim(),
+        term: document.getElementById("eTerm").value.trim(),
+      };
+
+      try {
+        await fetch(`${API_BASE}/courses/${courseId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        editCourseModal.close();
+        await loadCourse(courseId);
+      } catch (err) {
+        console.error("Error updating course:", err);
       }
+    });
+  }
+}
 
-      const newAssessment = {
+/****************************************************
+ * 7. COURSE PAGE INTERACTIONS (Modals/Forms)
+ ****************************************************/
+
+function setupCoursePageInteractions(courseCode, realId) {
+  const addModal = document.getElementById('addAssessmentModal');
+  const openAddBtn = document.getElementById('openAddAssessmentModalBtn');
+  const cancelBtns = [
+    document.getElementById('cancelAddAssessmentBtn'),
+    document.getElementById('cancelAddAssessmentBtn2')
+  ];
+  const addForm = document.getElementById('addAssessmentForm');
+  const table = document.getElementById('assessmentsTable');
+
+  if (openAddBtn && addModal) openAddBtn.addEventListener('click', () => addModal.showModal());
+  cancelBtns.forEach(btn => {
+    if (btn) btn.addEventListener('click', () => addModal.close());
+  });
+
+  if (addForm) {
+    addForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const assessments = getStudentAssessments(courseCode);
+      assessments.push({
         id: Date.now().toString(),
         title: document.getElementById('aTitle').value.trim(),
         category: document.getElementById('aType').value,
@@ -253,33 +378,66 @@ function setupCoursePageInteractions(courseId) {
         earned: Number(document.getElementById('aEarned').value),
         total: Number(document.getElementById('aTotal').value),
         completed: document.getElementById('aCompleted').checked,
-      };
+      });
 
-      course.assessments.push(newAssessment);
-      saveCourses(courses);
-
-      addAssessmentModal.close();
-      addAssessmentForm.reset();
-      renderAssessments(courseId);
+      saveStudentAssessments(courseCode, assessments);
+      addModal.close();
+      addForm.reset();
+      renderStudentAssessments(courseCode);
+      loadAdminCategories(realId);
     });
   }
 
-  // Delete assessment via event delegation
   if (table) {
     table.addEventListener('click', (e) => {
-      const btn = e.target.closest("[data-action='delete-assessment']");
-      if (!btn) return;
+      const delBtn = e.target.closest("[data-action='delete-assessment']");
+      if (!delBtn) return;
+      const id = delBtn.getAttribute('data-assessment-id');
+      const assessments = getStudentAssessments(courseCode).filter(a => a.id !== id);
+      saveStudentAssessments(courseCode, assessments);
+      renderStudentAssessments(courseCode);
+      loadAdminCategories(realId);
+    });
+  }
 
-      const assessmentId = btn.getAttribute('data-assessment-id');
-      if (!assessmentId) return;
+  // Edit Course Logic
+  const editModal = document.getElementById('editCourseModal');
+  const editBtn = document.getElementById('editCourseBtn');
+  const editForm = document.getElementById('editCourseForm');
 
-      const courses = getCourses();
-      const course = courses.find((c) => c.id === courseId);
+  if (editBtn && editModal) {
+    editBtn.addEventListener('click', async () => {
+      const res = await fetch('/api/courses');
+      const courses = await res.json();
+      const course = courses.find(c => c.code === courseCode);
       if (!course) return;
 
-      course.assessments = course.assessments.filter((a) => a.id !== assessmentId);
-      saveCourses(courses);
-      renderAssessments(courseId);
+      document.getElementById('eCode').value = course.code;
+      document.getElementById('eName').value = course.name;
+      document.getElementById('eInstructor').value = course.instructor || '';
+      document.getElementById('eTerm').value = course.term || '';
+      editModal.showModal();
+    });
+  }
+
+  if (editForm) {
+    editForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // We need the database ID for the PUT request
+      await fetch('/api/courses/' + realId, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: document.getElementById('eCode').value.trim(),
+          name: document.getElementById('eName').value.trim(),
+          instructor: document.getElementById('eInstructor').value.trim(),
+          term: document.getElementById('eTerm').value.trim(),
+        })
+      });
+
+      editModal.close();
+      window.location.href = `./course.html?courseId=${document.getElementById('eCode').value.trim()}`;
     });
   }
 }

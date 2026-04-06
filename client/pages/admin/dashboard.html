@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Dashboard - Smart Course Companion</title>
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/components.css" />
+    <link rel="stylesheet" href="../../css/layout.css" />
+    <link rel="stylesheet" href="../../css/admin-pages.css" />
+    
+  </head>
+  <body id="admin-dashboard">
+    <header>
+      <div class="container">
+        <a href="../index/index.html" class="site-logo">LearnFlow</a>
+        <nav>
+          <a href="../auth/login.html" class="action-button">Logout</a>
+          <a href="../auth/profile.html" class="action-button" id="profileLink">Profile</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="grid-wrapper">
+          <div class="grid-background"></div>
+        </div>
+
+        <div class="container">
+          <h1 class="admin-title">Admin Panel</h1>
+          <p class="auth-subtext admin-fade admin-fade-welcome">Welcome Admin</p>
+          <p class="auth-subtext admin-fade admin-fade-instruction">
+            Select an option from the menu.
+          </p>
+
+          <nav class="hero-cta-row">
+            <a href="dashboard.html" class="action-button">Dashboard</a>
+            <a href="courses.html" class="action-button">Manage Courses</a>
+            <a href="assessments.html" class="action-button">Assessment Categories</a>
+            <a href="stats.html" class="action-button">Statistics</a>
+          </nav>
+
+          <section class="auth-panel" aria-label="Admin quick stats">
+            <p class="auth-subtext" id="admin-name"><strong></strong></p>
+            <p class="auth-subtext" id="active-courses"></p>
+            <p class="auth-subtext" id="total-courses"></p>
+            <p class="auth-subtext auth-subtext--small" id="total-students"></p>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>© 2026 • SOEN 287 • LearnFlow</p>
+      </div>
+    </footer>
+    <script src="../../js/core/config.js"></script>
+    <script type="module">
+      import { requireAuth } from "../../js/auth/guard.js";
+      requireAuth("admin");
+    </script>
+    <script src="../../js/adminSide.js"></script>
+  </body>
+</html>

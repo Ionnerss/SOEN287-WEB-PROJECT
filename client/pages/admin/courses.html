@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Courses - LearnFlow</title>
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/components.css" />
+    <link rel="stylesheet" href="../../css/layout.css" />
+    <link rel="stylesheet" href="../../css/admin-pages.css" />
+  </head>
+  <body class="admin-page">
+    <header>
+      <div class="container">
+        <a href="../index/index.html" class="site-logo">LearnFlow</a>
+        <nav>
+          <a href="../auth/login.html" class="action-button">Logout</a>
+          <a href="../auth/profile.html" class="action-button" id="profileLink">Profile</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="grid-wrapper">
+          <div class="grid-background"></div>
+        </div>
+
+        <div class="container admin-content">
+          <h1 class="admin-page-title fade-step fade-step-1">Manage Courses</h1>
+          <p class="admin-subtext fade-step fade-step-2">
+            Review all courses, then edit, enable, disable, or remove entries.
+          </p>
+
+          <nav class="admin-action-row stagger-buttons">
+            <a href="dashboard.html" class="action-button">Dashboard</a>
+            <button class="action-button" type="button" id="openAddCourse">
+              <strong>Add Course</strong>
+            </button>
+            <a href="assessments.html" class="action-button">Assessment Categories</a>
+            <a href="stats.html" class="action-button">Statistics</a>
+          </nav>
+
+          <div class="admin-stack">
+            <section
+              class="admin-card fade-step fade-step-4"
+              aria-label="Enabled course list"
+            >
+              <h2>Enabled Courses</h2>
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Course Code</th>
+                      <th>Course Name</th>
+                      <th>Instructor</th>
+                      <th>Term</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="enabled-courses-body"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section
+              class="admin-card fade-step fade-step-5"
+              aria-label="Disabled course list"
+            >
+              <h2>Disabled Courses</h2>
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Course Code</th>
+                      <th>Course Name</th>
+                      <th>Instructor</th>
+                      <th>Term</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="disabled-courses-body"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 • SOEN 287 • LearnFlow</p>
+      </div>
+    </footer>
+
+    <!-- Add Course Modal -->
+    <dialog id="addCourseModal" class="admin-modal">
+      <form id="addCourseForm" class="admin-modal-content">
+        <div class="admin-modal-header">
+          <h3>Add Course</h3>
+          <button id="closeAddCourse" class="action-button action-button--compact">✕</button>
+        </div>
+
+        <div class="grid">
+          <label class="field">
+            <span class="field__label">Course Code</span>
+            <input type="text" id="courseCode" class="input" required />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Course Name</span>
+            <input type="text" id="courseName" class="input" required />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Instructor</span>
+            <input type="text" id="courseInstructor" class="input" />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Term</span>
+            <input type="text" id="courseTerm" class="input" placeholder="Winter 2026" />
+          </label>
+        </div>
+
+        <p id="addCourseError" class="admin-subtext" style="color:#b00020; display:none;"></p>
+
+        <div class="admin-modal-footer">
+          <button type="button" id="cancelAddCourse" class="action-button action-button--compact">Cancel</button>
+          <button type="submit" class="action-button action-button--compact">Add</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Edit Course Modal -->
+    <dialog id="editCourseModal" class="admin-modal">
+      <form id="editCourseForm" class="admin-modal-content">
+        <div class="admin-modal-header">
+          <h3>Edit Course</h3>
+          <button id="closeEditCourse" class="action-button action-button--compact">✕</button>
+        </div>
+
+        <input type="hidden" id="editCourseId" />
+
+        <div class="grid">
+          <label class="field">
+            <span class="field__label">Course Code</span>
+            <input type="text" id="editCourseCode" class="input" required />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Course Name</span>
+            <input type="text" id="editCourseName" class="input" required />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Instructor</span>
+            <input type="text" id="editCourseInstructor" class="input" />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Term</span>
+            <input type="text" id="editCourseTerm" class="input" />
+          </label>
+        </div>
+
+        <p id="editCourseError" class="admin-subtext" style="color:#b00020; display:none;"></p>
+
+        <div class="admin-modal-footer">
+          <button type="button" id="cancelEditCourse" class="action-button action-button--compact">Cancel</button>
+          <button type="submit" class="action-button action-button--compact">Save</button>
+        </div>
+      </form>
+    </dialog>
+    
+    <script src="../../js/core/config.js"></script>
+    <script type="module" src="../../js/adminSide.js"></script>
+  </body>
+</html>
