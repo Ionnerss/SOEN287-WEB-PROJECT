@@ -39,19 +39,6 @@ app.get("/", (req, res) => {
   res.redirect("pages/index/index.html");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, "127.0.0.1", () => {
+  console.log(`Server running on http://127.0.0.1:${PORT}`);
 });
-  
-// ------------------------------------------------------
-// TEMPORARY DEV LOGIN ROUTE (for bypassing login page)
-// ------------------------------------------------------
-
-
-// ------------------------------------------------------
-// TEMPORARY DEV LOGIN ROUTE FOR ADMIN
-// ------------------------------------------------------
-
-
-
-
