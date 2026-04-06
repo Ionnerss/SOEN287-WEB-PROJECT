@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile</title>
+
+  <!-- Global + layout + role-based CSS -->
+  <link rel="stylesheet" href="../../css/base.css" />
+  <link rel="stylesheet" href="../../css/layout.css" />
+  <link rel="stylesheet" href="../../css/admin-pages.css" />
+  <link rel="stylesheet" href="../../css/student-pages.css" />|
+  <link rel="stylesheet" href="../../css/components.css" />
+  
+</head>
+
+<!-- Body class will be set dynamically by profile.js -->
+<body id="profileBody">
+
+  <!-- Header (shared across pages) -->
+    <header>
+      <div class="container">
+        <a href="../index/index.html" class="site-logo">LearnFlow</a>
+        <nav>
+          <a href="../auth/login.html" class="action-button">Logout</a>
+          <a href="../student/dashboard.html" class="action-button">Dashboard</a>
+        </nav>
+      </div>
+    </header>
+
+  <main>
+    <section class="hero">
+      <div class="container" id="profileContainer">
+
+        <!-- Title + subtitle (injected by JS) -->
+        <h1 id="profileTitle"></h1>
+        <p id="profileSubtitle"></p>
+
+        <!-- Card content (admin-card or student-card injected by JS) -->
+        <div id="profileCard"></div>
+
+        <!-- Logout button (admin or student style injected by JS) -->
+        <div id="logoutContainer"></div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 LearnFlow. All rights reserved.</p>
+  </footer>
+
+  <!-- Config + logic -->
+  <script src="../../js/core/config.js"></script>
+  <script src="../../js/profile.js" defer></script>
+</body>
+</html>

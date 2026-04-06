@@ -1,11 +1,23 @@
 import express from "express";
+import { requireAuth } from "./usersRoutes.js";
 import pool from "../config/db.js";
 
 const router = express.Router();
 
 async function getAllCourses(req, res) {
   try {
-    const [rows] = await pool.query("SELECT * FROM courses");
+    let rows;
+
+    if (req.sessionUser.role === "admin") {
+      // Admin sees all courses
+      [rows] = await pool.query("SELECT * FROM courses");
+    } else {
+      // Student sees only their own
+      [rows] = await pool.query(
+        "SELECT * FROM courses WHERE user_id = ?",
+        [req.sessionUser.user_id]
+      );
+    }
 
     res.json(rows);
   } catch (err) {
@@ -162,7 +174,7 @@ async function disableCourse(req, res) {
 /* -----------------------------------------
    Routes
 ------------------------------------------ */
-
+router.use(requireAuth);
 router.get("/", getAllCourses);
 router.get("/:id", getCourseById);
 router.post("/", createCourse);

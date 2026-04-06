@@ -1,8 +1,18 @@
+const API_BASE = "http://127.0.0.1:3000/api";
+
+let CURRENT_USER = null;
+
+async function loadCurrentUser() {
+  const res = await fetch(`${API_BASE}/auth/guard`, { credentials: "include" });
+  const data = await res.json();
+  if (data.authenticated) CURRENT_USER = data.user;
+}
+
 /****************************************************
  * 1. INITIALIZATION & ENTRY POINT
  ****************************************************/
-
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadCurrentUser();
   initDashboardPage();
   initCoursePage();
 });
@@ -33,10 +43,36 @@ function getStudentAssessments(courseCode) {
   return all[courseCode] || [];
 }
 
-function saveStudentAssessments(courseCode, assessments) {
-  const all = JSON.parse(localStorage.getItem('studentAssessments') || '{}');
-  all[courseCode] = assessments;
-  localStorage.setItem('studentAssessments', JSON.stringify(all));
+      const code = document.getElementById("cCode").value.trim();
+      const name = document.getElementById("cName").value.trim();
+      const instructor = document.getElementById("cInstructor").value.trim();
+      const term = document.getElementById("cTerm").value.trim();
+      if (!code || !name || !term) return;
+
+      const newCourse = {
+        code,
+        name,
+        instructor,
+        term,
+        user_id: CURRENT_USER?.userId,
+      };
+
+      try {
+        await fetch(`${API_BASE}/courses`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(newCourse),
+        });
+
+        addCourseModal.close();
+        addCourseForm.reset();
+        loadCoursesDashboard();
+      } catch (err) {
+        console.error("Error adding course:", err);
+      }
+    });
+  }
 }
 
 /****************************************************
@@ -63,8 +99,9 @@ async function renderCoursesDashboard() {
   if (!coursesGrid) return;
 
   try {
-    const res = await fetch('/api/courses');
+    const res = await fetch(`${API_BASE}/courses`, { credentials: "include" });
     const courses = await res.json();
+    renderOverviewBars(courses);
 
     coursesGrid.innerHTML = '';
 
@@ -101,6 +138,33 @@ async function renderCoursesDashboard() {
   } catch (err) {
     console.error('Failed to load courses:', err);
   }
+}
+
+function renderOverviewBars(courses) {
+  const overviewBars = document.getElementById("overviewBars");
+  if (!overviewBars) return;
+
+  overviewBars.innerHTML = "";
+
+  if (!courses || courses.length === 0) {
+    overviewBars.innerHTML = `<p class="muted small">No courses yet.</p>`;
+    return;
+  }
+
+  courses.forEach((course) => {
+    const bar = document.createElement("div");
+    bar.className = "barrow";
+    bar.innerHTML = `
+      <div class="barrow__label">
+        <strong>${course.code}</strong>
+        <span class="muted small">${course.name}</span>
+      </div>
+      <div class="progress">
+        <div class="progress__bar" style="width: 0%"></div>
+      </div>
+    `;
+    overviewBars.appendChild(bar);
+  });
 }
 
 /****************************************************
@@ -259,9 +323,27 @@ function handleTableClick(e, categories) {
     stats.total = Math.max(0, (stats.total || 0) - 1);
     saveSubmissionStats(stats);
 
-    const row = document.getElementById('adminrow-' + id);
-    const a = categories.find(c => String(c.assessment_id) === String(id));
-    if (row && a) row.replaceWith(renderAdminRow(a, false));
+      const payload = {
+        user_id: CURRENT_USER?.userId,
+        code: document.getElementById("eCode").value.trim(),
+        name: document.getElementById("eName").value.trim(),
+        instructor: document.getElementById("eInstructor").value.trim(),
+        term: document.getElementById("eTerm").value.trim(),
+      };
+
+      try {
+        await fetch(`${API_BASE}/courses/${courseId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        editCourseModal.close();
+        await loadCourse(courseId);
+      } catch (err) {
+        console.error("Error updating course:", err);
+      }
+    });
   }
 }
 

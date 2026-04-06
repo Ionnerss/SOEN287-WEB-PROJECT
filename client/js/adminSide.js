@@ -1,9 +1,20 @@
-/**
- * adminSide.js - LearnFlow Admin Management
- * Handles Dashboard Stats, Assessments, Course Dropdowns, and Category Creation.
- */
+let ADMIN_COURSES_CACHE = [];
 
-// ── 1. SHARED HELPERS ────────────────────────────────
+let CURRENT_ADMIN = null;
+
+async function loadCurrentAdmin() {
+  const API = window.APP_CONFIG.api;
+  const res = await fetch(`${API.baseUrl}/${API.basePath}/auth/guard`, { credentials: "include" });
+  const data = await res.json();
+  if (data.authenticated) CURRENT_ADMIN = data.user;
+}
+// ── assessments.html ──────────────────────────────
+async function initAssessmentsPage() {
+  var tbody = document.getElementById('assessmentsBody');
+  if (!tbody) return;
+
+  const res = await fetch('/api/assessments', { credentials: "include" });
+  const assessments = await res.json();
 
 async function loadCoursesDropdown(selectId) {
   const select = document.getElementById(selectId);
@@ -41,7 +52,9 @@ async function initDashboardStats() {
   const activeCoursesEl = document.getElementById('active-courses');
   const totalCoursesEl = document.getElementById('total-courses');
 
-  if (!adminNameEl && !activeCoursesEl) return;
+  const res = await fetch('/api/assessments', { credentials: "include" });
+  const all = await res.json();
+  const assessment = all.find(a => a.id === id);
 
   try {
     const res = await fetch('/api/courses');
@@ -128,53 +141,19 @@ async function initCoursesPage() {
     });
   }
 
-  // Open/close Edit Course modal
-  const editModal = document.getElementById('editCourseModal');
-  const closeEditBtn = document.getElementById('closeEditCourse');
-  const cancelEditBtn = document.getElementById('cancelEditCourse');
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const formError = document.getElementById('formError');
+    const title = document.getElementById('titleInput').value.trim();
+    const type = document.getElementById('typeInput').value;
+    const weight = Number(document.getElementById('weightInput').value);
+    const dueDate = document.getElementById('dueDateInput').value;
 
-  if (closeEditBtn && editModal) closeEditBtn.addEventListener('click', () => editModal.close());
-  if (cancelEditBtn && editModal) cancelEditBtn.addEventListener('click', () => editModal.close());
-
-  // Edit Course form submit
-  const editForm = document.getElementById('editCourseForm');
-  if (editForm) {
-    editForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const errorEl = document.getElementById('editCourseError');
-      const id = document.getElementById('editCourseId').value;
-
-      const payload = {
-        code: document.getElementById('editCourseCode').value.trim(),
-        name: document.getElementById('editCourseName').value.trim(),
-        instructor: document.getElementById('editCourseInstructor').value.trim(),
-        term: document.getElementById('editCourseTerm').value.trim(),
-      };
-
-      try {
-        const res = await fetch('/api/courses/' + id, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          if (errorEl) {
-            errorEl.textContent = data.error || 'Failed to update course.';
-            errorEl.style.display = 'block';
-          }
-          return;
-        }
-
-        editModal.close();
-        editForm.reset();
-        if (errorEl) errorEl.style.display = 'none';
-        await renderCoursesTable();
-      } catch (err) {
-        console.error('Edit course error:', err);
-      }
+    const updateRes = await fetch('/api/assessments/' + id, {
+      credentials: "include",
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, type, weight, dueDate })
     });
   }
 }
@@ -188,65 +167,12 @@ async function renderCoursesTable() {
     const res = await fetch('/api/courses');
     const courses = await res.json();
 
-    if (enabledBody) enabledBody.innerHTML = '';
-    if (disabledBody) disabledBody.innerHTML = '';
-
-    courses.forEach((c) => {
-      const row = document.createElement('tr');
-      const isEnabled = c.enabled !== 0;
-
-      row.innerHTML = `
-        <td>${c.code}</td>
-        <td>${c.name}</td>
-        <td>${c.instructor || '—'}</td>
-        <td>${c.term || '—'}</td>
-        <td>${isEnabled ? 'Enabled' : 'Disabled'}</td>
-        <td>
-          <button class="action-button action-button--compact" data-action="edit" data-id="${c.course_id}">Edit</button>
-          <button class="action-button action-button--compact" data-action="${isEnabled ? 'disable' : 'enable'}" data-id="${c.course_id}">${isEnabled ? 'Disable' : 'Enable'}</button>
-          <button class="action-button action-button--compact" data-action="delete" data-id="${c.course_id}">Delete</button>
-        </td>
-      `;
-
-      if (isEnabled && enabledBody) enabledBody.appendChild(row);
-      else if (!isEnabled && disabledBody) disabledBody.appendChild(row);
-    });
-
-    // Handle action button clicks
-    document.querySelectorAll('[data-action]').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const action = btn.getAttribute('data-action');
-        const id = btn.getAttribute('data-id');
-
-        if (action === 'edit') {
-          const course = courses.find(c => String(c.course_id) === String(id));
-          if (!course) return;
-          document.getElementById('editCourseId').value = course.course_id;
-          document.getElementById('editCourseCode').value = course.code;
-          document.getElementById('editCourseName').value = course.name;
-          document.getElementById('editCourseInstructor').value = course.instructor || '';
-          document.getElementById('editCourseTerm').value = course.term || '';
-          document.getElementById('editCourseModal').showModal();
-        }
-
-        if (action === 'disable') {
-          if (!confirm('Are you sure you want to disable this course?')) return;
-          await fetch('/api/courses/' + id + '/disable', { method: 'PUT' });
-          await renderCoursesTable();
-        }
-
-        if (action === 'enable') {
-          if (!confirm('Are you sure you want to enable this course?')) return;
-          await fetch('/api/courses/' + id + '/enable', { method: 'PUT' });
-          await renderCoursesTable();
-        }
-
-        if (action === 'delete') {
-          if (!confirm('Are you sure you want to delete this course?')) return;
-          await fetch('/api/courses/' + id, { method: 'DELETE' });
-          await renderCoursesTable();
-        }
-      });
+  var deleteBtn = document.getElementById('deleteBtn');
+  if (deleteBtn) {
+    deleteBtn.addEventListener('click', async function() {
+      if (!confirm('Are you sure you want to delete "' + assessment.title + '"?')) return;
+      await fetch('/api/assessments/' + id, { method: 'DELETE', credentials: "include" });
+      window.location.href = 'assessments.html';
     });
 
   } catch (err) {
@@ -260,11 +186,9 @@ async function initAssessmentsPage() {
   const tbody = document.getElementById('assessmentsBody');
   if (!tbody) return;
 
-  try {
-    const [coursesRes, assessmentsRes] = await Promise.all([
-      fetch('/api/courses'),
-      fetch('/api/assessments/admin/all')
-    ]);
+    const res = await fetch('/api/assessments?courseId=' + courseId, { credentials: "include" });
+    const assessments = await res.json();
+    const hasFinal = assessments.some(a => a.type === 'Final');
 
     if (!coursesRes.ok || !assessmentsRes.ok) {
       tbody.innerHTML = '<tr><td colspan="6" style="color:red;">Error loading data.</td></tr>';
@@ -274,9 +198,18 @@ async function initAssessmentsPage() {
     const courses = await coursesRes.json();
     const assessments = await assessmentsRes.json();
 
-    const courseLookup = {};
-    courses.forEach(c => {
-      courseLookup[c.course_id || c.id] = c.code;
+    var courseId = document.getElementById('courseId').value;
+    var title = document.getElementById('title').value.trim();
+    var type = document.getElementById('type').value;
+    var weight = Number(document.getElementById('weight').value);
+    var dueDate = document.getElementById('dueDate').value;
+    var errorEl = document.getElementById('createError');
+
+    const res = await fetch('/api/assessments', {
+      credentials: "include",
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ courseId, title, type, weight, dueDate })
     });
 
     tbody.innerHTML = '';
@@ -334,8 +267,8 @@ async function initManagePage() {
   }
 
   try {
-    const res = await fetch('/api/assessments/admin/all');
-    if (!res.ok) throw new Error("Could not fetch assessment data");
+    const res = await fetch(url, { credentials: "include" });
+    const courses = await res.json();
 
     const all = await res.json();
     const assessment = all.find(a => String(a.assessment_id) === String(id));
@@ -410,14 +343,27 @@ function initCreatePage() {
   const form = document.getElementById('createCategoryForm');
   if (!form) return;
 
-  loadCoursesDropdown('courseId');
+      if (action === "delete") {
+        if (!confirm("Are you sure you want to delete this course?")) return;
+        await fetch(`${API.baseUrl}/${API.basePath}/courses/${id}`, {
+          method: "DELETE",
+          credentials: "include"
+        });
+      }
 
-  const courseSelect = document.getElementById('courseId');
-  const typeSelect = document.getElementById('type');
+      if (action === "enable") {
+        await fetch(`${API.baseUrl}/${API.basePath}/courses/${id}/enable`, {
+          method: "PUT",
+          credentials: "include"
+        });
+      }
 
-  courseSelect.addEventListener('change', async function() {
-    const courseId = courseSelect.value;
-    if (!courseId) return;
+      if (action === "disable") {
+        await fetch(`${API.baseUrl}/${API.basePath}/courses/${id}/disable`, {
+          method: "PUT",
+          credentials: "include"
+        });
+      }
 
     const res = await fetch('/api/assessments/admin/all?courseId=' + courseId);
     const assessments = await res.json();
@@ -436,32 +382,27 @@ function initCreatePage() {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const errorEl = document.getElementById('createError');
+    errorEl.style.display = "none";
 
-    const payload = {
-      courseId: document.getElementById('courseId').value,
-      title: document.getElementById('title').value.trim(),
-      type: document.getElementById('type').value,
-      weight: Number(document.getElementById('weight').value),
-      dueDate: document.getElementById('dueDate').value
-    };
+    const code = document.getElementById("courseCode").value.trim();
+    const name = document.getElementById("courseName").value.trim();
+    const instructor = document.getElementById("courseInstructor").value.trim();
+    const term = document.getElementById("courseTerm").value.trim();
 
-    try {
-      const res = await fetch('/api/assessments/admin', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+    const res = await fetch(`${API.baseUrl}/${API.basePath}/courses`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+        user_id: CURRENT_ADMIN?.userId,
+        code,
+        name,
+        instructor,
+        term
+      })
+    });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        if (errorEl) {
-          errorEl.textContent = data.error || 'Failed to create assessment.';
-          errorEl.style.display = 'block';
-        }
-        return;
-      }
+    const data = await res.json();
 
       window.location.href = 'assessments.html';
     } catch (err) {
@@ -470,11 +411,8 @@ function initCreatePage() {
   });
 }
 
-// ── 7. INITIALIZATION ─────────────────────────────────
-
-document.addEventListener('DOMContentLoaded', () => {
-  initDashboardStats();
-  initCoursesPage();
+document.addEventListener("DOMContentLoaded", async function () {
+  await loadCurrentAdmin();
   initAssessmentsPage();
   initManagePage();
   initCreatePage();

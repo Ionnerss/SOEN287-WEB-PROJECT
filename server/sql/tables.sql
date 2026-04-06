@@ -22,11 +22,9 @@ CREATE TABLE IF NOT EXISTS courses (
     instructor  VARCHAR(255),
     term        VARCHAR(100),
     enabled     TINYINT(1) NOT NULL DEFAULT 1,
-    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_courses_user 
-        FOREIGN KEY (user_id) REFERENCES users(user_id) 
-        ON DELETE CASCADE
-) ENGINE=InnoDB;
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    enabled     TINYINT(1) NOT NULL DEFAULT 1
+);
 
 -- 3. Assessments Table
 -- Contains grading criteria and weights for each course

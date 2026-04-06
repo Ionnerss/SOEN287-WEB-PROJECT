@@ -17,6 +17,7 @@
         <a href="../index/index.html" class="site-logo">LearnFlow</a>
         <nav>
           <a href="../auth/login.html" class="action-button">Logout</a>
+          <a href="../auth/profile.html" class="action-button" id="profileLink">Profile</a>
         </nav>
       </div>
     </header>
@@ -115,16 +116,6 @@
                   <h2>Your courses</h2>
                   <p class="muted small">Add/edit/delete your courses</p>
                 </div>
-
-                <label class="field">
-                  <span class="field__label">Search</span>
-                  <input
-                    id="courseSearch"
-                    class="input input--small"
-                    type="search"
-                    placeholder="SOEN 287…"
-                  />
-                </label>
               </div>
 
               <div class="student-stack" id="coursesGrid" aria-label="Courses list"></div>
@@ -152,28 +143,8 @@
               </label>
             </div>
 
-            <!-- Keep it simple for D1: just progress bars. If you add charts later, replace this block. -->
-            <div class="student-stack" id="overviewBars">
-              <div class="barrow">
-                <div class="barrow__label">
-                  <strong>SOEN 287</strong>
-                  <span class="muted small">2/5 completed</span>
-                </div>
-                <div class="progress">
-                  <div class="progress__bar" style="width: 40%"></div>
-                </div>
-              </div>
-
-              <div class="barrow">
-                <div class="barrow__label">
-                  <strong>COMP 248</strong>
-                  <span class="muted small">1/4 completed</span>
-                </div>
-                <div class="progress">
-                  <div class="progress__bar" style="width: 25%"></div>
-                </div>
-              </div>
-            </div>
+            <!-- Empt Container for Progress -->
+           <div class="student-stack" id="overviewBars"></div>
           </section>
         </div>
       </section>
