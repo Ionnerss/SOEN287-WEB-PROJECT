@@ -12,7 +12,7 @@ import authRoutes from "./src/routes/authRoutes.js";
 import usersRoutes from "./src/routes/usersRoutes.js";
 import coursesRoutes from "./src/routes/courses.js";
 import assessmentsRoutes from "./src/routes/assessments.js";
-
+import enrollRoutes from "./src/routes/enroll.js";
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
@@ -34,6 +34,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/courses", coursesRoutes);
 app.use("/api/assessments", assessmentsRoutes);
+app.use("/api/enroll", enrollRoutes);
 
 app.get("/", (req, res) => {
   res.redirect("pages/index/index.html");

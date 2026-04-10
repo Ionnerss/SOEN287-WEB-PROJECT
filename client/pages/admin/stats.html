@@ -39,20 +39,12 @@
             <a href="stats.html" class="action-button">Statistics</a>
           </nav>
 
-          <div class="admin-stack">
-            <section class="admin-card fade-step fade-step-4" aria-label="Submission stats">
-              <h2>Assessment Submissions</h2>
-              <div id="totalSubmissions"></div>
-              <div id="perAssessmentStats"></div>
-            </section>
+          <!-- Summary cards -->
+          <div class="admin-grid admin-grid-3 fade-step fade-step-3" id="summaryCards" style="margin-bottom:1.5rem;"></div>
 
-          
+          <!-- Per-course breakdown -->
+          <div class="admin-stack" id="courseStats"></div>
 
-            <section class="admin-card fade-step fade-step-5" aria-label="Active course count">
-              <h2>Active Courses</h2>
-              <p>Total active courses: 1</p>
-            </section>
-          </div>
         </div>
       </section>
     </main>
@@ -63,111 +55,157 @@
       </div>
     </footer>
 
-  <script>
+    <script>
+    async function loadStats() {
+      try {
+        const [coursesRes, assessmentsRes, enrollCountsRes] = await Promise.all([
+          fetch('/api/courses', { credentials: 'include' }),
+          fetch('/api/assessments/admin/all', { credentials: 'include' }),
+          fetch('/api/enroll/counts', { credentials: 'include' })
+        ]);
 
-const TOTAL_STUDENTS = 10;
-const submissions = JSON.parse(localStorage.getItem('submissions')) || {};
+        const courses      = await coursesRes.json();
+        const assessments  = await assessmentsRes.json();
+        const enrollCounts = await enrollCountsRes.json();
 
-// Fetch both courses and assessments to map IDs to Names/Codes
-Promise.all([
-  fetch('/api/courses').then(res => res.json()),
-  fetch('/api/assessments/admin/all').then(res => res.json()) // Using the admin endpoint to ensure we get all data
-])
-.then(([courses, assessments]) => {
-  const totalEl = document.getElementById('totalSubmissions');
-  const container = document.getElementById('perAssessmentStats');
-  
-  // 1. Create a lookup map: { "1": "SOEN287", "2": "COMP248" }
-  const courseLookup = {};
-  courses.forEach(c => {
-    courseLookup[String(c.course_id)] = c.code;
-  });
+        // Build lookups
+        const courseLookup = {};
+        courses.forEach(c => { courseLookup[String(c.course_id)] = c; });
 
-  container.innerHTML = '';
-  if (!assessments.length) {
-    container.innerHTML = '<p>No assessments found.</p>';
-    return;
-  }
+        const enrollMap = {};
+        enrollCounts.forEach(r => { enrollMap[String(r.course_id)] = r.student_count; });
 
-  // Calculate global total
-  let globalTotal = 0;
-  Object.values(submissions).forEach(v => { globalTotal += (v || 0); });
+        // Global summary
+        const totalAssessments = assessments.length;
+        const totalCompleted   = assessments.filter(a => a.completed === true).length;
+        const totalStudents    = Object.values(enrollMap).reduce((s, n) => s + n, 0);
+        const totalCourses     = courses.filter(c => c.enabled !== 0).length;
 
-  totalEl.innerHTML = `
-    <p class="admin-kpi">Total submissions across all students: <strong>${globalTotal}</strong></p>
-  `;
+        renderSummaryCards(totalCourses, totalStudents, totalAssessments, totalCompleted);
+        renderCourseBreakdown(courses, assessments, enrollMap);
 
-  // 2. Group by course using the mapped Course Code
-  const grouped = {};
-  assessments.forEach(a => {
-    const courseIdKey = String(a.course_id || a.courseId);
-    const code = courseLookup[courseIdKey] || 'Unknown Course';
-    
-    if (!grouped[code]) grouped[code] = [];
-    grouped[code].push(a);
-  });
+      } catch(err) {
+        console.error("Stats error:", err);
+        document.getElementById('courseStats').innerHTML =
+          '<p style="color:red;">Error loading statistics.</p>';
+      }
+    }
 
-  // 3. Render each group
-  Object.entries(grouped).forEach(([courseCode, items]) => {
-    const block = document.createElement('div');
-    block.style.marginBottom = '2.5rem';
-    block.style.padding = '1rem';
-    block.style.borderLeft = '4px solid #800020';
-    block.style.background = 'rgba(128, 0, 32, 0.05)';
+    function renderSummaryCards(totalCourses, totalStudents, totalAssessments, totalCompleted) {
+      const container = document.getElementById('summaryCards');
+      const submissionRate = totalAssessments === 0 ? 0
+        : Math.round((totalCompleted / totalAssessments) * 100);
 
-    const title = document.createElement('h3');
-    title.textContent = courseCode; // Now shows "SOEN287" instead of "1"
-    block.appendChild(title);
+      container.innerHTML = `
+        <article class="admin-card" style="text-align:center;">
+          <div style="font-size:2rem;font-weight:700;color:#7a0020;">${totalCourses}</div>
+          <div class="muted small">Active Courses</div>
+        </article>
+        <article class="admin-card" style="text-align:center;">
+          <div style="font-size:2rem;font-weight:700;color:#7a0020;">${totalStudents}</div>
+          <div class="muted small">Total Enrollments</div>
+        </article>
+        <article class="admin-card" style="text-align:center;">
+          <div style="font-size:2rem;font-weight:700;color:#7a0020;">${totalCompleted} / ${totalAssessments}</div>
+          <div class="muted small">Submissions (${submissionRate}%)</div>
+        </article>
+      `;
+    }
 
-    let courseTotalSubmissions = 0;
-    let weightedTotal = 0;
-    let totalWeight = 0;
+    function renderCourseBreakdown(courses, assessments, enrollMap) {
+      const container = document.getElementById('courseStats');
+      container.innerHTML = '';
 
-    items.forEach(a => {
-      const assessmentId = a.assessment_id || a.id;
-      const count = submissions[assessmentId] || 0;
-      courseTotalSubmissions += count;
+      // Group assessments by courseId
+      const grouped = {};
+      assessments.forEach(a => {
+        const key = String(a.courseId || a.course_id);
+        if (!grouped[key]) grouped[key] = [];
+        grouped[key].push(a);
+      });
 
-      const percent = Math.round((count / TOTAL_STUDENTS) * 100);
-      weightedTotal += (percent * (a.weight || 0));
-      totalWeight += (a.weight || 0);
+      if (Object.keys(grouped).length === 0) {
+        container.innerHTML = '<p class="muted small">No assessments found.</p>';
+        return;
+      }
 
-      const label = document.createElement('p');
-      label.className = 'admin-kpi';
-      label.innerHTML = `<strong>${percent}%</strong> of students completed ${a.title}`;
+      courses.forEach(course => {
+        const key   = String(course.course_id);
+        const items = grouped[key] || [];
+        if (items.length === 0) return;
 
-      const progress = document.createElement('progress');
-      progress.value = percent;
-      progress.max = 100;
-      progress.style.width = '100%';
+        const enrolled  = enrollMap[key] || 0;
+        const completed = items.filter(a => a.completed === true).length;
+        const total     = items.length;
+        const pct       = total === 0 ? 0 : Math.round((completed / total) * 100);
 
-      block.appendChild(label);
-      block.appendChild(progress);
-    });
+        const card = document.createElement('section');
+        card.className = 'admin-card fade-step fade-step-4';
+        card.style.marginBottom = '1.5rem';
 
-    // Class average logic
-    const classAvg = totalWeight ? Math.round(weightedTotal / totalWeight) : 0;
-    const failing = Math.max(0, 50 - classAvg) * 2;
+        card.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+            <div>
+              <h2 style="margin:0;">${course.code}</h2>
+              <p class="muted small" style="margin:0;">${course.name} • ${enrolled} student${enrolled !== 1 ? 's' : ''} enrolled</p>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:1.5rem;font-weight:700;color:#7a0020;">${pct}%</div>
+              <div class="muted small">${completed} / ${total} submitted</div>
+            </div>
+          </div>
 
-    const statsSummary = document.createElement('div');
-    statsSummary.style.marginTop = '1rem';
-    statsSummary.innerHTML = `
-      <p class="admin-kpi">Total submissions: <strong>${courseTotalSubmissions}</strong></p>
-      <p class="admin-kpi">Class Average: <strong>${classAvg}%</strong></p>
-      <p class="admin-kpi" style="color: ${failing > 30 ? 'red' : 'inherit'}">
-        ${Math.round(failing)}% of students are failing this class (below 50%).
-      </p>
-    `;
-    
-    block.appendChild(statsSummary);
-    container.appendChild(block);
-  });
-})
-.catch(err => {
-  console.error("Error loading stats:", err);
-  document.getElementById('perAssessmentStats').innerHTML = '<p style="color:red;">Error loading statistics from server.</p>';
-});
-</script>
+          <!-- Overall progress bar -->
+          <div style="background:#e5e7eb;border-radius:999px;height:10px;overflow:hidden;margin-bottom:1.5rem;">
+            <div style="width:${pct}%;height:100%;background:#7a0020;border-radius:999px;transition:width 0.4s;"></div>
+          </div>
 
+          <!-- Per-assessment rows -->
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Assessment</th>
+                <th>Type</th>
+                <th>Due</th>
+                <th>Weight</th>
+                <th>Submitted</th>
+                <th>Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${items.map(a => {
+                const isCompleted = a.completed === true;
+                return `
+                  <tr>
+                    <td>${a.title}</td>
+                    <td>${a.type || a.category || '-'}</td>
+                    <td>${a.due_date?.slice(0,10) || '-'}</td>
+                    <td>${a.weight || 0}%</td>
+                    <td>
+                      <span class="tag" style="${isCompleted ? 'background:#7a0020;color:#fff;' : ''}">
+                        ${isCompleted ? 'Yes' : 'No'}
+                      </span>
+                    </td>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:0.5rem;">
+                        <div style="flex:1;background:#e5e7eb;border-radius:999px;height:6px;overflow:hidden;">
+                          <div style="width:${isCompleted ? 100 : 0}%;height:100%;background:#7a0020;border-radius:999px;"></div>
+                        </div>
+                        <span class="muted small">${isCompleted ? '100' : '0'}%</span>
+                      </div>
+                    </td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    loadStats();
+    </script>
   </body>
 </html>

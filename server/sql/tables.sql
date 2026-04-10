@@ -67,3 +67,12 @@ CREATE TABLE IF NOT EXISTS auth_challenges (
         FOREIGN KEY (user_id) REFERENCES users(user_id) 
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+
+CREATE TABLE enrollments (
+    enrollment_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    course_id INT NOT NULL,
+    UNIQUE KEY unique_enrollment (user_id, course_id)
+    DELETE FROM enrollments WHERE user_id IS NULL;
+);

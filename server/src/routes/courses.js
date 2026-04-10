@@ -171,10 +171,23 @@ async function disableCourse(req, res) {
   }
 }
 
+async function getAvailableCourses(req, res) {
+  try {
+    const [rows] = await pool.query(
+      "SELECT * FROM courses WHERE enabled = 1"
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error("Error fetching available courses:", err);
+    res.status(500).json({ error: "Database error" });
+  }
+}
+
 /* -----------------------------------------
    Routes
 ------------------------------------------ */
 router.use(requireAuth);
+router.get("/available", getAvailableCourses);
 router.get("/", getAllCourses);
 router.get("/:id", getCourseById);
 router.post("/", createCourse);

@@ -5,6 +5,24 @@
     "title": "Deliverable 2",
     "type": "Project",
     "weight": 10,
-    "due_date": "2026-04-05"
+    "due_date": "2026-04-05",
+    "completed": false
+  },
+  {
+    "assessment_id": "1775776350737",
+    "courseId": "7",
+    "title": "FINAL",
+    "type": "Final",
+    "weight": 60,
+    "due_date": "2026-04-30",
+    "completed": false
+  },
+  {
+    "assessment_id": "1775849564465",
+    "courseId": "9",
+    "title": "Test Lab",
+    "type": "Lab",
+    "weight": 5,
+    "due_date": "2026-04-12"
   }
 ]

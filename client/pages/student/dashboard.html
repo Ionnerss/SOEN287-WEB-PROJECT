@@ -86,23 +86,7 @@
                 </label>
               </div>
 
-              <ul class="list" id="upcomingList" aria-label="Upcoming assessments list">
-                <!-- Example item (JS should render real items) -->
-                <li class="list__item">
-                  <div>
-                    <div class="list__title">Lab 1</div>
-                    <div class="muted small">SOEN 287 • Due 2026-02-20</div>
-                  </div>
-                  <div class="row gap">
-                    <span class="tag">Pending</span>
-                    <a
-                      class="action-button action-button--compact"
-                      href="./course.html?courseId=SOEN287"
-                      >Open</a
-                    >
-                  </div>
-                </li>
-              </ul>
+              <ul class="list" id="upcomingList" aria-label="Upcoming assessments list"></ul>
 
               <p class="muted small" id="upcomingEmpty" hidden>
                 No upcoming assessments 🎉
@@ -152,64 +136,57 @@
 
     <!-- Add Course Modal -->
     <dialog class="student-modal" id="addCourseModal">
-      <form method="dialog" class="student-modal-content" id="addCourseForm">
-        <div class="student-modal-header">
-          <h3>Add course</h3>
-          <button
-            class="action-button action-button--compact"
-            value="cancel"
-            aria-label="Close"
-            id="cancelAddCourseBtn"
-          >
-            ✕
-          </button>
-        </div>
 
-        <div class="grid">
-          <label class="field">
-            <span class="field__label">Course code</span>
-            <input id="cCode" class="input" placeholder="SOEN 287" required />
-          </label>
+<form class="student-modal-content" id="addCourseForm">
 
-          <label class="field">
-            <span class="field__label">Course name</span>
-            <input id="cName" class="input" placeholder="Web Programming" required />
-          </label>
+<div class="student-modal-header">
+<h3>Add Course</h3>
 
-          <label class="field">
-            <span class="field__label">Instructor</span>
-            <input id="cInstructor" class="input" placeholder="e.g., Prof. X" />
-          </label>
+<button
+type="button"
+class="action-button action-button--compact"
+id="closeAddCourse">
+✕
+</button>
 
-          <label class="field">
-            <span class="field__label">Term</span>
-            <input id="cTerm" class="input" placeholder="Winter 2026" required />
-          </label>
-        </div>
+</div>
 
-        <div class="student-modal-footer">
-          <button
-            class="action-button action-button--compact"
-            value="cancel"
-            type="button"
-            id="cancelAddCourseBtn"
-          >
-            Cancel
-          </button>
-          <button
-            class="action-button action-button--compact"
-            value="default"
-            type="submit"
-          >
-            Add
-          </button>
-        </div>
-      </form>
-    </dialog>
+<div class="grid">
+
+<label class="field">
+<span class="field__label">Course</span>
+
+<select id="courseSelect" class="input">
+<option value="">Loading courses...</option>
+</select>
+
+</label>
+
+</div>
+
+<div class="student-modal-footer">
+
+<button
+type="button"
+class="action-button action-button--compact"
+id="cancelAddCourse">
+Cancel
+</button>
+
+<button
+type="submit"
+class="action-button action-button--compact">
+Add
+</button>
+
+</div>
+
+</form>
+</dialog>
 
     <!-- Add Assessment Modal (optional on dashboard, but useful) -->
     <dialog class="student-modal" id="addAssessmentModal">
-      <form method="dialog" class="student-modal-content" id="addAssessmentForm">
+      <form class="student-modal-content" id="addAssessmentForm">
         <div class="student-modal-header">
           <h3>Add assessment</h3>
           <button
@@ -222,13 +199,7 @@
         </div>
 
         <div class="grid">
-          <label class="field">
-            <span class="field__label">Course</span>
-            <select id="aCourse" class="input" required>
-              <option value="">Choose…</option>
-              <option value="SOEN287">SOEN 287</option>
-            </select>
-          </label>
+          
 
           <label class="field">
             <span class="field__label">Title</span>
@@ -261,15 +232,13 @@
         <div class="student-modal-footer">
           <button
             class="action-button action-button--compact"
-            value="cancel"
             type="button"
-            id="cancelAddAssessmentBtn"
+            id="cancelAddAssessmentBtn2"
           >
             Cancel
           </button>
           <button
             class="action-button action-button--compact"
-            value="default"
             type="submit"
           >
             Add
